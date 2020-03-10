@@ -143,5 +143,79 @@ public class Solution {
         Num226invertTree(root.right);
         return root;
     }
+    public List<Double> Nu637averageOfLevels(TreeNode root) {
+        List<Double> ans = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            int sum = 0;
+            int size = queue.size();
+            for(int i=0;i<size;i++)
+            {
+                TreeNode node = queue.remove();
+                sum+=node.val;
+                if(node.left!=null) queue.add(node.left);
+                if(node.right!=null) queue.add(node.right);
+            }
+            ans.add((double)sum/size);
+        }
+        return ans;
+    }
+    public TreeNode Num669trimBST(TreeNode root, int L, int R) {
+        if(root==null) return null;
+        if(root.val<L)
+        {
+            root = Num669trimBST(root.right,L,R);
+            return root;
+        }else if(root.val > R)
+        {
+            root = Num669trimBST(root.left,L,R);
+            return root;
+        }
+        root.left = Num669trimBST(root.left,L,R);
+        root.right = Num669trimBST(root.right,L,R);
+        return root;
+    }
+//    public TreeNode Num108sortedArrayToBST(int[] nums) {
+//
+//    }
+    public boolean Num653findTarget(TreeNode root, int k) {
+        Set<Integer> set = new HashSet<>();
+        return Num653find(root,k,set);
+    }
+    public boolean Num653find(TreeNode root,int k,Set<Integer> set)
+    {
+        if(root==null) return false;
+        if(set.contains(k-root.val)) return true;
+        set.add(root.val);
+        return Num653find(root.left,k,set)||Num653find(root.right,k,set);
+    }
+    public TreeNode Num538convertBST(TreeNode root) {
+        if(root==null) return null;
+        if()
+    }
+    public int Num530getMinimumDifference(TreeNode root) {
+        int[] ans = new int[2];
+        ans[0] = Integer.MAX_VALUE;
+        ans[1] = Integer.MAX_VALUE;
+        Num530GetMinD(root,ans);
+        return ans[0];
+    }
+    public void Num530GetMinD(TreeNode root,int[] ans)
+    {
+        if(root==null) return;
+        Num530GetMinD(root.left,ans);
+        if(ans[0] ==Integer.MAX_VALUE&&ans[1]==Integer.MAX_VALUE)
+        {
+
+        }
+        else if(Math.abs(root.val-ans[1])<ans[0])
+        {
+            ans[0] = Math.abs(root.val-ans[1]);
+        }
+        ans[1] = root.val;
+        Num530GetMinD(root.right,ans);
+    }
 
 }

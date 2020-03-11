@@ -217,5 +217,225 @@ public class Solution {
         ans[1] = root.val;
         Num530GetMinD(root.right,ans);
     }
+    public boolean Num100isSameTree(TreeNode p, TreeNode q) {
+        if(p==null && q==null) return true;
+        else if((p==null&& q!=null ) || (q==null&& p!=null)) return false;
+        boolean current = p.val==q.val;
+        return Num100isSameTree(p.left,q.left) && Num100isSameTree(p.right,q.right) && current;
+    }
+    /*
+    * Code for leetcode Num783
+    * */
+    List<Integer> vals;
+    public int Num783minDiffInBST(TreeNode root) {
+        vals = new ArrayList();
+        Num783dfs(root);
+        Collections.sort(vals);
+
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < vals.size() - 1; ++i)
+            ans = Math.min(ans, vals.get(i+1) - vals.get(i));
+
+        return ans;
+    }
+
+    public void Num783dfs(TreeNode node) {
+        if (node == null) return;
+        vals.add(node.val);
+        Num783dfs(node.left);
+        Num783dfs(node.right);
+    }
+    public int Num404sumOfLeftLeaves(TreeNode root) {
+        int[] ans = new int[1];
+        if(root.left==null&&root.right==null) return 0;
+        Num404SumOfLeftLeaves(root,"left",ans);
+        return ans[0];
+    }
+    public void Num404SumOfLeftLeaves(TreeNode root,String direction,int[] ans)
+    {
+        if(root==null) return;
+        if(direction == "left")
+        {
+            if(root.left==null&&root.right==null)
+            {
+                ans[0]+=root.val;
+            }
+        }
+        Num404SumOfLeftLeaves(root.left,"left",ans);
+        Num404SumOfLeftLeaves(root.right,"right",ans);
+    }
+    public boolean Num993isCousins(TreeNode root, int x, int y) {
+        if(root==null) return false;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            int size = queue.size();
+            HashMap<Integer,Integer> map = new HashMap<>();
+            for(int i=0;i<size;i++)
+            {
+                TreeNode node = queue.remove();
+                if(node.left!=null)
+                {
+                    queue.add(node.left);
+                    map.put(node.left.val,node.val);
+                }
+                if(node.right!=null)
+                {
+                    queue.add(node.right);
+                    map.put(node.right.val,node.val);
+                }
+            }
+            if(map.containsKey(x)&&map.containsKey(y) && map.get(x)!=map.get(y))
+            {
+                return true;
+            }
+            map.clear();
+        }
+        return false;
+    }
+    /*
+    * Code for Leetcode543 focus on the height of each node*/
+    public int Num543diameterOfBinaryTree(TreeNode root) {
+        if(root==null) return 0;
+        int[] max = new int[1];
+        Num543DOBT(root,max);
+        return max[0];
+    }
+    public int Num543DOBT(TreeNode root,int[] max)
+    {
+        if(root==null) return 0;
+        int left = Num543DOBT(root.left,max);
+        int right = Num543DOBT(root.right,max);
+        if(left+right > max[0])
+        {
+            max[0] = left+right;
+        }
+        return Math.max(left,right)+1;
+    }
+    public List<List<Integer>> Num107levelOrderBottom(TreeNode root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if(root==null) return ans;
+        int depth = 0;
+        Num107DFS(root,depth,ans);
+        return ans;
+    }
+    public void Num107DFS(TreeNode root,int depth,List<List<Integer>> ans)
+    {
+        if(root==null) return ;
+        if(ans.size()<=depth)
+        {
+            ans.add(0,new LinkedList<>());
+        }
+        ans.get(ans.size()-1-depth).add(root.val);
+        Num107DFS(root.left,depth+1,ans);
+        Num107DFS(root.right,depth+1,ans);
+    }
+    public List<List<Integer>> Num107AlevelOrderBottom(TreeNode root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if(root==null) return ans;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            int size = queue.size();
+            List<Integer> level = new LinkedList<>();
+            for(int i=0;i<size;i++)
+            {
+                TreeNode node = queue.remove();
+                level.add(node.val);
+                if(node.left!=null)
+                {
+                    queue.add(node.left);
+                }
+                if(node.right!=null)
+                    queue.add(node.right);
+            }
+            ans.add(0,level);
+        }
+       return ans;
+    }
+    public List<String> Num257binaryTreePaths(TreeNode root) {
+        List<String> ans = new LinkedList<>();
+        if(root==null) return ans;
+        Num257BTP(root,ans,"");
+        return ans;
+    }
+    public void Num257BTP(TreeNode node,List<String> ans, String ancestor)
+    {
+
+        if(node.left==null&&node.right==null)
+        {
+            ancestor=ancestor+"->"+String.valueOf(node.val);
+            ancestor = ancestor.substring(2,ancestor.length());
+            ans.add(ancestor);
+            return;
+        }
+        if(node.left!=null )Num257BTP(node.left,ans,ancestor+"->"+String.valueOf(node.val));
+        if(node.right!=null)Num257BTP(node.right,ans,ancestor+"->"+String.valueOf(node.val));
+    }
+    public boolean Num101isSymmetric(TreeNode root) {
+        TreeNode root1 = root;
+        return Num101sym(root1,root);
+    }
+    public boolean Num101sym(TreeNode root1,TreeNode root)
+    {
+        if(root1==null&&root==null) return true;
+        else if(root1!=null &&root!=null && root1.val ==root.val)
+        {
+            return true && Num101sym(root1.left,root.right) && Num101sym(root1.right,root.left);
+        }
+        else return false;
+    }
+    /*
+    * code for leetcode Num572*/
+    HashSet < String > trees = new HashSet < > ();
+    public boolean Num572isSubtree(TreeNode s, TreeNode t) {
+        String tree1 = Num572preorder(s, true);
+        String tree2 = Num572preorder(t, true);
+        return tree1.indexOf(tree2) >= 0;
+    }
+    public String Num572preorder(TreeNode t, boolean left) {
+        if (t == null) {
+            if (left)
+                return "lnull";
+            else
+                return "rnull";
+        }
+        return "#"+t.val + " " +Num572preorder(t.left, true)+" " +Num572preorder(t.right, false);
+    }
+    public void Num270inorder(TreeNode root, List<Integer> nums) {
+        if (root == null) return;
+        inorder(root.left, nums);
+        nums.add(root.val);
+        inorder(root.right, nums);
+    }
+
+    public int Num270closestValue(TreeNode root, double target) {
+        List<Integer> nums = new ArrayList();
+        Num270inorder(root, nums);
+        return Collections.min(nums, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return Math.abs(o1 - target) < Math.abs(o2 - target) ? -1 : 1;
+            }
+        });
+    }
+    /*code for Leetcode 563*/
+    int tilt = 0;
+    public int Num563findTilt(TreeNode root) {
+        Num563traverse(root);
+        return tilt;
+    }
+    public int Num563traverse(TreeNode root)
+    {
+        if (root == null )
+            return 0;
+        int left = Num563traverse(root.left);
+        int right = Num563traverse(root.right);
+        tilt += Math.abs(left-right);
+        return left + right + root.val;
+    }
+
 
 }

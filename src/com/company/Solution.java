@@ -100,16 +100,7 @@ public class Solution {
             dfs(node.right, leafValues);
         }
     }
-    public int Num1022sumRootToLeaf(TreeNode root) {
-        int[] ans = new int[1];
-        Num1022Sumroottoleaf(root,ans);
-        return ans[0];
-    }
-    public void Num1022Sumroottoleaf(TreeNode root,int[] ans,string forpart)
-    {
-        if(root==null) return;
-        if(root.left==null&&root.right==null)
-    }
+
     public TreeNode Num897increasingBST(TreeNode root) {
         List<Integer> vals = new ArrayList();
         inorder(root, vals);
@@ -191,10 +182,10 @@ public class Solution {
         set.add(root.val);
         return Num653find(root.left,k,set)||Num653find(root.right,k,set);
     }
-    public TreeNode Num538convertBST(TreeNode root) {
+ /*   public TreeNode Num538convertBST(TreeNode root) {
         if(root==null) return null;
         if()
-    }
+    }*/
     public int Num530getMinimumDifference(TreeNode root) {
         int[] ans = new int[2];
         ans[0] = Integer.MAX_VALUE;
@@ -437,5 +428,71 @@ public class Solution {
         return left + right + root.val;
     }
 
+
+    public void Num671dfs(TreeNode root, Set<Integer> uniques) {
+        if (root != null) {
+            uniques.add(root.val);
+            Num671dfs(root.left, uniques);
+            Num671dfs(root.right, uniques);
+        }
+    }
+    public int Num671findSecondMinimumValue(TreeNode root) {
+        Set<Integer> uniques = new HashSet<Integer>();
+        Num671dfs(root, uniques);
+
+        int min1 = root.val;
+        long ans = Long.MAX_VALUE;
+        for (int v : uniques) {
+            if (min1 < v && v < ans) ans = v;
+        }
+        return ans < Long.MAX_VALUE ? (int) ans : -1;
+    }
+
+    public boolean Num110isBalanced(TreeNode root) {
+        if(root==null) return true;
+        return Math.abs(Num110IBT(root.left) - Num110IBT(root.right)) <2 && Num110isBalanced(root.left) && Num110isBalanced(root.right);
+    }
+    public int Num110IBT(TreeNode root)
+    {
+        if(root==null) return 0;
+        return Math.max(Num110IBT(root.left),Num110IBT(root.right))+1;
+    }
+
+    public int Num437pathSum(TreeNode root, int sum) {
+        if(root==null) return 0;
+        List<String> paths = new ArrayList<>();
+        String values="";
+        Num437DFSpathSearch(root,sum,paths,values);
+        return paths.size();
+    }
+    public void Num437DFSpathSearch(TreeNode node,int sum,List<String> paths,String values)
+    {
+        if(node==null) return;
+        values+=String.valueOf(sum);
+        String[] allvalues = values.split(" ");
+        String valu ="";
+        for(String value :allvalues)
+        {
+            if(Integer.valueOf(value)-node.val==0)
+            {
+                paths.add("finish");
+            }
+            value = String.valueOf(Integer.valueOf(value)-node.val);
+            valu=valu+value+" ";
+        }
+        Num437DFSpathSearch(node.left,sum,paths,valu);
+        Num437DFSpathSearch(node.right,sum,paths,valu);
+    }
+
+    public TreeNode Num235lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode node = root;
+        while(node!=null)
+        {
+            if(p.val >node.val &&q.val >node.val) node = node.right;
+            else if(p.val<node.val && q.val <node.val) node = node.left;
+            else return node;
+        }
+        return null;
+    }
 
 }

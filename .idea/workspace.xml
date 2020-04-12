@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/com/company/MovingAverage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Microsoft.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Microsoft.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -56,6 +59,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -69,7 +77,8 @@
       <updated>1583635113282</updated>
       <workItem from="1583635116565" duration="6957000" />
       <workItem from="1583711968360" duration="7325000" />
-      <workItem from="1583878088589" duration="29384000" />
+      <workItem from="1583878088589" duration="39595000" />
+      <workItem from="1585961816612" duration="59562000" />
     </task>
     <servers />
   </component>
@@ -88,5 +97,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/company/Solution.java</url>
+          <line>500</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

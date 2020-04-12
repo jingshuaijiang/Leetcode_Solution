@@ -265,7 +265,156 @@ public class Solution_Microsoft {
         }
         return pointer+1;
 
-
     }
+    /*
+    * Day 5 No.1*/
+    public boolean Num242isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        int[] counter = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            counter[s.charAt(i) - 'a']++;
+            counter[t.charAt(i) - 'a']--;
+        }
+        for (int count : counter) {
+            if (count != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*2*/
+    public int Num70climbStairs(int n) {
+        if(n==1) return 1;
+        if(n==2) return 2;
+        int[] dp = new int[n+1];
+        dp[0]=0;dp[1] = 1;dp[2] = 2;
+        for(int i=3;i<=n;i++)
+        {
+            dp[i] = dp[i-1]+dp[i-2];
+        }
+        return dp[n];
+    }
+    /*3*/
+    public String Num415addStrings(String num1, String num2) {
+        StringBuilder sb = new StringBuilder("");
+        int carrier = 0;
+        int p1 = num1.length()-1;
+        int p2 = num2.length()-1;
+        while(p1>=0 || p2>=0)
+        {
+            int n1 = p1>=0?num1.charAt(p1)-'0':0;
+            int n2 = p2>=0?num2.charAt(p2) -'0':0;
+            int c1 = (n1+n2+carrier)%10;
+            carrier = (n1+n2+carrier)/10;
+            sb.insert(0,c1);
+            p1--;p2--;
+        }
+        if(carrier==1) sb.insert(0,1);
+        return sb.toString();
+    }
+    /*4*/
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head.next==null) return head;
+        ListNode pre = head;
+        ListNode current = head.next;
+        while(current!=null)
+        {
+           while(current!=null&&current.val==pre.val )
+           {
+               current = current.next;
+           }
+           if(current==null)
+           {
+               pre.next=null;
+               break;
+           }
+           pre.next = current;
+           pre = pre.next;
+           current = current.next;
+        }
+        return head;
+    }
+    /*5*/
+    public int Num53maxSubArray(int[] nums) {
+        if(nums.length==1) return nums[0];
+       int[] dp  = new int[nums.length];
+       dp[0] = nums[0];
+       int max = dp[0];
+       for(int i=1;i<nums.length;i++)
+       {
+           if(dp[i-1]<0)
+           {
+               dp[i] = nums[i];
+           }
+           else
+           {
+               dp[i] = nums[i]+dp[i-1];
+           }
+           if(dp[i] >max) max = dp[i];
+       }
+       return max;
+    }
+    /*6*/
+    public boolean Num836isRectangleOverlap(int[] rec1, int[] rec2) {
+        return !(rec1[2] <= rec2[0] ||   // left
+                rec1[3] <= rec2[1] ||   // bottom
+                rec1[0] >= rec2[2] ||   // right
+                rec1[1] >= rec2[3]);    // top
+    }
+    /*7 is the moving average*/
+    /*8*/
+    public int Num198rob(int[] nums) {
+        if(nums.length==0) return 0;
+        if(nums.length==1) return nums[0];
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0],nums[1]);
+        for(int i=2;i<nums.length;i++)
+        {
+            dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);
+        }
+        return dp[nums.length-1];
+    }
+    /*10*/
+    public ListNode Num160getIntersectionNode(ListNode headA, ListNode headB) {
+        int len1 = findLength(headA);
+        int len2 = findLength(headB);
+        int headStart = Math.abs(len1 - len2);
+        if(len1 > len2){
+            headA = doHeadStart(headA, headStart);
+        } else {
+            headB = doHeadStart(headB, headStart);
+        }
+
+        while(headA != null && headB != null){
+            if(headA == headB) return headA;
+            headA = headA.next;
+            headB = headB.next;
+        }
+
+        return null;
+    }
+
+    public int findLength(ListNode A){
+        int lctr = 0;
+        while(A != null){
+            lctr++;
+            A = A.next;
+        }
+        return lctr;
+    }
+
+    public ListNode doHeadStart(ListNode A, int headStart){
+        while(headStart-- != 0){
+            A = A.next;
+        }
+        return A;
+    }
+
+
+
 
 }

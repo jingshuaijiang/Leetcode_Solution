@@ -494,5 +494,1039 @@ public class Solution {
         }
         return null;
     }
+    public String Num1119removeVowels(String S) {
+        return S.replaceAll("[aeiou]","");
+    }
+    public String Num1108defangIPaddr(String address) {
+        String[] slist = address.split("[.]");
+        String ans= "";
+        for(int i=0;i<slist.length;i++)
+        {
+            ans=ans+slist[i]+"[.]";
+        }
+        ans = ans.substring(0,ans.length()-3);
+        return ans;
+    }
+    public int Num1342numberOfSteps (int num) {
+        int count = 0;
+        while(num!=0)
+        {
+            if(num%2==1)
+            {
+                num-=1;
+            }
+            else
+            {
+                num/=2;
+            }
+            count++;
+        }
+        return count;
+    }
+    public int[] Num1365smallerNumbersThanCurrent(int[] nums) {
+        int [] counter = new int[101];
+        for(int i=0;i<nums.length;i++)
+        {
+            counter[nums[i]]++;
+        }
+        for(int i=1;i<counter.length;i++)
+        {
+            counter[i]+=counter[i-1];
+        }
+        int[] ans = new int[nums.length];
+        for(int i=0;i<nums.length;i++)
+        {
+            if(nums[i]-1<0)
+            {
+                ans[i] = 0;
+            }
+            else {
+                ans[i] = counter[nums[i] - 1];
+            }
+        }
+        return ans;
+    }
+    public int Num1290getDecimalValue(ListNode head) {
+        StringBuilder sb = new StringBuilder();
+        while(head!=null)
+        {
+            sb.append(head.val);
+            head = head.next;
+        }
+        return Integer.parseInt(sb.toString(),2);
+    }
+    public int Num1221balancedStringSplit(String s) {
+        Stack<Character> stack = new Stack<Character>();
+        int count = 0;
+        for(int i=0;i<s.length();i++)
+        {
+            char c =s.charAt(i);
+            if(stack.isEmpty() || c==stack.peek())
+            {
+                stack.push(c);
+            }
+            else
+            {
+                stack.pop();
+            }
+            if(stack.isEmpty())
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int Num1296findNumbers(int[] nums) {
+        int count = 0;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(Num1296EvenNumber(nums[i]))
+                count++;
+        }
+        return count;
+    }
+    boolean Num1296EvenNumber(int number)
+    {
+        if(Integer.toString(number).length()%2==1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public int Num1281subtractProductAndSum(int n) {
+        if(n == 0) return 0;
+        int product = 1;
+        int sum = 0;
+        while(n!=0)
+        {
+            int left = n%10;
+            n = n/10;
+            product*=left;
+            sum+=left;
+        }
+        return product - sum;
+    }
+    public int[] Num1313decompressRLElist(int[] nums) {
+        int count = 0;
+        for(int i=0;i<nums.length;i+=2)
+        {
+            count+=nums[i];
+        }
+        int[] ans = new int[count];
+        int init = 0;
+        for(int i=0;i<nums.length;i+=2)
+        {
+            for(int j=0;j<nums[i];j++)
+            {
+                ans[init] = nums[i+1];
+                init++;
+            }
+        }
+        return ans;
+    }
+    //do it again
+    public int[][] Num1086highFive(int[][] items) {
+        Arrays.sort(items, (a,b) -> (b[1]-a[1]));
+        List<int[]> list = new ArrayList();
+        int[] idSum = new int[1000];
+        int[] idcount = new int[1000];
+
+        Map<Integer, Integer>  map = new HashMap<>();
+        for(int[] i : items) {
+            if(idcount[i[0]] < 5) {
+                idSum[i[0]] += i[1];
+                idcount[i[0]]++;
+                map.put(i[0],idSum[i[0]]);
+            }
+        }
+        int[][] res = new int[map.size()][2];
+        int j=0;
+        for(Map.Entry<Integer, Integer>  m : map.entrySet()) {
+            list.add(new int[]{m.getKey(), m.getValue()});
+            res[j][0] = m.getKey();
+            res[j][1] = m.getValue()/5;
+            j++;
+        }
+        return res;
+    }
+    public int Num1252oddCells(int n, int m, int[][] indices) {
+        int [][] matrix = new int[n][m];
+        for(int[] c:indices)
+        {
+            for(int j=0;j<m;j++)
+            {
+                matrix[c[0]][j]++;
+            }
+            for(int j=0;j<n;j++)
+            {
+                matrix[j][c[1]]++;
+            }
+        }
+        int count = 0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(matrix[i][j]%2!=0)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+
+    }
+    public List<Integer> Num1213arraysIntersection(int[] arr1, int[] arr2, int[] arr3) {
+        int [] counter = new int[2001];
+        List<Integer> list = new ArrayList<>();
+        for(int i=0;i<arr1.length;i++)
+        {
+            counter[arr1[i]]++;
+        }
+        for(int i=0;i<arr2.length;i++)
+        {
+            counter[arr2[i]]++;
+        }
+        for(int i=0;i<arr3.length;i++)
+        {
+            counter[arr3[i]]++;
+        }
+        for(int i=0;i<counter.length;i++)
+        {
+            if(counter[i]==3)
+            {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+    public int Num1266minTimeToVisitAllPoints(int[][] points) {
+        int count = 0;
+        for(int i=1;i<points.length;i++)
+        {
+            count+=Math.max(Math.abs(points[i-1][0]-points[i][0]),Math.abs(points[i-1][1]-points[i][1]));
+        }
+        return count;
+    }
+    public int Num1323maximum69Number (int num) {
+        String nums = Integer.toString(num);
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for(int i=0;i<nums.length();i++)
+        {
+            if(nums.charAt(i)=='6'&&count==1)
+            {
+                sb.append('9');
+                count--;
+            }
+            else
+            {
+                sb.append(nums.charAt(i));
+            }
+        }
+        return Integer.parseInt(sb.toString());
+    }
+    public int[] Num760anagramMappings(int[] A, int[] B) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int[] p = new int[A.length];
+        for(int i=0;i<B.length;i++)
+        {
+            map.put(B[i],i);
+        }
+        for(int i=0;i<A.length;i++)
+        {
+            p[i] = map.get(A[i]);
+        }
+        return p;
+    }
+    public int Num1165calculateTime(String keyboard, String word) {
+        Map<Character, Integer> index = new HashMap<>();
+        for (int i = 0; i < keyboard.length(); i++){
+            index.put(keyboard.charAt(i), i);
+        }
+        int prev = 0;
+        int time = 0;
+        for (int i = 0; i < word.length(); i++){
+            time += Math.abs(index.get(word.charAt(i)) - prev);
+            prev = index.get(word.charAt(i));
+        }
+        return time;
+    }
+    public int[] Num1389createTargetArray(int[] nums, int[] index) {
+        List<Integer> list = new LinkedList<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            list.add(index[i],nums[i]);
+        }
+        int[] ans = new int[nums.length];
+        for(int i=0;i<list.size();i++)
+        {
+            ans[i] = list.get(i);
+        }
+        return ans;
+    }
+    public int[] Num1299replaceElements(int[] arr) {
+        int max = arr[arr.length-1];
+        int[] ans = new int[arr.length];
+        ans[arr.length-1] = -1;
+        for(int i=arr.length-2;i>=0;i--)
+        {
+            ans[i] = max;
+            if(arr[i] > max)
+            {
+                max = arr[i];
+            }
+        }
+        return ans;
+    }
+    public int Num1351countNegatives(int[][] grid) {
+        int count = 0;
+        for(int[] sub: grid)
+        {
+            for(int i=0;i<sub.length;i++)
+            {
+                if(sub[i]<0)
+                {
+                    count+=sub.length-i;
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+    public String Num1370sortString(String s) {
+        return "helloworld";
+    }
+    public String Num1021removeOuterParentheses(String S) {
+        Stack<Character> stack = new Stack<>();
+        String split = "";
+        String ans = "";
+        for(int i=0;i< S.length();i++)
+        {
+            if(stack.empty())
+            {
+                if(split.length()==0)
+                    ans+=split;
+                else
+                    ans = ans+split.substring(1,split.length()-1);
+                split = "";
+
+            }
+            if(S.charAt(i)=='(')
+            {
+                stack.push('(');
+            }
+            else
+            {
+                stack.pop();
+            }
+            split+=S.charAt(i);
+        }
+        return ans;
+    }
+    public boolean Num1134isArmstrong(int N) {
+        int temp = N;
+        int sum = 0;
+        if(N==0) return false;
+        int length = Integer.toString(N).length();
+        while(N!=0)
+        {
+            int count = N%10;
+            sum+=Math.pow(count,length);
+            N = N/10;
+        }
+        return sum==temp;
+    }
+    public int Num1180countLetters(String S) {
+        Character pre = S.charAt(0);
+        int count = 0;
+        int length = 1;
+        for(int i=1;i<S.length();i++)
+        {
+            if(S.charAt(i)==pre)
+                length++;
+            else
+            {
+                count= count +(length*(length+1))/2;
+                length = 1;
+                pre = S.charAt(i);
+            }
+        }
+        count=count +(length*(length+1))/2;
+        return count;
+    }
+    public int[] Num1304sumZero(int n) {
+        int[] ans = new int[n];
+        int count = 0;
+        if(n%2 == 0 )
+        {
+            count = n/2;
+        }
+        else
+            count = (n-1)/2;
+        int index = 0;
+        for(int i=1;i<=count;i++)
+        {
+            ans[index] = i;
+            ans[index+1] = -i;
+            index+=2;
+        }
+        return ans;
+
+    }
+    public String Num1374generateTheString(int n) {
+        StringBuilder sb = new StringBuilder();
+        if(n%2==0)
+        {
+            sb.append('b');
+            n = n-1;
+        }
+        for(int i=0;i<n;i++)
+        {
+            sb.append('a');
+        }
+        return sb.toString();
+    }
+    public List<Integer> Num728selfDividingNumbers(int left, int right) {
+        List<Integer> ans = new ArrayList<>();
+        for(int i=left;i<=right;i++)
+        {
+            if(selfdividingNumber(i))
+                ans.add(i);
+        }
+        return ans;
+    }
+    public boolean selfdividingNumber(int number)
+    {
+        int p = number;
+        if(Integer.toString(number).contains("0"))
+            return false;
+        while(number!=0)
+        {
+            int re = number %10 ;
+            if(p%re!=0)
+                return false;
+            number = number/10;
+        }
+        return true;
+    }
+    public List<Integer> Num1380luckyNumbers (int[][] matrix) {
+        int r=matrix.length;
+        int c=matrix[0].length;
+        List<Integer> list = new ArrayList();
+
+        for(int i=0; i<r; i++ ){
+            for(int j=0; j<c; j++){
+                if(minInRow(matrix,i,j) && maxInColumn(matrix,i,j))
+                    list.add(matrix[i][j]);
+            }
+        }
+        return list;
+    }
+
+    public boolean minInRow(int[][] matrix, int i, int j){
+        for(int k=0; k<matrix[0].length; k++){
+            if(k!=j){
+                if(matrix[i][k] < matrix[i][j]) return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean maxInColumn(int[][] matrix, int i, int j){
+        for(int k=0; k<matrix.length; k++){
+            if(k!=i){
+                if(matrix[k][j] > matrix[i][j]) return false;
+            }
+        }
+        return true;
+    }
+    public List<Integer> Num1403minSubsequence(int[] nums) {
+        int sum = 0;
+        for(int i=0;i<nums.length;i++)
+        {
+            sum+=nums[i];
+        }
+        Arrays.sort(nums);
+        List<Integer> ans = new ArrayList<>();
+        int count = 0;
+        for(int i = nums.length-1;i>=0;i--)
+        {
+            count+=nums[i];
+            ans.add(nums[i]);
+            if(count > sum/2)
+                break;
+        }
+        return ans;
+    }
+    public boolean Num1207uniqueOccurrences(int[] arr) {
+        int[] count = new int[2001];
+        for(int ele: arr){
+            count[ele+1000]++;
+        }
+        Set<Integer> set = new HashSet<>();
+        for(int i=0;i<count.length;i++){
+            if(count[i]!=0){
+                if(set.contains(count[i])){
+                    return false;
+                }
+                set.add(count[i]);
+            }
+        }
+        return true;
+    }
+
+    public int Num852peakIndexInMountainArray(int[] A) {
+        int max = Integer.MIN_VALUE;
+        int index = 0;
+        for(int i=0;i<A.length;i++)
+        {
+            if(A[i] >max)
+            {
+                max = A[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public int Num1385findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+        int distance = 0;
+        for(int i=0;i<arr1.length;i++){
+            List<Boolean> boundaryList = new ArrayList<Boolean>();
+            for(int j=0;j<arr2.length;j++){
+                if(Math.abs(arr1[i]-arr2[j]) <= d) boundaryList.add(true);
+            }
+            if(boundaryList.size() == 0) distance++;
+        }
+        return distance;
+    }
+
+    public int Num1051heightChecker(int[] heights) {
+        int[] sorted = heights.clone();
+
+        Arrays.sort(sorted);
+
+        int count = 0;
+        for (int i = 0; i < heights.length; ++i) {
+            if (heights[i] != sorted[i]) count++;
+        }
+        return count;
+    }
+    public int Num1394findLucky(int[] arr) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for(int a: arr) {
+            hm.put(a, hm.getOrDefault(a, 0) + 1);
+        }
+        int res = -1;
+        for(Map.Entry<Integer, Integer> entry: hm.entrySet()) {
+            int key = entry.getKey();
+            if(key > res && key == entry.getValue()) {
+                res = key;
+            }
+        }
+        return res;
+    }
+    public int[] Num1337kWeakestRows(int[][] mat, int k) {
+        List<int[]> list  = new ArrayList<>();
+        for(int i=0;i<mat.length;i++)
+        {
+            int sum = 0;
+            for(int j = 0;j<mat[i].length;j++)
+            {
+                if(mat[i][j]==1)
+                    sum+=1;
+            }
+            list.add(new int[] {i,sum});
+        }
+        Collections.sort(list, new Comparator<int[]>(){
+            public int compare(int[] a, int[] b){
+                if(a[1]!=b[1]){
+                    return a[1] - b[1];
+                }
+                return a[0] - b[0];
+            }
+        });
+        int[] res = new int[k];
+        for(int i=0;i<k;i++){
+            res[i] = list.get(i)[0];
+        }
+
+        return res;
+
+
+    }
+    public ListNode Num876middleNode(ListNode head) {
+        ListNode one=head,two = head;
+        while(two!=null)
+        {
+            one = one.next;
+            two = two.next.next;
+        }
+        return one;
+    }
+
+    public List<String> Num811subdomainVisits(String[] cpdomains) {
+        List<String> ans = new LinkedList<>();
+        HashMap<String,Integer> map = new HashMap<>();
+        for(String s:cpdomains)
+        {
+            String[] splits = s.split(" ");
+            int count = Integer.parseInt(splits[0]);
+            splits = splits[1].split("\\.");
+            String temp = "";
+            for(int i=splits.length-1; i>=0; i--)
+            {
+                // empty string
+                if(temp.length() == 0){
+                    temp = splits[i];
+                }else{
+                    temp = splits[i] + "." + temp;
+                }
+                System.out.println(temp);
+                map.put(temp, map.getOrDefault(temp, 0)+count);
+            }
+
+        }
+        for(String key : map.keySet())
+        {
+            ans.add(String.valueOf(map.get(key)) + " " + key);
+        }
+        return ans;
+    }
+    public String Num1047removeDuplicates(String S) {
+        Stack<Character> stack = new Stack<>();
+        for(int i=0;i<S.length();i++)
+        {
+            if(!stack.isEmpty()&&S.charAt(i)==stack.peek())
+                stack.pop();
+            else
+            {
+                stack.push(S.charAt(i));
+            }
+        }
+        String ans = "";
+        while(!stack.isEmpty())
+        {
+            ans = stack.pop()+ans;
+        }
+        return ans;
+    }
+    public List<List<Integer>> Num1200minimumAbsDifference(int[] arr) {
+        Arrays.sort(arr);
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<arr.length-1;i++)
+        {
+            if(arr[i+1] - arr[i] < min)
+            {
+                min = arr[i+1] - arr[i];
+            }
+        }
+        List<List<Integer>> ans  = new LinkedList<>();
+        for(int i=0;i<arr.length-1;i++)
+        {
+            if(arr[i+1] - arr[i] == min)
+            {
+                List<Integer> list = new LinkedList<>();
+                list.add(arr[i]);
+                list.add(arr[i+1]);
+                ans.add(list);
+            }
+        }
+        return ans;
+    }
+    public int[] Num821shortestToChar(String S, char C) {
+        int index = 0;
+        for(int i = 0;i< S.length();i++)
+        {
+            if(S.charAt(i) ==C)
+            {
+                index = i;
+                break;
+            }
+        }
+        int[] ans = new int[S.length()];
+        for(int i=0;i<S.length();i++)
+        {
+            if(S.charAt(i)==C)
+            {
+                index = i;
+                for(int j = i-1;j>=0;j--)
+                {
+                    if(ans[j] > i-j)
+                    {
+                        ans[j] = i-j;
+                    }
+                    else
+                        break;
+                }
+            }
+            ans[i] = Math.abs(i-index);
+        }
+        return ans;
+    }
+    public int[] Num1122relativeSortArray(int[] arr1, int[] arr2) {
+        int[] count = new int[1001], res = new int[arr1.length];
+        for(int e : arr1) count[e]++;
+        int idx = 0;
+        for(int e : arr2) {
+            for(int i= 0; i < count[e]; i++) res[idx++] = e;
+            count[e] = 0;
+        }
+
+        for(int i = 0; i <= 1000; i++) {
+            for(int j= 0; j < count[i]; j++) res[idx++] = i;
+        }
+        return res;
+    }
+    public int Num1160countCharacters(String[] words, String chars) {
+        int num = 0;
+        String[] arr = chars.split("");
+
+        for(int i = 0; i< words.length; i++){
+            int count = 0;
+            int lengthOfWord = words[i].length();
+            for(int x =0; x<arr.length; x++){
+
+                if(words[i].contains(arr[x])){
+                    count++;
+                    words[i] = words[i].replaceFirst(arr[x],"");
+                }
+            }
+            if(count >= lengthOfWord){
+                num+= lengthOfWord;
+            }
+
+        }
+        return num;
+    }
+    public int Num1064fixedPoint(int[] A) {
+        for(int i=0;i<A.length;i++)
+        {
+            if(A[i] == i)
+                return i;
+        }
+        return -1;
+    }
+    public int Num1133largestUniqueNumber(int[] A) {
+        int[] bucket = new int[1001];
+        for(int a : A)
+            bucket[a]++;
+
+        for(int i = 1000; i >= 0; i--)
+            if(bucket[i] == 1)
+                return i;
+        return -1;
+    }
+    public int Num1217minCostToMoveChips(int[] chips) {
+        int odd = 0;
+        for(int i = 0;i<chips.length;i++)
+        {
+            if(chips[i] %2 ==1)
+                odd++;
+        }
+        return Math.min(odd,chips.length-odd);
+    }
+
+    public String[] Num500findWords(String[] words) {
+        HashMap<Character,Integer> map = new HashMap<>();
+        map.put('q',1);
+        map.put('w',1);
+        map.put('e',1);
+        map.put('r',1);
+        map.put('t',1);
+        map.put('y',1);
+        map.put('u',1);
+        map.put('i',1);
+        map.put('o',1);
+        map.put('p',1);
+        map.put('a',2);
+        map.put('s',2);
+        map.put('d',2);
+        map.put('f',2);
+        map.put('g',2);
+        map.put('h',2);
+        map.put('j',2);
+        map.put('k',2);
+        map.put('l',2);
+        map.put('z',3);
+        map.put('x',3);
+        map.put('c',3);
+        map.put('v',3);
+        map.put('b',3);
+        map.put('n',3);
+        map.put('m',3);
+        List<String> ans = new LinkedList<>();
+        for(int i=0;i<words.length;i++)
+        {
+            String word = words[i].toLowerCase();
+            int j = map.get(word.charAt(0));
+            int tr = 0;
+            for(int k = 0;k<word.length();k++)
+            {
+                if(map.get(word.charAt(k))!=j){
+                    tr = 1;
+                    break;
+            }
+            }
+            if(tr==0)
+                ans.add(words[i]);
+        }
+        String[] array = new String[ans.size()];
+        System.arraycopy(ans.toArray(), 0, array, 0, ans.size());
+        return array;
+    }
+
+    public int[][] Num867transpose(int[][] A) {
+        int[][] transpose = new int[A[0].length][A.length];
+        for(int i=0;i<A.length;i++)
+        {
+            for(int j=0;j<A[0].length;j++)
+            {
+                transpose[j][i] = A[i][j];
+            }
+        }
+        return transpose;
+    }
+
+    public int[] Num496nextGreaterElement(int[] nums1, int[] nums2) {
+        int[] ans = new int[nums1.length];
+        HashMap<Integer,Integer> map = new HashMap<>();
+        Stack<Integer> stack = new Stack<>();
+        stack.push(nums2[0]);
+        for(int i=1;i<nums2.length;i++)
+        {
+            while(!stack.isEmpty() && stack.peek()<nums2[i])
+            {
+                map.put(stack.pop(),nums2[i]);
+            }
+            stack.push(nums2[i]);
+        }
+        while(!stack.isEmpty())
+        {
+            map.put(stack.pop(),-1);
+        }
+        for(int i=0;i< nums1.length;i++)
+        {
+            ans[i] = map.get(nums1[i]);
+        }
+        return ans;
+    }
+    public int lastStoneWeight(int[] stones) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for(int stone: stones)
+        {
+            pq.add(stone);
+        }
+        while(pq.size()!=0)
+        {
+            int s1 = pq.poll();
+            if(pq.size()==0)
+                return s1;
+            int s2 = pq.poll();
+            if(s1-s2!=0)
+                pq.add(s1-s2);
+        }
+        return 0;
+    }
+
+    public boolean Num20isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.charAt(i) =='{'|| s.charAt(i) =='('||s.charAt(i) =='[')
+                stack.push(s.charAt(i));
+            else
+            {
+                if(stack.size()==0)
+                    return false;
+                else
+                {
+                    Character c = stack.pop();
+                    if(s.charAt(i)==')'&& c!='('  )
+                        return false;
+                    if(s.charAt(i)=='}'&& c!='{')
+                        return false;
+                    if(s.charAt(i)==']'&& c!='[')
+                        return false;
+                }
+
+            }
+        }
+        if(stack.size()!=0)
+            return false;
+        return true;
+    }
+    public boolean Num844backspaceCompare(String S, String T) {
+        Stack<Character> S_stack = new Stack<>();
+        for(int i=0;i<S.length();i++)
+        {
+            if(S.charAt(i)!='#')
+                S_stack.push(S.charAt(i));
+            else if(S.charAt(i)=='#' && !S_stack.isEmpty())
+                S_stack.pop();
+        }
+        Stack<Character> T_stack = new Stack<>();
+        for(int i=0;i<T.length();i++)
+        {
+            if(T.charAt(i)!='#')
+                T_stack.push(T.charAt(i));
+            else if(T.charAt(i)=='#' && !T_stack.isEmpty())
+                T_stack.pop();
+        }
+        return S_stack.toString().equals(T_stack.toString());
+    }
+    public int Num682calPoints(String[] ops) {
+        Stack<Integer> stack = new Stack<>();
+        for(int i=0;i<ops.length;i++)
+        {
+            if(ops[i].equals("C"))
+                stack.pop();
+            else if(ops[i].equals("D"))
+                stack.push(2*stack.peek());
+            else if(ops[i].equals("+"))
+            {
+                int pre = stack.pop();
+                int ppre = stack.pop();
+                stack.push(pre);
+                stack.push(ppre);
+                stack.push(pre+ppre);
+            }
+            else
+                stack.push(Integer.valueOf(ops[i]));
+        }
+        int ans = 0;
+        while(!stack.isEmpty())
+        {
+            ans+=stack.pop();
+        }
+        return ans;
+    }
+    public int Num1196maxNumberOfApples(int[] arr) {
+        Arrays.sort(arr);
+        int count = 0;
+        int weight = 5000;
+        for(int i=0;i<arr.length;i++)
+        {
+            if(weight>=arr[i])
+            {
+                weight-=arr[i];
+                count++;
+            }
+        }
+        return count;
+    }
+    public int Num476findComplement(int num) {
+        int temp = num,bit = 1;
+        while(temp!=0)
+        {
+            num = num^bit;
+            bit = bit <<1;
+            temp = temp >>1;
+        }
+        return num;
+    }
+    public List<String> Num784letterCasePermutation(String S) {
+        List<String> result = new ArrayList<>();
+        if(S == null || S.length() == 0) {
+            result.add(S);
+            return result;
+        }
+
+        char[] str = S.toCharArray();
+        findPermutations(result, str, 0);
+        return result;
+    }
+
+    public void findPermutations(List<String> result, char[] str, int index){
+        result.add(new String(str));
+
+        for(int i = index; i < str.length; i++){
+            if(!Character.isDigit(str[i])){
+                char temp = str[i];
+                str[i] = (Character.isLowerCase(str[i])) ? Character.toUpperCase(str[i]) : Character.toLowerCase(str[i]);
+                findPermutations(result, str, i + 1);
+                str[i] = temp;
+            }
+        }
+    }
+    public String[] Num884uncommonFromSentences(String A, String B) {
+        HashMap<String,String> map = new HashMap<>();
+        List<String> ans = new LinkedList<>();
+        String[] alist = A.split(" ");
+        String[] blist = B.split(" ");
+        for(int i=0;i<alist.length;i++)
+        {
+            if(map.containsKey(alist[i]))
+                continue;
+            else map.put(alist[i],"A");
+        }
+        for(int i=0;i<blist.length;i++)
+        {
+            if(map.containsKey(blist[i]))
+            {
+                if(map.get(blist[i]).equals("A"))
+                    map.put(blist[i],"AB");
+            }
+            else
+            {
+                map.put(blist[i],"B");
+            }
+        }
+        for (String key1: map.keySet()
+             ) {
+            if(!map.get(key1).equals("AB"))
+            {
+                ans.add(key1);
+            }
+        }
+        return ans.toArray(new String[ans.size()]);
+    }
+
+    public int[] Num985sumEvenAfterQueries(int[] A, int[][] queries) {
+        int even = 0;
+        int[] ans = new int[queries.length];
+        for(int i=0;i<A.length;i++)
+        {
+            if(A[i] %2 ==0)
+                even+=A[i];
+        }
+        for(int i=0;i<queries.length;i++)
+        {
+            int a = A[queries[i][1]]%2;
+            int b = (A[queries[i][1]]+queries[i][0])%2;
+            if(a==0 && b!=0)
+            {
+                even = even - A[queries[i][1]];
+            }
+            else if(a!=0 && b==0)
+            {
+                even = even+A[queries[i][1]]+queries[i][0];
+            }
+            else if(a ==0 && b==0 && A[queries[i][1]]!=(A[queries[i][1]]+queries[i][0]))
+            {
+                even = even +queries[i][0];
+            }
+            A[queries[i][1]]=A[queries[i][1]]+queries[i][0];
+            ans[i] = even;
+        }
+        return ans;
+    }
+
+    public int maxNumberOfBalloons(String text) {
+        int count[] = new int[26];
+        for(char c: text.toCharArray())
+        {
+            count[c - 'a']++;
+        }
+        int min = count[1];
+        min=Math.min(min,count[0]);
+        min=Math.min(min,count['l'-'a']/2);
+        min=Math.min(min,count['o'-'a']/2);
+        min=Math.min(min,count['n'-'a']);
+        return min;
+    }
 
 }

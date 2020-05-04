@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.print.attribute.HashAttributeSet;
 import java.util.*;
 
 public class Solution {
@@ -796,9 +797,7 @@ public class Solution {
         }
         return count;
     }
-    public String Num1370sortString(String s) {
-        return "helloworld";
-    }
+
     public String Num1021removeOuterParentheses(String S) {
         Stack<Character> stack = new Stack<>();
         String split = "";
@@ -1527,6 +1526,529 @@ public class Solution {
         min=Math.min(min,count['o'-'a']/2);
         min=Math.min(min,count['n'-'a']);
         return min;
+    }
+    public int Num1099twoSumLessThanK(int[] A, int K) {
+        int i = A.length-1;
+        int j = 0;
+        int max = Integer.MIN_VALUE;
+        while(i>j)
+        {
+            int sum = A[i] + A[j];
+
+            if (sum < K) {
+                max = Math.max(max, sum);
+                i++;
+            } else{
+                j--;
+            }
+        }
+        return max;
+    }
+    public int[] Num167twoSum(int[] numbers, int target) {
+        int[] result = new int[2];
+        int i = 0;  // left pointer
+        int j = numbers.length - 1;  // right pointer
+        while (i < j) {  // two numbers, so "i != j"
+            int sum = numbers[i] + numbers[j];
+            if (sum == target) {  // not zero-based
+                result[0] = i + 1;
+                result[1] = j + 1;
+                return result;
+            } else if (sum < target) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return result;
+    }
+    public int Num243shortestDistance(String[] words, String word1, String word2) {
+        int i1 = Integer.MAX_VALUE,i2 = 0;
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<words.length;i++)
+        {
+            if(words[i].equals(word1))
+                i1 = i;
+            else if(words[i].equals(word2))
+                i2 = i;
+            if(Math.abs(i2-i1) < min)
+                min = Math.abs(i2-i1);
+        }
+        return min;
+    }
+    public void Num237deleteNode(ListNode node) {
+        while(node.next.next!=null)
+        {
+            node.val = node.next.val;
+            node = node.next;
+        }
+        node.val = node.next.val;
+        node.next = null;
+    }
+
+    public void Num283moveZeroes(int[] nums) {
+
+        int i = 0,j = 0;
+        while(i<=nums.length-1&& j<=nums.length-1)
+        {
+            while(i<=nums.length-1&&nums[i]!=0)
+            {
+                i++;
+            }
+            while(j<=nums.length-1&&nums[j]==0)
+            {
+                j++;
+            }
+            if(i>nums.length-1 || j>nums.length-1 || i>j)
+                break;
+            else
+            {
+                nums[i] = nums[j];
+                nums[j] = 0;
+            }
+        }
+    }
+    public int Num169majorityElement(int[] nums) {
+        if(nums.length==1) return nums[0];
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i = 0;i<nums.length;i++)
+        {
+            if(!map.containsKey(nums[i]))
+                map.put(nums[i],1);
+            else
+            {
+                if(map.get(nums[i])+1>nums.length/2)
+                    return nums[i];
+                map.put(nums[i],map.get(nums[i])+1);
+            }
+        }
+        return -1;
+    }
+    public List<Integer> Num448findDisappearedNumbers(int[] nums) {
+        List<Integer> ans = new LinkedList<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            int index = Math.abs(nums[i])-1;
+            if(nums[index] >0)
+            {
+                nums[index]*=-1;
+            }
+        }
+        for(int i=1;i<=nums.length;i++)
+        {
+            if(nums[i-1]>0)
+                ans.add(i);
+        }
+        return ans;
+    }
+    public List<Integer> Num442findDuplicates(int[] nums) {
+        List<Integer> ans = new LinkedList<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            int index = Math.abs(nums[i])-1;
+            if(nums[index]>0)
+            {
+                nums[index]*=-1;
+            }
+            else if(nums[index]<0)
+            {
+                ans.add(index+1);
+            }
+        }
+        return ans;
+    }
+    public int NUm256minCost(int[][] costs) {
+        if(costs.length==0) return 0;
+        int[][] dp = new int[costs.length][3];
+        dp[0][0] = costs[0][0];
+        dp[0][1] = costs[0][1];
+        dp[0][2] = costs[0][2];
+        for(int i=1;i<costs.length;i++)
+        {
+            dp[i][0] = Math.min(dp[i-1][1],dp[i-1][2])+costs[i][0];
+            dp[i][1] = Math.min(dp[i-1][0],dp[i-1][2])+costs[i][1];
+            dp[i][2] = Math.min(dp[i-1][1],dp[i-1][0])+costs[i][2];
+        }
+
+        int min = Math.min(dp[costs.length-1][0],dp[costs.length-1][1]);
+        min = Math.min(min,dp[costs.length-1][2]);
+        return min;
+    }
+    public int Num1022sumRootToLeaf(TreeNode root) {
+        int[] ans = new int[1];
+        Num1022SUm(root,ans,"");
+        return ans[0];
+    }
+    public void Num1022SUm(TreeNode node,int[] ans,String ancestor)
+    {
+        if(node.left==null&&node.right==null)
+        {
+            ancestor = ancestor+Integer.toString(node.val);
+            int i = Integer.parseInt(ancestor,2);
+            ans[0]+=i;
+        }
+        else
+        {
+            if(node.left!=null)
+            {
+                Num1022SUm(node.left,ans,ancestor+Integer.toString(node.val));
+            }
+            if(node.right!=null)
+            {
+                Num1022SUm(node.right,ans,ancestor+Integer.toString(node.val));
+            }
+        }
+    }
+
+    public String Num1370sortString(String s) {
+        int[] carray = new int[26];
+        for(int i=0;i<s.length();i++)
+        {
+            carray[s.charAt(i)-'a']++;
+        }
+        StringBuilder sb = new StringBuilder();
+        while(sb.length()<s.length())
+        {
+            for(int i=0;i<26;i++)
+            {
+                if(carray[i]!=0)
+                {
+                    sb.append((char)(i+'a'));
+                    carray[i]--;
+                }
+            }
+            for(int i=25;i>=0;i--)
+            {
+                if(carray[i]!=0)
+                {
+                    sb.append((char)(i+'a'));
+                    carray[i]--;
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public int[] Num349intersection(int[] nums1, int[] nums2) {
+        List<Integer> list= new ArrayList<>();
+        Map<Integer,Integer> map= new HashMap<>();
+        for(int i=0;i<nums1.length;i++){
+            map.put(nums1[i],1);
+        }
+        for(int i=0;i<nums2.length;i++){
+            if(map.containsKey(nums2[i])){
+                list.add(nums2[i]);
+                map.remove(nums2[i]);
+            }
+        }
+        int[] arr= new int[list.size()];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=list.get(i);
+        }
+        return arr;
+    }
+
+    public boolean Num860lemonadeChange(int[] bills) {
+        int five = 0, ten = 0;
+        for (int bill: bills) {
+            if (bill == 5)
+                five++;
+            else if (bill == 10) {
+                if (five == 0) return false;
+                five--;
+                ten++;
+            } else {
+                if (five > 0 && ten > 0) {
+                    five--;
+                    ten--;
+                } else if (five >= 3) {
+                    five -= 3;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public TreeNode Num108sortedArrayToBST(int[] nums) {
+        return Num108ToBST(nums,0,nums.length-1);
+    }
+
+    public TreeNode Num108ToBST(int[] nums,int i,int j)
+    {
+        if(i>j)
+        {
+            return null;
+        }
+        else
+        {
+            int mid = Math.round((i+j)/2);
+            TreeNode node = new TreeNode(nums[mid]);
+            node.left = Num108ToBST(nums,i,mid-1);
+            node.right = Num108ToBST(nums,mid+1,j);
+            return node;
+        }
+    }
+
+    public TreeNode Num538convertBST(TreeNode root) {
+        int[] sum = new int[1];
+        Num538BST(root,sum);
+        return root;
+    }
+
+    public void Num538BST(TreeNode node, int[] sum)
+    {
+        if(node ==null) return;
+        Num538BST(node.right,sum);
+        int temp = node.val;
+        node.val +=sum[0];
+        sum[0]+=temp;
+        Num538BST(node.left,sum);
+    }
+
+    public int Num111minDepth(TreeNode root) {
+        if(root==null) return 0;
+        int[] min = new int[1];
+        min[0] = Integer.MAX_VALUE;
+        Num111Mindepth(root,min,0);
+        return min[0];
+    }
+
+    public void Num111Mindepth(TreeNode node,int[] min,int depth)
+    {
+        if(node.left==null&&node.right==null)
+        {
+            if(depth+1<min[0])
+            {
+                min[0] = depth+1;
+            }
+        }
+        if(node.left!=null)
+        {
+            Num111Mindepth(node.left,min,depth+1);
+        }
+        if(node.right!=null)
+        {
+            Num111Mindepth(node.right,min,depth+1);
+        }
+    }
+
+    public boolean Num112hasPathSum(TreeNode root, int sum) {
+        if (root == null)
+            return false;
+        sum -= root.val;
+        if ((root.left == null) && (root.right == null))
+            return (sum == 0);
+        return Num112hasPathSum(root.left, sum) || Num112hasPathSum(root.right, sum);
+    }
+
+    int ans;
+    public int Num687longestUnivaluePath(TreeNode root) {
+        ans = 0;
+        Num687arrowLength(root);
+        return ans;
+    }
+    public int Num687arrowLength(TreeNode node) {
+        if (node == null) return 0;
+        int left = Num687arrowLength(node.left);
+        int right = Num687arrowLength(node.right);
+        int arrowLeft = 0, arrowRight = 0;
+        if (node.left != null && node.left.val == node.val) {
+            arrowLeft += left + 1;
+        }
+        if (node.right != null && node.right.val == node.val) {
+            arrowRight += right + 1;
+        }
+        ans = Math.max(ans, arrowLeft + arrowRight);
+        return Math.max(arrowLeft, arrowRight);
+    }
+
+    public TreeNode Num105buildTree(int[] preorder, int[] inorder) {
+        return buildtreehelper(preorder,inorder,0,preorder.length-1,0,inorder.length-1);
+    }
+
+    public TreeNode buildtreehelper(int[] preorder,int[] inorder,int prei,int prej,int ini,int inj)
+    {
+        if(prei>prej||ini>inj)
+            return null;
+        TreeNode node = new TreeNode(preorder[prei]);
+        int i = ini;
+        for(;i<=inj;i++)
+        {
+            if(inorder[i]==preorder[prei])
+            {
+                break;
+            }
+        }
+        node.left = buildtreehelper(preorder,inorder,prei+1,prei+i-ini,ini,i-1);
+        node.right = buildtreehelper(preorder,inorder,prei+i-ini+1,prej,i+1,inj);
+        return node;
+    }
+    public List<Integer> Num145postorderTraversal(TreeNode root) {
+        List<Integer> result = new LinkedList<>();
+        postordertraversalhelper(root,result);
+        return result;
+    }
+    public void postordertraversalhelper(TreeNode node,List<Integer> result)
+    {
+        if(node==null)
+            return;
+        postordertraversalhelper(node.left,result);
+        postordertraversalhelper(node.right,result);
+        result.add(node.val);
+    }
+    public List<List<Integer>> Num103zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<>();
+        if(root==null)
+        {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int count=0;
+        while(queue.size()!=0)
+        {
+            int num = queue.size();
+            List<Integer> levellist = new LinkedList<>();
+            for(int i=0;i<num;i++)
+            {
+                TreeNode node = queue.peek();
+                if(node.left!=null)
+                {
+                    queue.add(node.left);
+                }
+                if(node.right!=null)
+                {
+                    queue.add(node.right);
+                }
+                if(count%2==0)
+                {
+                    levellist.add(node.val);
+                    queue.remove();
+                }
+                else
+                {
+                    levellist.add(0,node.val);
+                    queue.remove();
+                }
+            }
+            count+=1;
+            result.add(levellist);
+        }
+        return result;
+    }
+    public int Num276numWays(int n, int k) {
+        if(n==0)
+        {
+            return 0;
+        }else if (n==1)
+        {
+            return k;
+        }
+        int[] dp = new int[n];
+        dp[0] = k;
+        dp[1] = k*k;
+        for(int i=2;i<n;i++)
+        {
+            dp[i] = dp[i-1]*(k-1)+dp[i-2]*(k-1);
+        }
+        return dp[n-1];
+    }
+    public List<Integer> Num94inorderTraversal(TreeNode root) {
+        List<Integer> result = new LinkedList<>();
+        inordertraversalhelper(root,result);
+        return result;
+    }
+
+    public void inordertraversalhelper(TreeNode node,List<Integer>result)
+    {
+        if(node==null)
+            return;
+        inordertraversalhelper(node.left,result);
+        result.add(node.val);
+        inordertraversalhelper(node.right,result);
+    }
+    public int Num230kthSmallest(TreeNode root, int k) {
+        int[] result = new int[2];
+        result[1] = 1;
+        Kthsmallesthelper(root,k,result);
+        return result[0];
+    }
+
+    public void Kthsmallesthelper(TreeNode node,int k,int[] result)
+    {
+        if(node==null)
+            return;
+        Kthsmallesthelper(node.left,k,result);
+        if(result[1]==k)
+        {
+            result[0] = node.val;
+        }
+        result[1]+=1;
+        Kthsmallesthelper(node.right,k,result);
+    }
+    public void Num114flatten(TreeNode root) {
+        if(root==null)
+            return;
+        Num114flatten(root.left);
+        Num114flatten(root.right);
+        TreeNode node = root.right;
+        root.right = root.left;
+        root.left=null;
+        while(root.right!=null)
+        {
+            root = root.right;
+        }
+        root.right = node;
+
+    }
+    public List<Integer> Num144preorderTraversal(TreeNode root) {
+        List<Integer> result = new LinkedList<>();
+        preordertraversalhelper(root,result);
+        return result;
+    }
+    public void preordertraversalhelper(TreeNode node,List<Integer> result)
+    {
+        if(node==null)
+            return;
+        result.add(node.val);
+        preordertraversalhelper(node.left,result);
+        preordertraversalhelper(node.right,result);
+    }
+    public List<Integer> Num144Sol2preorderTraversal(TreeNode root) {
+        List<Integer> result = new LinkedList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.isEmpty())
+        {
+            TreeNode node = stack.pop();
+            if(node.right!=null)
+            {
+                stack.push(node.right);
+            }
+            if(node.left!=null)
+            {
+                stack.push(node.left);
+            }
+            result.add(node.val);
+        }
+        return result;
+    }
+    public int[] Num238productExceptSelf(int[] nums) {
+        int[] ans = new int[nums.length];
+        ans[0] = 1;
+        for(int i=1;i<nums.length;i++)
+        {
+            ans[i] = ans[i-1] * nums[i-1];
+        }
+        int a = nums[nums.length-1];
+        for(int i=nums.length-2;i>0;i--)
+        {
+            ans[i] = ans[i] * a;
+            a*=nums[i];
+        }
+        return ans;
     }
 
 }

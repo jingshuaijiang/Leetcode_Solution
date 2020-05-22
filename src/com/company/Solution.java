@@ -2050,5 +2050,405 @@ public class Solution {
         }
         return ans;
     }
+    public ListNode Num19removeNthFromEnd(ListNode head, int n) {
+        ListNode node = new ListNode(0);
+        node.next = head;
+        ListNode ihead = node,jnode = node;
+        for(int i=0;i<n;i++)
+        {
+            jnode = jnode.next;
+        }
+        while(jnode.next!=null)
+        {
+            jnode = jnode.next;
+            ihead = ihead.next;
+        }
+        ihead.next = ihead.next.next;
+        return node.next;
+
+    }
+    public List<List<Integer>> Num366findLeaves(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        int i=Num366helper(root,result);
+        return result;
+    }
+    public int Num366helper(TreeNode node,List<List<Integer>> result)
+    {
+        if(node==null)
+            return -1;
+        int leftdepth = Num366helper(node.left,result);
+        int rightdepth = Num366helper(node.right,result);
+        int currentdepth = Math.max(leftdepth,rightdepth)+1;
+        if(result.size()<=currentdepth)
+        {
+            result.add(new ArrayList<>());
+        }
+        result.get(currentdepth).add(node.val);
+        return currentdepth;
+    }
+    public void Num48rotate(int[][] matrix) {
+
+    }
+    public int minPathSum(int[][] grid) {
+        if(grid==null)
+            return 0;
+        int[][] dp = new int[grid.length][grid[0].length];
+        dp[0][0] = grid[0][0];
+        for(int i=1;i<grid.length;i++)
+        {
+            dp[i][0] = dp[i-1][0];
+        }
+        for(int j=1;j<grid[0].length;j++)
+        {
+            dp[0][j] = dp[0][j-1];
+        }
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+
+                dp[i][j] = Math.min(dp[i-1][j],dp[i][j-1])+grid[i][j];
+
+            }
+        }
+        return dp[grid.length-1][grid[0].length-1];
+    }
+    public int Num96numTrees(int n) {
+        int[] dp = new int[n+1];
+        dp[0]=1;
+        dp[1] = 1;
+        return Num96helper(n,dp);
+    }
+    public int Num96helper(int n,int[] dp)
+    {
+        if(dp[n]!=0)
+        {
+            return dp[n];
+        }
+        int sum = 0;
+        for(int i=0;i<n;i++)
+        {
+            sum+=Num96helper(i,dp)*Num96helper(n-i-1,dp);
+        }
+        dp[n] = sum;
+        return sum;
+    }
+    public List<Integer> Num199rightSideView(TreeNode root) {
+        List<Integer> result = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            int k = Integer.MAX_VALUE;
+            int i = queue.size();
+            for(int j=0;j<i;j++)
+            {
+                TreeNode node = queue.poll();
+                if(node.right!=null)
+                {
+                    queue.add(node.right);
+                }
+                if(node.left!=null)
+                {
+                    queue.add(node.left);
+                }
+                if(k==Integer.MAX_VALUE)
+                {
+                    k = node.val;
+                }
+            }
+            result.add(k);
+        }
+        return result;
+    }
+    public List<Boolean> Num1431kidsWithCandies(int[] candies, int extraCandies) {
+        int max = -1;
+        for (int i = 0; i < candies.length; i++) {
+            max = Math.max(candies[i], max);
+        }
+        List<Boolean> b = new ArrayList<>();
+        for (int i = 0; i < candies.length; i++) {
+            if (candies[i] + extraCandies >= max) {
+                b.add(Boolean.TRUE);
+            } else {
+                b.add(Boolean.FALSE);
+            }
+        }
+        return b;
+    }
+    public int Num279numSquares(int n) {
+        int dp[] = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        // bottom case
+        dp[0] = 0;
+
+        // pre-calculate the square numbers.
+        int max_square_index = (int) Math.sqrt(n) + 1;
+        int square_nums[] = new int[max_square_index];
+        for (int i = 1; i < max_square_index; ++i) {
+            square_nums[i] = i * i;
+        }
+
+        for (int i = 1; i <= n; ++i) {
+            for (int s = 1; s < max_square_index; ++s) {
+                if (i < square_nums[s])
+                    break;
+                dp[i] = Math.min(dp[i], dp[i - square_nums[s]] + 1);
+            }
+        }
+        return dp[n];
+    }
+    public int Num120minimumTotal(List<List<Integer>> triangle) {
+        if(triangle==null||triangle.size()==0)
+        {
+            return 0;
+        }
+        int[] dp = new int[triangle.size()];
+        dp[0] = triangle.get(0).get(0);
+        int pre = 0,current;
+        for(int i=1;i<triangle.size();i++)
+        {
+            List<Integer> rows = triangle.get(i);
+            for(int j=0;j<=i;j++)
+            {
+                current=dp[j];
+                if(j==0)
+                {
+                    dp[j] = current+rows.get(j);
+                }
+                else if(j==i)
+                {
+                    dp[j] = pre+rows.get(j);
+                }
+                else
+                {
+                    dp[j] = Math.min(current,pre)+rows.get(i);
+                }
+                pre = current;
+            }
+        }
+        int res = Integer.MAX_VALUE;
+        for(int i=0;i<triangle.size();i++)
+        {
+            res = Math.min(res,dp[i]);
+        }
+        return res;
+    }
+    public int Num11maxArea(int[] height) {
+        if(height.length<=1)
+        {
+            return 0;
+        }
+        int front = 0,end = height.length-1;
+        int maxarea = Integer.MIN_VALUE;
+        while(front!=end)
+        {
+            maxarea = Math.max(maxarea,(end-front)*Math.min(height[front],height[end]));
+            if(height[front] <=height[end])
+            {
+                front++;
+            }
+            else
+            {
+                end--;
+            }
+        }
+        return maxarea;
+    }
+    public void Num75sortColors(int[] nums) {
+        int curr = 0,p2 = nums.length-1,p0 = 0;
+        int tmp;
+        while(curr<=p2)
+        {
+            if(nums[curr]==0)
+            {
+                tmp = nums[p0];
+                nums[p0++] = nums[curr];
+                nums[curr++] = tmp;
+            }
+            else if(nums[curr]==2)
+            {
+                tmp = nums[curr];
+                nums[curr] = nums[p2];
+                nums[p2++] = tmp;
+            }
+            else
+            {
+                curr++;
+            }
+        }
+
+    }
+    public int Num312maxCoins(int[] nums) {
+        int[][] dp = new int[nums.length+2][nums.length+2];
+        int[] newarray = new int[nums.length+2];
+        newarray[0] = 1;
+        newarray[nums.length+1] = 1;
+        for(int i=1;i<newarray.length-1;i++)
+        {
+            newarray[i] = nums[i-1];
+        }
+        for (int j = 2; j < newarray.length; j++) {
+            for (int i = 0; i < newarray.length - j; i++) {
+                for (int k = i + 1; k < i + j; k++) {
+                    dp[i][i + j] = Math.max(dp[i][i + j], dp[i][k] + dp[k][i + j] + newarray[i] * newarray[k] * newarray[i + j]);
+                }
+            }
+        }
+        return dp[0][newarray.length-1];
+    }
+    public List<String> Num293generatePossibleNextMoves(String s) {
+        List<String> ans = new LinkedList<>();
+        char[] sarray = s.toCharArray();
+        for(int i=0;i<s.length()-1;i++)
+        {
+            if(sarray[i]=='+'&&sarray[i+1]=='+')
+            {
+                sarray[i] = '-';
+                sarray[i+1] ='-';
+                ans.add(new String((sarray)));
+                sarray[i] = '+';
+                sarray[i+1] ='+';
+            }
+        }
+        return ans;
+    }
+    public int Num171titleToNumber(String s) {
+        int ans = 0;
+        int base = 26;
+        int length  = s.length()-1;
+        for(int i=0;i<s.length();i++)
+        {
+            ans= (int) (ans + ((s.charAt(i)-'A')+1)*Math.pow(base,length));
+            length-=1;
+        }
+        return ans;
+    }
+    public List<List<Integer>> Num118generate(int numRows) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if(numRows ==0)
+        {
+            return ans;
+        }
+        ans.add(new ArrayList<>());
+        ans.get(0).add(1);
+        for(int i=1;i<numRows;i++)
+        {
+            List<Integer> row = new ArrayList<>();
+            List<Integer> rowpre = ans.get(i-1);
+            row.add(1);
+            for(int j=1;j<numRows-1;j++)
+            {
+                row.add(rowpre.get(j-1)+rowpre.get(j));
+            }
+            row.add(1);
+            ans.add(row);
+        }
+        return ans;
+    }
+
+    public int Num122maxProfit(int[] prices) {
+        int maxprofit = 0;
+        for(int i=1;i<prices.length;i++)
+        {
+            if(prices[i] > prices[i-1])
+            {
+                maxprofit+=(prices[i]-prices[i-1]);
+            }
+        }
+        return maxprofit;
+    }
+
+    public int Num997findJudge(int N, int[][] trust) {
+        if (trust.length < N - 1) {
+            return -1;
+        }
+
+        int[] trustScores = new int[N + 1];
+
+        for (int[] relation : trust) {
+            trustScores[relation[0]]--;
+            trustScores[relation[1]]++;
+        }
+
+        for (int i = 1; i <= N; i++) {
+            if (trustScores[i] == N - 1) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public String Num38countAndSay(int n) {
+        return Num38Answer(n);
+    }
+
+    public String Num38Answer(int n)
+    {
+        if(n==0)
+        {
+            return "";
+        }
+        if(n==1)
+        {
+            return "1";
+        }
+        else
+        {
+            StringBuilder sb = new StringBuilder();
+            String lastone = Num38Answer(n-1);
+            int i=0;
+            while(i<lastone.length())
+            {
+                int count = 1;
+                while(i<lastone.length()-1&&lastone.charAt(i)==lastone.charAt(i+1))
+                {
+                    count++;
+                    i+=1;
+                }
+                sb.append(Integer.toString(count)+lastone.charAt(i));
+            }
+            return sb.toString();
+        }
+
+    }
+    public int NUm628maximumProduct(int[] nums) {
+        Arrays.sort(nums);
+        int max1 = nums[0]*nums[1]*nums[nums.length-1];
+        int max2 = nums[nums.length-1] * nums[nums.length-2] *nums[nums.length-3];
+        return Math.max(max1,max2);
+    }
+
+    public int[] Num1042gardenNoAdj(int N, int[][] paths) {
+        Map<Integer,List<Integer>> graph = new HashMap<>();
+        for(int i=0;i<N;i++)
+        {
+            graph.put(i,new ArrayList<>());
+        }
+        for(int[] pairs:paths)
+        {
+            graph.get(pairs[0]-1).add(pairs[1]-1);
+            graph.get(pairs[1]-1).add(pairs[0]-1);
+        }
+        int[] ans = new int[N];
+        for(int i=0;i<N;i++)
+        {
+            boolean used[] = new boolean[5];
+            for(int adj:graph.get(i))
+            {
+                used[ans[adj]] = true;
+            }
+            for(int j=1;j<=4;j++)
+            {
+                if(!used[j])
+                {
+                    ans[i] = j;
+                }
+            }
+        }
+        return ans;
+    }
+
+
+
 
 }

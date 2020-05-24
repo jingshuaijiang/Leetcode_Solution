@@ -2448,6 +2448,382 @@ public class Solution {
         return ans;
     }
 
+    /**
+     * This is a very classic dp problem. The key is not the formular, but what to return.
+     * @param cost
+     * @return
+     */
+    public int Num746minCostClimbingStairs(int[] cost) {
+        int [] dp = new int[cost.length];
+        dp[0] = cost[0];
+        dp[1] = Math.min(cost[0],cost[1]);
+        for(int i=2;i<cost.length;i++)
+        {
+            dp[i] = cost[i] + Math.min(dp[i-1],dp[i-2]);
+        }
+        return Math.min(dp[cost.length-1],dp[cost.length-2]);
+    }
+
+    public boolean Num717isOneBitCharacter(int[] bits) {
+        int count = 0;
+        for(int i=0;i<bits.length-1;)
+        {
+            if(bits[i]==0)
+            {
+                count+=1;
+                i+=1;
+            }
+            else
+            {
+                count+=2;
+                i+=2;
+            }
+        }
+        return count==bits.length-2;
+    }
+    public int Num1450busyStudent(int[] startTime, int[] endTime, int queryTime) {
+        int count = 0;
+        for(int i=0;i<startTime.length;i++)
+        {
+            if(startTime[i]<=queryTime && queryTime<=endTime[i])
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+    public int Num1085sumOfDigits(int[] A) {
+        int min = Integer.MAX_VALUE;
+        for (int i : A) {
+            min = Math.min(min, i);
+        }
+        int digits = 0;
+        while (min != 0) {
+            digits += (min % 10);
+            min /= 10;
+        }
+        return digits % 2 == 0 ? 1 : 0;
+    }
+
+    public int[] Num922sortArrayByParityII(int[] A) {
+        int[] ans = new int[A.length];
+        int odd = 1;
+        int even = 0;
+        for(int i=0;i<A.length;i++)
+        {
+            if(A[i]%2==0)
+            {
+                ans[even]= A[i];
+                even+=2;
+            }
+            else
+            {
+                ans[odd] =A[i];
+                odd+=2;
+            }
+        }
+        return ans;
+    }
+
+    public int Num1413minStartValue(int[] nums) {
+        int min = nums[0];
+        int sum = nums[0];
+        for(int i=1;i<nums.length;i++)
+        {
+            sum+=nums[i];
+            min = Math.min(sum,min);
+        }
+        if(min<=0)
+        {
+            return 1-min;
+        }
+        return min;
+    }
+
+    public boolean Num766isToeplitzMatrix(int[][] matrix) {
+        for(int i=0;i<matrix[0].length;i++)
+        {
+            int increment = 1;
+            int t = matrix[0][i];
+            while((i+increment)<matrix[0].length&& increment <matrix.length)
+            {
+                if(matrix[increment][i+increment]!=t)
+                {
+                    return false;
+                }
+                increment++;
+            }
+        }
+        for(int i=1;i<matrix.length;i++)
+        {
+            int increment = 1;
+            int t = matrix[i][0];
+            while((i+increment)<matrix.length&& increment <matrix[0].length)
+            {
+                if(matrix[i+increment][increment]!=t)
+                {
+                    return false;
+                }
+                increment++;
+            }
+        }
+        return true;
+    }
+
+    public List<List<Integer>> Num1260shiftGrid(int[][] grid, int k) {
+        int m = grid.length;
+        int n = grid[0].length;
+        k = k%(m*n);
+        List<List<Integer>> ans = new ArrayList<>();
+        for(int i=0;i<m;i++)
+        {
+            List<Integer> row = new ArrayList<>();
+            ans.add(i,row);
+            for(int j=0;j<n;j++)
+            {
+                row.add(0);
+            }
+        }
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                int newcol = (j+k)% n;
+                int row = (j+k) /n;
+                row = (i +row)%m;
+                ans.get(row).set(newcol,grid[i][j]);
+            }
+        }
+        return ans;
+
+    }
+
+    public int[][] Num566matrixReshape(int[][] nums, int r, int c) {
+        int row = nums.length;
+        int col = nums[0].length;
+        if((row*col)!=(r*c))
+            return nums;
+        int[][] ans = new int[r][c];
+        int arow = 0;
+        int acol = 0;
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                int newcol = (i*col+j)%c;
+                int newrow = (i*col+j)/c;
+                ans[newrow][newcol] = nums[i][j];
+            }
+        }
+        return ans;
+    }
+
+    public List<Integer> NUm989addToArrayForm(int[] A, int K) {
+        int carrier = 0;
+        int point = A.length-1;
+        List<Integer> ans = new ArrayList<>();
+        while(point>=0||K>0)
+        {
+            int a = K%10;
+            int curr = 0;
+            if(point >=0)
+            {
+                curr = A[point]+a+carrier;
+            }
+            else
+            {
+                curr = a+carrier;
+            }
+            carrier= curr/10;
+            curr = curr%10;
+            ans.add(0,curr);
+            point--;
+            K = K/10;
+        }
+        if(carrier!=0)
+        {
+            ans.add(0,carrier);
+        }
+        return ans;
+
+    }
+
+    public int Num724pivotIndex(int[] nums) {
+        if(nums.length==0||nums.length==2)
+            return -1;
+        if(nums.length==1)
+        {
+            return 0;
+        }
+        int leftsum = nums[0];
+        int rightsum = 0;
+        for(int i=2;i<nums.length;i++)
+        {
+            rightsum+=nums[i];
+        }
+
+        for(int j=1;j<nums.length-1;j++)
+        {
+            if(leftsum==rightsum)
+            {
+                return j;
+            }
+            leftsum+=nums[j];
+            rightsum-=nums[j+1];
+        }
+        return -1;
+    }
+
+    /**
+     * Needs to be done again
+     * @param seats
+     * @return
+     */
+
+    public int Num849maxDistToClosest(int[] seats) {
+        int pre = -1;
+        int after = 0;
+        int max = Integer.MIN_VALUE;
+        int ans = 0;
+        for(int i=0;i<seats.length;i++)
+        {
+            if(seats[i]==1)
+            {
+                pre = i;
+            }
+            else
+            {
+                while(after <seats.length && seats[after]==0 || after < i)
+                {
+                    after++;
+                }
+                int left = pre == -1? seats.length:i-pre;
+                int right = after == seats.length? seats.length: after -i;
+                ans = Math.max(ans,Math.min(left,right));
+            }
+        }
+        return ans;
+    }
+
+    public int[] Num66plusOne(int[] digits) {
+        int n = digits.length-1;
+        int carrier = 0;
+        for(int i=n;i>=0;i--)
+        {
+            if(digits[i]==9)
+            {
+                digits[i] = 0;
+
+            }
+            else
+            {
+                digits[i]+=1;
+                return digits;
+            }
+        }
+        int[] ans = new int[n+2];
+        ans[0] = 1;
+        for(int i=0;i<=n;i++)
+        {
+            ans[i+1] = digits[i];
+        }
+        return ans;
+
+    }
+
+    public int[] Num1409processQueries(int[] queries, int m) {
+        int[] ans = new int[queries.length];
+        List<Integer> helplist = new ArrayList<>();
+        for(int i=1;i<=m;i++)
+        {
+            helplist.add(i);
+        }
+        for(int i=0;i<queries.length;i++)
+        {
+            int query = queries[i];
+            for(int j=0;j<m;j++)
+            {
+                if(helplist.get(j) == query)
+                {
+                    ans[i] = j;
+                    helplist.remove(j);
+                    helplist.add(0,query);
+                    break;
+                }
+            }
+        }
+
+        return ans;
+    }
+    public int Num1395numTeams(int[] rating) {
+        int n = rating.length;
+        int sum = 0;
+        for(int i=0;i<n;i++)
+        {
+            int leftless=0,leftmore = 0;
+            int rightless=0,rightmore = 0;
+            for(int j=0;j<i;j++)
+            {
+                if(rating[j]<rating[i])
+                {
+                    leftless++;
+                }
+                else if(rating[j]>rating[i])
+                {
+                    leftmore++;
+                }
+            }
+            for(int j=i+1;j<n;j++)
+            {
+                if(rating[j]<rating[i])
+                {
+                    rightless++;
+                }
+                else if(rating[j]>rating[i])
+                {
+                    rightmore++;
+                }
+            }
+            sum += (leftless*rightmore);
+            sum+= (leftmore* rightless);
+        }
+        return sum;
+    }
+
+    public int[][] Num1329diagonalSort(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int diagnal = m+n-1;
+        ArrayList<Integer>[] alist = new ArrayList[diagnal];
+        for(int i=0;i<diagnal;i++)
+        {
+            alist[i] = new ArrayList<>(m);
+        }
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                alist[j-i+(m-1)].add(mat[i][j]);
+            }
+        }
+        for(int i=0;i<diagnal;i++)
+        {
+            Collections.sort(alist[i]);
+        }
+        int[] a = new int[diagnal];
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                mat[i][j] = alist[j-i+m-1].get(a[j-i+m-1]);
+                a[j-i+m-1]++;
+            }
+        }
+        return mat;
+    }
+
+    
+
 
 
 

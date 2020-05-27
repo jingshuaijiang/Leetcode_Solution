@@ -2822,7 +2822,497 @@ public class Solution {
         return mat;
     }
 
-    
+    public int Num1287findSpecialInteger(int[] arr) {
+        int num = arr.length;
+        int count = 1;
+        for(int j=0;j<arr.length-1;j++)
+        {
+            if(arr[j]==arr[j+1])
+            {
+                count++;
+                if(count > (num/4))
+                {
+                    return arr[j];
+                }
+            }
+            else
+            {
+                count = 1;
+            }
+
+        }
+        return -1;
+    }
+
+    public int[] Num1170numSmallerByFrequency(String[] queries, String[] words) {
+        int[] query = new int[queries.length];
+        int[] word = new int[12];
+        for(String w: words)
+        {
+            word[smallCharFrequency(w)]++;
+        }
+        for(int i=word.length-2;i>=0;i--)
+        {
+            word[i] += word[i+1];
+        }
+        for(int i=0;i<queries.length;i++)
+        {
+            query[i] = word[smallCharFrequency(queries[i])+1];
+        }
+        return query;
+
+    }
+
+    private int smallCharFrequency(String s) {
+        char max = 'z';
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char curr = s.charAt(i);
+            if (curr < max) {
+                count = 1;
+                max = curr;
+            } else if (max == curr) count++;
+        }
+        return count;
+    }
+
+    public int Num1426countElements(int[] arr) {
+        int [] counter = new int[1001];
+        int sum = 0;
+        for(int i=0;i<arr.length;i++)
+        {
+            counter[arr[i]]++;
+        }
+        for(int i=0;i<1000;i++)
+        {
+            sum = (counter[i+1]!=0)? (sum+counter[i]) : sum;
+        }
+        return sum;
+    }
+
+    public int[] Num1331arrayRankTransform(int[] arr) {
+        TreeSet<Integer> set = new TreeSet<>();
+        Map<Integer, Integer> posMap = new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            set.add(arr[i]);
+        }
+        int cnt = 0;
+        for(int n : set){
+            posMap.put(n, ++cnt);
+        }
+        for(int i=0;i<arr.length;i++){
+            arr[i] = posMap.get(arr[i]);
+        }
+        return arr;
+    }
+
+    /**
+     * 模拟整个过程，直接放进去
+     * @param deck
+     * @return
+     */
+    public int[] Num950deckRevealedIncreasing(int[] deck) {
+        int[] ans = new int[deck.length];
+        Deque<Integer> help = new LinkedList<>();
+        for(int i=0;i<deck.length;i++)
+        {
+            help.add(i);
+        }
+        Arrays.sort(deck);
+        for(int i=0;i<deck.length;i++)
+        {
+            int index = help.pollFirst();
+            ans[index] = deck[i];
+            if(!help.isEmpty())
+            {
+                help.add(help.pollFirst());
+            }
+        }
+        return ans;
+    }
+
+    public boolean Num1150isMajorityElement(int[] nums, int target) {
+        int count = 1;
+        int N = nums.length;
+        for(int i=0;i<nums.length-1;i++)
+        {
+            if(nums[i]==target)
+            {
+                if(nums[i+1]==nums[i])
+                {
+                    count++;
+                    if(count > (N/2))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    public int Num697findShortestSubArray(int[] nums) {
+        HashMap<Integer, Integer> left = new HashMap<>(),
+        right = new HashMap<>(),count = new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            if(!left.containsKey(nums[i])) {
+                left.put(nums[i], i);
+            }
+
+
+
+                right.put(nums[i],i);
+                count.put(nums[i],count.getOrDefault(nums[i],0)+1);
+
+        }
+        int ans = Integer.MAX_VALUE;
+        int degree = Collections.max(count.values());
+        for(int x: count.keySet())
+        {
+            if(count.get(x)==degree)
+            {
+                ans = Math.min(ans,right.get(x)-left.get(x)+1);
+            }
+        }
+        return ans;
+    }
+
+    public int[] Num888fairCandySwap(int[] A, int[] B) {
+        int suma = 0;
+        int sumb = 0;
+        for(int a:A)
+        {
+            suma+=a;
+        }
+        for(int b:B)
+        {
+            sumb+=b;
+        }
+        int p = (suma-sumb)/2;
+        Set<Integer> setB = new HashSet();
+        for (int x: B) setB.add(x);
+
+        for (int x: A)
+            if (setB.contains(x + p))
+                return new int[]{x, x + p};
+
+            throw null;
+    }
+
+    public List<Integer> Num119getRow(int rowIndex) {
+        List<List<Integer>> ans =  new ArrayList<>();
+        List<Integer> rowone = new ArrayList<>();
+        rowone.add(0,1);
+        ans.add(rowone);
+        for(int i=1;i<=rowIndex;i++)
+        {
+            List<Integer> rowlist = new ArrayList<>();
+            rowlist.add(0,1);
+            rowlist.add(0,1);
+            ans.add(rowlist);
+        }
+        for(int i=2;i<=rowIndex;i++)
+        {
+            for(int j = 1;j<i-1;j++)
+            {
+                int a = ans.get(i-2).get(j-1)+ans.get(i-2).get(j);
+                ans.get(i).add(j,a);
+            }
+        }
+        return ans.get(rowIndex-1);
+    }
+
+    public List<Integer> OptimizedNum119getRow(int rowIndex) {
+        List<Integer> pre = new ArrayList<>();
+        pre.add(1);
+        if(rowIndex==0)
+        {
+            return pre;
+        }
+        pre.add(1);
+        if(rowIndex==1)
+        {
+            return pre;
+        }
+        for(int i=2;i<=rowIndex;i++)
+        {
+
+            for(int j=1;j<=i-1;j++)
+            {
+                int a = pre.get(j-1)+pre.get(j);
+                pre.set(j,a);
+            }
+
+        }
+        return pre;
+
+    }
+
+    public int Num1277countSquares(int[][] matrix) {
+        int[][] dp = new int[matrix.length][matrix[0].length];
+        for(int i=0;i<matrix.length;i++)
+        {
+            dp[i][0] = matrix[i][0];
+        }
+        for(int j=0;j<matrix[0].length;j++)
+        {
+            dp[0][j] = matrix[0][j];
+        }
+        for(int i=1;i<matrix.length;i++)
+        {
+            for(int j=1;j<matrix[0].length;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    dp[i][j] = 0;
+                }
+                else
+                {
+                    dp[i][j] = Math.min(Math.min(dp[i-1][j],dp[i-1][j-1]),dp[i][j-1])+1;
+                }
+            }
+        }
+
+        int ans = 0;
+        for(int i=0;i<matrix.length;i++)
+        {
+            for(int j=0;j<matrix[0].length;j++) {
+                ans+=dp[i][j];
+            }
+            }
+        return ans;
+    }
+
+    public int Num695maxAreaOfIsland(int[][] grid) {
+        if (grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int ans = 0;
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    int area = Num695DFS(grid,i,j);
+                    ans = Math.max(ans,area);
+                }
+            }
+        }
+        return ans;
+
+    }
+    public int Num695DFS(int[][] grid,int i,int j)
+    {
+        if (!(0 <= i && i < grid.length
+                && 0 <= j && j < grid[0].length)) {
+            return 0;
+        }
+
+        if(grid[i][j]!=1)
+            return 0;
+
+        grid[i][j] = 2;
+
+        return 1
+                + Num695DFS(grid, i - 1, j)
+                + Num695DFS(grid, i + 1, j)
+                + Num695DFS(grid, i, j - 1)
+                + Num695DFS(grid, i, j + 1);
+
+    }
+
+    public List<List<Integer>> Num1222queensAttacktheKing(int[][] queens, int[] king) {
+        List<List<Integer>> result = new ArrayList<>();
+        boolean[][] seen = new boolean[8][8];
+
+        for(int[] queen : queens){
+            seen[queen[0]][queen[1]] = true;
+        }
+
+        int[] directions = {-1, 0, 1};
+        for(int dx : directions){
+            for(int dy : directions){
+                if(dx == 0 && dy == 0) continue;
+
+                int x = king[0];
+                int y = king[1];
+
+                while(x + dx >= 0 && x + dx < 8 && y + dy >= 0 && y + dy < 8){
+                    x += dx;
+                    y += dy;
+                    if(seen[x][y]){
+                        result.add(Arrays.asList(x, y));
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public int[][] Num723candyCrush(int[][] board) {
+
+    }
+
+    public List<Integer> Num969pancakeSort(int[] A) {
+
+    }
+
+    public int Num485findMaxConsecutiveOnes(int[] nums) {
+        if(nums.length==0)
+        {
+            return 0;
+        }
+        int pre = -1;
+        int index = 0;
+        int max = Integer.MIN_VALUE;
+        while(index<nums.length)
+        {
+            if(nums[index]==1)
+            {
+                pre = index;
+                while(index<nums.length && nums[index]==1)
+                {
+                    max = Math.max(index-pre,max);
+                    index++;
+                }
+            }
+            index++;
+        }
+        return max;
+    }
+
+    public boolean Num896isMonotonic(int[] A) {
+        if(A.length==1)
+            return true;
+        int store = 0;
+        int c = 0;
+        for(int i=0;i<A.length-1;i++)
+        {
+            if(A[i]>A[i+1])
+            {
+                c = -1;
+            }
+            else if(A[i]==A[i+1])
+            {
+                c = 0;
+                continue;
+            }
+            else
+            {
+                c = 1;
+            }
+
+            if(c!=store&&store!=0)
+            {
+                return false;
+            }
+            store = c;
+        }
+        return true;
+    }
+    /**
+     * special topic of two pointers of the same direction
+     */
+    /**
+     * Using two pointers of the same direction
+     * @param s
+     * @param nums
+     * @return
+     */
+    public int Num209minSubArrayLen(int s, int[] nums) {
+        int left = 0;
+        int sum = 0;
+        int min = nums.length;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(sum<s)
+            {
+                sum+=nums[i];
+            }
+            while(sum>=s)
+            {
+                sum-=nums[left];
+                left++;
+                min = Math.min(min,i-left+1);
+            }
+        }
+        return min;
+    }
+
+    public int Num3lengthOfLongestSubstring(String s) {
+        if(s.length()==1)
+        {
+            return 1;
+        }
+        int min = 0;
+        int left = 0;
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(int i=0;i<s.length();i++)
+        {
+            if(map.containsKey(s.charAt(i)))
+            {
+                int index = map.get(s.charAt(i));
+                left = Math.max(index+1,left);
+            }
+
+            map.put(s.charAt(i),i);
+            min = Math.max(min,i-left+1);
+
+
+        }
+        return min;
+    }
+
+    public int Num340lengthOfLongestSubstringKDistinct(String s, int k) {
+        HashMap<Character,Integer> map = new HashMap<>();
+        int min = 0;
+        int left = 0;
+        if(k==0)
+            return 0;
+        for(int i=0;i<s.length();i++)
+        {
+            if(!map.containsKey(s.charAt(i)))
+            {
+                map.put(s.charAt(i),1);
+            }
+            else
+            {
+                map.put(s.charAt(i),map.get(s.charAt(i))+1);
+            }
+            if(map.size()<k)
+            {
+
+                min = Math.max(min,i-left+1);
+            }
+            else if(map.size()==k&&map.containsKey(s.charAt(i)))
+            {
+                min = Math.max(min,i-left+1);
+            }
+            else
+            {
+                while(map.size()>=k)
+                {
+                    if(map.get(s.charAt(left))==1)
+                    {
+                        map.remove(s.charAt(left));
+                    }
+                    else
+                    {
+                        map.put(s.charAt(left),map.get(s.charAt(left))-1);
+                    }
+                    left++;
+                }
+            }
+        }
+        return min;
+    }
 
 
 

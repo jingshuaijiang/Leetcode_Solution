@@ -1,5 +1,7 @@
 package com.company;
 
+import javafx.util.Pair;
+
 import javax.print.attribute.HashAttributeSet;
 import java.util.*;
 
@@ -3156,14 +3158,6 @@ public class Solution {
         return result;
     }
 
-    public int[][] Num723candyCrush(int[][] board) {
-
-    }
-
-    public List<Integer> Num969pancakeSort(int[] A) {
-
-    }
-
     public int Num485findMaxConsecutiveOnes(int[] nums) {
         if(nums.length==0)
         {
@@ -3313,6 +3307,268 @@ public class Solution {
         }
         return min;
     }
+
+    public int[][] Num661imageSmoother(int[][] M) {
+        int[][] ans = new int[M.length][M[0].length];
+        for(int i=0;i<M.length;i++)
+        {
+            for(int j=0;j<M[0].length;j++)
+            {
+                int sum = 0;
+                int count= 0;
+                for(int ri=i-1;ri<=i+1;ri++)
+                {
+                    for(int rj = j-1;rj<=j+1;rj++)
+                    {
+                        if(0<=ri&&ri<=M.length-1&&0<=rj&&rj<=M[0].length-1)
+                        {
+                            count++;
+                            sum+=M[ri][rj];
+                        }
+                    }
+                }
+                ans[i][j] = Math.round(sum/count);
+            }
+        }
+        return ans;
+    }
+
+    public int Num674findLengthOfLCIS(int[] nums) {
+        int max = 0;
+        if(nums.length==0)
+        {
+            return max;
+        }
+        max+=1;
+        int left = 0;
+        for(int i=1;i<nums.length;i++)
+        {
+            if(nums[i]>nums[i-1])
+            {
+                max = Math.max(max,i-left+1);
+            }
+            else
+            {
+                left = i;
+            }
+        }
+        return max;
+    }
+
+    public void Num1089duplicateZeros(int[] arr) {
+        int zeros = 0;
+        for(int i=0;i<arr.length-zeros;i++)
+        {
+            if(arr[i]==0)
+            {
+                if(i+zeros==arr.length-1-zeros)
+                {
+                    arr[arr.length-1] = -1;
+                    break;
+                }
+                zeros++;
+            }
+        }
+        int last = (arr[arr.length-1] ==-1)? arr.length-1-zeros:arr.length-2-zeros;
+        for(int i=last;i>=0;i--)
+        {
+            if(arr[i]==0)
+            {
+                arr[i+zeros]=0;
+                zeros--;
+                arr[i+zeros]=0;
+            }
+            else
+            {
+                arr[i+zeros] = arr[i];
+            }
+        }
+    }
+
+    public int Num1184distanceBetweenBusStops(int[] distance, int start, int destination) {
+        int ans = 0;
+        if(start==destination)
+            return 0;
+        if(start>destination)
+        {
+            ans = start;
+            start = destination;
+            destination = ans;
+        }
+        ans = 0;
+        int clock = 0;
+        for(int i=0;i<distance.length;i++)
+        {
+            ans+=distance[i];
+            if(i>=start&&i<destination)
+            {
+                clock+=distance[i];
+            }
+        }
+        return Math.min(clock,ans-clock);
+
+    }
+
+    public boolean Num1013canThreePartsEqualSum(int[] A) {
+        int sum = 0;
+        for(int i=0;i<A.length;i++)
+        {
+            sum+=A[i];
+        }
+        if(sum%3!=0)
+        {
+            return false;
+        }
+        int sum1 = 0;
+        int i=0,j = A.length-1;
+        for(;i<A.length;i++)
+        {
+            sum1+=A[i];
+            if(sum1==(sum/3))
+                break;
+        }
+        sum1=0;
+        for(;j>=0;j--)
+        {
+            sum1+=A[j];
+            if(sum1==(sum/3))
+                break;
+        }
+        if((i-j)>=-1)
+            return false;
+        return true;
+    }
+
+    public int[] Num350intersect(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int i=0,j=0,k=0;
+        List<Integer> ans = new ArrayList<>();
+        while(i<nums1.length&&j<nums2.length)
+        {
+            if(nums1[i]<nums2[j])
+            {
+                i++;
+            }
+            else if(nums1[i]>nums2[j])
+            {
+                j++;
+            }
+            else
+            {
+                nums1[k++] = nums1[i++];
+                ++j;
+            }
+        }
+        return Arrays.copyOfRange(nums1, 0, k);
+    }
+
+    public List<List<Integer>> Num15threeSum(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        HashSet<Pair> found = new HashSet<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            HashMap<Integer,Integer> map = new HashMap<>();
+            for(int j = i+1;j<nums.length;j++)
+            {
+                int complement = -nums[i]-nums[j];
+                if(map.containsKey(complement)&&map.get(complement)!=j)
+                {
+                    int v1 = Math.min(nums[i],Math.min(complement,nums[j]));
+                    int v2 = Math.max(nums[i],Math.max(complement,nums[j]));
+                    if(found.add(new Pair(v1,v2)))
+                    {
+                        ans.add(Arrays.asList(nums[i],complement,nums[j]));
+                    }
+                }
+                map.put(nums[j],j);
+            }
+        }
+        return ans;
+    }
+
+    public List<List<Integer>> Num78subsets(int[] nums) {
+        List<List<Integer>> ans = new LinkedList<>();
+        List<Integer> addlist = new LinkedList<>();
+        Num78recursiveHelper(ans,nums,0,addlist);
+        return ans;
+    }
+
+    public void Num78recursiveHelper(List<List<Integer>> ans,int[] nums,int index,List<Integer> addlist)
+    {
+        if(index>nums.length-1)
+        {
+
+            ans.add(new ArrayList(addlist));
+            return;
+        }
+        Num78recursiveHelper(ans,nums,index+1,addlist);
+        addlist.add(nums[index]);
+        Num78recursiveHelper(ans,nums,index+1,addlist);
+        addlist.remove(addlist.size()-1);
+        return;
+    }
+
+    public List<Integer> Num969pancakeSort(int[] A) {
+        List<Integer> ans = new LinkedList<>();
+        for(int i=A.length;i>=1;i--)
+        {
+            int index = Num969findmax(i,A);
+            if(index == i-1)
+                continue;
+            if(index!=0)
+            {
+                Num969reverse(A,0,index);
+                ans.add(index+1);
+            }
+            Num969reverse(A,0,i-1);
+            ans.add(i);
+        }
+        return ans;
+    }
+
+    public int Num969findmax(int num,int[] A)
+    {
+        for(int i=0;i<A.length;i++)
+        {
+            if(A[i]==num)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void Num969reverse(int[] A,int start,int end)
+    {
+        for(int i=0;i<(end-start+1)/2;i++)
+        {
+            int temp = A[start+i];
+            A[start+i] = A[end-i];
+            A[end-i] = temp;
+        }
+    }
+
+    public int Num35searchInsert(int[] nums, int target) {
+        if(target<nums[0])
+            return 0;
+        for(int i=0;i<nums.length-1;i++)
+        {
+            if(nums[i]<target && nums[i+1]>target)
+            {
+                return i+1;
+            }
+            else if(nums[i]==target)
+            {
+                return i;
+            }
+        }
+        if(nums[nums.length-1]==target)
+            return nums.length-1;
+        return nums.length;
+    }
+
+    
 
 
 

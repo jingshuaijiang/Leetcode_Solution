@@ -2088,9 +2088,7 @@ public class Solution {
         result.get(currentdepth).add(node.val);
         return currentdepth;
     }
-    public void Num48rotate(int[][] matrix) {
 
-    }
     public int minPathSum(int[][] grid) {
         if(grid==null)
             return 0;
@@ -3568,7 +3566,191 @@ public class Solution {
         return nums.length;
     }
 
-    
+    public List<List<Integer>> Num830largeGroupPositions(String S) {
+        List<List<Integer>> ans = new LinkedList<>();
+        int count=1;
+        for(int i=0;i<S.length();i++)
+        {
+            if(i==S.length()-1||S.charAt(i)!=S.charAt(i+1))
+            {
+                if(count>=3)
+                {
+                    List<Integer> newlist = new LinkedList<>();
+                    newlist.add(i-count+1);
+                    newlist.add(i);
+                    ans.add(newlist);
+                }
+                count=1;
+            }
+            else
+                count++;
+        }
+        return ans;
+    }
+
+    public void Num48rotate(int[][] matrix) {
+        int n = matrix.length;
+        for(int i=0;i<n/2;i++)
+        {
+            for(int j=0;j<(n+1)/2;j++)
+            {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[n-j-1][i];
+                matrix[n-j-1][i] = matrix[n-i-1][n-j-1];
+                matrix[n-i-1][n-j-1] = matrix[j][n-i-1];
+                matrix[j][n-i-1] = temp;
+            }
+        }
+
+    }
+    public void Num189rotate(int[] nums, int k) {
+        k = k% nums.length;
+        int count = 0;
+        for(int start = 0;count<nums.length;start++)
+        {
+            int curr = start;
+            int pre = nums[start];
+            do{
+                int next = (curr+k)%nums.length;
+                int temp = nums[next];
+                nums[next] = pre;
+                pre = temp;
+                curr = next;
+                count++;
+            }
+            while(start!=curr);
+        }
+    }
+
+    public int Num41firstMissingPositive(int[] nums) {
+        int count1= 0;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(nums[i]==1)
+            {
+                count1++;
+                break;
+            }
+        }
+        if(count1==0)
+            return 1;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(nums[i]<=0||nums[i]>nums.length)
+            {
+                nums[i] = 1;
+            }
+        }
+        for(int i=0;i<nums.length;i++)
+        {
+            int a  = Math.abs(nums[i]);
+            if(a==nums.length)
+            {
+                nums[0] = -Math.abs(nums[0]);
+            }
+            else
+                nums[a] = -Math.abs(nums[a]);
+
+        }
+        for(int i=1;i<nums.length;i++)
+        {
+            if(nums[i]>0)
+                return i;
+        }
+        if(nums[0]>0)
+            return 0;
+        return nums.length+1;
+    }
+
+    public int Num28strStr(String haystack, String needle) {
+        if(needle.equals(""))
+        {
+            return 0;
+        }
+        int L =haystack.length(), n = needle.length();
+        for(int i=0;i<=L-n;i++)
+        {
+            if(haystack.substring(i,i+n).equals(needle))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public String Num299getHint(String secret, String guess) {
+        int bulls=0;
+        int cows = 0;
+        int[] helplist = new int[10];
+        for(int i=0;i<secret.length();i++)
+        {
+            if(secret.charAt(i)==guess.charAt(i))
+            {
+                bulls++;
+            }
+
+            helplist[secret.charAt(i)-'0']++;
+
+        }
+        for(int i=0;i<guess.length();i++)
+        {
+            if(helplist[guess.charAt(i)-'0']!=0)
+            {
+                cows++;
+                helplist[guess.charAt(i)-'0'] -=1;
+            }
+
+        }
+        return (bulls+ "A" +(cows-bulls)+"B");
+    }
+
+    /**
+     * greedy algorithm maybe math problems.
+     * Needs to be calculated in a math way.
+     * @param gas
+     * @param cost
+     * @return
+     */
+    public int Num134canCompleteCircuit(int[] gas, int[] cost) {
+        int sum = 0;
+        for(int i=0;i<gas.length;i++)
+        {
+            gas[i] = gas[i]-cost[i];
+            sum+=gas[i];
+        }
+        if(sum<0)
+            return -1;
+        sum=0;
+        int start = 0;
+        for(int i=0;i<gas.length;i++)
+        {
+            sum+=gas[i];
+            if(sum<0)
+            {
+                start=i+1;
+                sum = 0;
+            }
+        }
+        return start;
+    }
+
+    public int Num243shortestDistanceagain(String[] words, String word1, String word2) {
+        int i1 = -1, i2 = -1;
+        int minDistance = words.length;
+        int currentDistance;
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].equals(word1)) {
+                i1 = i;
+            } else if (words[i].equals(word2)) {
+                i2 = i;
+            }
+
+            if (i1 != -1 && i2 != -1) {
+                minDistance = Math.min(minDistance, Math.abs(i1 - i2));
+            }
+        }
+        return minDistance;
+    }
 
 
 

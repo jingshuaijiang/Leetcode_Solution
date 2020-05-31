@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/company/MovingAverage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Microsoft.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Microsoft.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -79,6 +76,14 @@
       <workItem from="1583711968360" duration="7325000" />
       <workItem from="1583878088589" duration="39595000" />
       <workItem from="1585961816612" duration="59562000" />
+      <workItem from="1586712294914" duration="25003000" />
+      <workItem from="1588467860097" duration="10788000" />
+      <workItem from="1588563977253" duration="6647000" />
+      <workItem from="1588813678311" duration="15303000" />
+      <workItem from="1590156641098" duration="26151000" />
+      <workItem from="1590354278127" duration="31458000" />
+      <workItem from="1590588496659" duration="23992000" />
+      <workItem from="1590822445386" duration="20710000" />
     </task>
     <servers />
   </component>
@@ -103,8 +108,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/company/Solution.java</url>
-          <line>500</line>
+          <line>503</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/company/Solution.java</url>
+          <line>1977</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

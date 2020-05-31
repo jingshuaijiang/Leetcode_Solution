@@ -3752,7 +3752,248 @@ public class Solution {
         return minDistance;
     }
 
+    public int Num245shortestWordDistance(String[] words, String word1, String word2) {
+        int i1=-1,i2 = -1;
+        int minDistance = words.length;
+        for(int i=0;i<words.length;i++)
+        {
+            if(word1.equals(word2))
+            {
+                if(words[i].equals(word1))
+                {
+                    if(i1==-1)
+                    {
+                        i1 = i;
+                    }
+                    else
+                    {
+                        minDistance = Math.min(minDistance,Math.abs(i-i1));
+                        i1 = i;
+                    }
+                }
 
+            }
+            else
+            {
+                if(words[i].equals(word1))
+                {
+                    i1=i;
+                }
+                else if(words[i].equals(word2))
+                {
+                    i2 = i;
+                }
+                if(i1!=-1&&i2!=-1)
+                {
+                    minDistance = Math.min(minDistance,Math.abs(i1-i2));
+                }
+            }
+        }
+        return minDistance;
+    }
 
+    /**
+     * using sort time is O(nlogn)
+     * @param citations
+     * @return
+     */
+    public int Num274hIndex(int[] citations) {
+        int h_index = -1;
+        Arrays.sort(citations);
+        int n = citations.length;
+        for(int i=0;i<n;i++)
+        {
+            if((n-i)<=citations[i])
+                h_index = Math.max(h_index,n-i);
+        }
+        return h_index;
+    }
 
+    /**
+     * O(n) time solution for Leetcode Num274
+     * @param citations
+     * @return
+     */
+    public int Num274hIndexOn(int[] citations) {
+        int n = citations.length;
+        int[] newlist = new int[n+1];
+        for(int c:citations)
+        {
+            newlist[Math.min(n,c)]++;
+        }
+        int k=n;
+        for(int s = newlist[n];k>s;s+=newlist[k])
+            k--;
+        return k;
+    }
+
+    public int numPairsDivisibleBy60(int[] time) {
+        int[] list = new int[60];
+        for(int t:time)
+        {
+            list[t%60]++;
+        }
+        int count = 0;
+        for(int i=1;i<=29;i++)
+        {
+            count = count + list[i]*list[60-i];
+        }
+        count = (list[0]==0)? count : (list[0]*(list[0]-1))/2+count;
+        count = (list[30]==0)? count : (list[30]*(list[30]-1))/2+count;
+        return count;
+
+    }
+
+    /**
+     * Dynamic programming
+     * @param nums
+     * @return
+     */
+    public boolean Num55canJump(int[] nums) {
+        boolean[] dp = new boolean[nums.length];
+        dp[0] = true;
+        for(int i=1;i<nums.length;i++)
+        {
+            for(int j=i-1;j>=0;j--)
+            {
+                dp[i] = dp[j] && (nums[j]>=i-j);
+                if(dp[i]==true)
+                    break;
+            }
+        }
+        return dp[nums.length-1];
+    }
+
+    /**
+     * typical problem that should be well studied.
+     * Greedy vs DP
+     * @param nums
+     * @return
+     */
+    public boolean Num55canJumpGreedy(int[] nums) {
+        int start = 0;
+        while(start<nums.length||nums[start]!=0)
+        {
+            int max = -1;
+            int maxindex = 0;
+            for(int i=1;i<nums[start];i++)
+            {
+                if(start+i+nums[start+i]>max)
+                {
+                    max = start+i+nums[start+i];
+                    maxindex = start+i;
+                }
+            }
+            start = maxindex;
+        }
+
+        if(start<nums.length && nums[start]==0)
+            return false;
+        return true;
+    }
+
+    /**
+     * the following question of jump game II, Since it is O(n^2) it exceeds the time limit
+     * @param nums
+     * @return
+     */
+    public int Num45jump(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = 0;
+        for(int i=1;i<nums.length;i++)
+        {
+            dp[i] = nums.length;
+            for(int j = i-1;j>=0;j--)
+            {
+                if(nums[j]+j>=i)
+                {
+                    dp[i] = Math.min(dp[j],dp[i]);
+                }
+            }
+            dp[i]+=1;
+        }
+        return dp[nums.length-1];
+    }
+
+    /**
+     * The greedy version of solution to question 45
+     * Pretty typical problem. we have a start point and we use greedy strategy
+     * to check in the range of the next point we can jump, which one can make us
+     * move to the most far away. Then we made this point our next starting point
+     * ANd iterate.
+     *
+     * Since this point can lead us to the furthest position. When we check its next,there is no
+     * way that a point before this point whose cover is further than this point.
+     * So, the greedy strategy works
+     * @param nums
+     * @return
+     */
+    public int Num45jumpGreedy(int[] nums)
+    {
+        int start = 0;
+        int count = 0;
+        while(start<nums.length-1)
+        {
+            int max = -1;
+            int maxindex = 0;
+            if(start+nums[start]>=nums.length-1)
+            {
+                count++;
+                break;
+            }
+            for(int i=1;i<=nums[start];i++)
+            {
+                if(start+i+nums[start+i]>max)
+                {
+                    max = start+i+nums[start+i];
+                    maxindex = start+i;
+                }
+            }
+            start = maxindex;
+            count++;
+        }
+        return count;
+    }
+    public List<Integer> Num1243transformArray(int[] arr) {
+        List<Integer> ans = new ArrayList<>();
+        ans.add(arr[0]);
+        if(arr.length==1)
+            return ans;
+        boolean changed = true;
+        while(changed)
+        {
+            changed = false;
+            int p = arr[0],t=0;
+            for(int i=1;i<arr.length-1;i++)
+            {
+                t = arr[i];
+                if(arr[i]>p && arr[i]>arr[i+1])
+                {
+                    changed = true;
+                    arr[i]--;
+                }
+                if(arr[i]<p && arr[i]<arr[i+1])
+                {
+                    changed = true;
+                    arr[i]++;
+                }
+                p = t;
+            }
+        }
+        for(int i=1;i<arr.length-1;i++)
+        {
+            ans.add(arr[i]);
+        }
+        ans.add(arr[arr.length-1]);
+        return ans;
+    }
+
+    /**
+     * seris of best buy and sell. Question 1.
+     * @param prices
+     * @return
+     */
+    public int Num121maxProfit(int[] prices) {
+        
+    }
 }

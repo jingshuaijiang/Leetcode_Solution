@@ -3994,6 +3994,60 @@ public class Solution {
      * @return
      */
     public int Num121maxProfit(int[] prices) {
-        
+        int maxprofit = 0;
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<prices.length;i++)
+        {
+
+            if(prices[i]<min)
+            {
+                min = prices[i];
+            }else if(prices[i] - min > maxprofit)
+            {
+                maxprofit = prices[i] - min;
+            }
+        }
+        return maxprofit;
+    }
+
+    public int Num122maxProfit2(int[] prices) {
+        int maxprofit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1])
+                maxprofit += prices[i] - prices[i - 1];
+        }
+        return maxprofit;
+    }
+
+    public String Num1436destCity(List<List<String>> paths) {
+        Map<String,String> map = new HashMap();
+        for(List<String> l : paths){
+
+            map.put(l.get(0),l.get(1));
+        }
+        for(Map.Entry<String,String> x : map.entrySet()){
+            if(!map.containsKey(x.getValue()))
+                return x.getValue();
+        }
+
+        return null;
+    }
+
+    public String Num1309freqAlphabets(String s) {
+        StringBuilder result = new StringBuilder();
+        int aValue = 'a' -1;
+        for(int i = s.length() -1; i >= 0 ; i--) {
+            int ascii = 0;
+            if(s.charAt(i) == '#') {
+                String sub = s.substring(i-2, i);
+                ascii = Integer.parseInt(sub) + aValue;
+                i-=2;
+            }
+            else {
+                ascii =s.charAt(i)-'0' + aValue;
+            }
+            result.append((char)ascii);
+        }
+        return result.reverse().toString();
     }
 }

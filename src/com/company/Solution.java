@@ -4050,4 +4050,137 @@ public class Solution {
         }
         return result.reverse().toString();
     }
+
+    /**
+     * This problem looks like some brain teaser.
+     * If we have one odd number, it can only be divided with odd numbers. Then
+     * his opponent can get an even number, in that turn odd lose, even win.
+     * @param N
+     * @return
+     */
+    public boolean Num1025divisorGame(int N) {
+        if(N%2==0)
+            return true;
+        else
+            return false;
+    }
+
+    public int[][] Num1030allCellsDistOrder(int R, int C, int r0, int c0) {
+        PriorityQueue<int[]> q = new PriorityQueue<int[]>((a,b) ->
+                (Math.abs(a[0]-r0) + Math.abs(a[1]-c0)) - (Math.abs(b[0]-r0) + Math.abs(b[1]-c0)));
+
+        for(int row=0; row < R; row++){
+            for(int col=0; col<C; col++){
+                q.add(new int[]{row,col});
+            }
+        }
+
+        int result[][] = new int[R*C][2];
+
+        for(int i=0; i<result.length;i++){
+            result[i] = q.poll();
+        }
+
+        return result;
+    }
+
+    /**
+     * beautiful solution
+     * @param prices
+     * @return
+     */
+    public int Num123maxProfit(int[] prices) {
+        if (prices.length == 0) {
+            return 0;
+        }
+        int K = 2;
+        int[] dp = new int[prices.length];
+        for (int k = 1; k <= K; k++) {
+            int min = prices[0];
+            for (int i = 1; i < prices.length; i++) {
+                min = Math.min(prices[i] - dp[i], min);
+                dp[i] = Math.max(dp[i - 1], prices[i] - min);
+            }
+        }
+        return dp[prices.length - 1];
+    }
+
+    /**
+     * Dynamic process space not optimal solution
+     * @param prices
+     * @return
+     */
+    public int Num309maxProfit(int[] prices) {
+        int[][] dp = new int[prices.length+2][2];
+        dp[0][0] = 0;
+        dp[0][1] = 0;
+        dp[1][0] = 0;
+        dp[1][1] = Integer.MIN_VALUE;
+        for(int i=2;i<=prices.length+1;i++)
+        {
+            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1]+prices[i-2]);
+            dp[i][1] = Math.max(dp[i-1][1],dp[i-2][0]-prices[i-2]);
+        }
+        return dp[prices.length+1][0];
+    }
+
+    /**
+     * Optimized DP of leetcode num309
+     * @param prices
+     * @return
+     */
+    public int Num309OptimizedmaxProfit(int[] prices) {
+        int dp_i_0 = 0,dp_i_1 = Integer.MIN_VALUE;
+        int dp_i_pre = 0;
+        for(int i=0;i<prices.length;i++)
+        {
+            int temp = dp_i_0;
+            dp_i_0 = Math.max(dp_i_0,dp_i_1+prices[i]);
+            dp_i_1 = Math.max(dp_i_1,dp_i_pre-prices[i]);
+            dp_i_pre = temp;
+        }
+        return dp_i_0;
+    }
+
+    /**
+     * The end of this series questions
+     * @param k
+     * @param prices
+     * @return
+     */
+    public int Num188maxProfit(int k, int[] prices) {
+        int[][] dp = new int[prices.length][k+1];
+        for(int j=1;j<=k;j++)
+        {
+            int min = Integer.MAX_VALUE;
+            for(int i=1;i<prices.length;i++)
+            {
+                min = Math.min(prices[i]-dp[i][j-1],min);
+                dp[i][j] = Math.max(dp[i-1][j],prices[i]-min);
+            }
+        }
+        return dp[prices.length-1][k];
+    }
+
+    public int Num188maxProfitOptimized(int k, int[] prices) {
+        if(prices.length==0)
+            return 0;
+        int[] dp = new int[prices.length];
+        if(k>prices.length)
+        {
+            k = prices.length/2;
+        }
+        for(int j=0;j<=k;j++)
+        {
+            int min = prices[0];
+            for(int i=1;i<prices.length;i++)
+            {
+                min = Math.min(prices[i]-dp[i],min);
+                dp[i] = Math.max(dp[i-1],prices[i]-min);
+            }
+        }
+        return dp[prices.length-1];
+    }
+
+    
 }

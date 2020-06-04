@@ -4182,5 +4182,64 @@ public class Solution {
         return dp[prices.length-1];
     }
 
+    public int Num1464maxProduct(int[] nums) {
+        int n = nums.length-1;
+        Arrays.sort(nums);
+        return (nums[n]-1)*(nums[n-1]-1);
+    }
+
+    public boolean Num1460canBeEqual(int[] target, int[] arr) {
+        Arrays.sort(target);
+        Arrays.sort(arr);
+        return Arrays.equals(target,arr);
+    }
+
+    /**
+     * two pointers
+     * @param height
+     * @return
+     */
+    public int Num11maxAreaAgain(int[] height) {
+        int start = 0;
+        int max = Integer.MIN_VALUE;
+        int end = height.length-1;
+        while(start<end)
+        {
+            if(height[start]<=height[end])
+            {
+                max = Math.max(max,height[start]*(end-start));
+                start++;
+            }
+            else
+            {
+                max = Math.max(max,height[end]*(end-start));
+                end--;
+            }
+        }
+        return max;
+    }
+
+    public int Num42trap(int[] height) {
+        int sum = 0;
+        int[] max_left = new int[height.length];
+        int[] max_right = new int[height.length];
+        for(int i=1;i<height.length-1;i++)
+        {
+            max_left[i] = Math.max(max_left[i-1],height[i-1]);
+        }
+        for(int i=height.length-2;i>=0;i--)
+        {
+            max_right[i] = Math.max(max_right[i+1],height[i+1]);
+        }
+        for(int i=1;i<height.length-1;i++)
+        {
+            int min = Math.min(max_left[i],max_right[i]);
+            if(min > height[i])
+            {
+                sum +=(min-height[i]);
+            }
+        }
+        return sum;
+    }
     
 }

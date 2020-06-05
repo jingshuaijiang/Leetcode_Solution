@@ -4241,5 +4241,240 @@ public class Solution {
         }
         return sum;
     }
-    
+
+    public int Num1176dietPlanPerformance(int[] calories, int k, int lower, int upper) {
+        int n = calories.length;
+        int sum = 0;
+        int ans = 0;
+        for(int i=0;i<k;i++)
+        {
+            sum +=calories[i];
+        }
+        for(int i=0;i<n-k;i++)
+        {
+            if(sum>upper)
+            {
+                ans++;
+            }
+            else if(sum<lower)
+            {
+                ans--;
+            }
+            if(i!=n-k-1)
+            {
+                sum=sum-calories[i]+calories[i+k];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * two pointer
+     * @param nums
+     * @return
+     */
+    public boolean Num334increasingTriplet(int[] nums) {
+        int first = Integer.MAX_VALUE;
+        int second = Integer.MAX_VALUE;
+        for(int num:nums)
+        {
+            if(num<=first)
+            {
+                first = num;
+            }
+            else if(num<=second)
+            {
+                second = num;
+            }
+            else if(num>second)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * time for hashset to find is O(1)
+     * @param nums
+     * @return
+     */
+    public int Num128longestConsecutive(int[] nums) {
+        Set<Integer> numset = new HashSet<>();
+        for(int num:nums)
+        {
+            numset.add(num);
+        }
+        int ans = 0;
+        for(int num:nums)
+        {
+            if(!numset.contains(num-1))
+            {
+                int current = num;
+                int length = 1;
+                while(numset.contains(current+1)){
+                    current+=1;
+                    length+=1;
+                }
+                ans = Math.max(ans,length);
+            }
+        }
+        return ans;
+    }
+
+    public int Num287findDuplicate(int[] nums) {
+        for(int i=0;i<nums.length;i++)
+        {
+            int value = Math.abs(nums[i]);
+            if(nums[value]<0)
+                return nums[value];
+            else{
+                nums[value] = -Math.abs(nums[value]);
+            }
+        }
+        return -1;
+    }
+
+    public int Num1338minSetSize(int[] arr) {
+        int n = arr.length;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int num:arr)
+        {
+            map.put(num,map.getOrDefault(num,0)+1);
+        }
+        List<Integer> counts = new ArrayList<>(map.values());
+        Collections.sort(counts);
+        Collections.reverse(counts);
+
+        int length = 0;
+        int sum = 0;
+        for(int num:counts)
+        {
+            sum+=num;
+            length++;
+            if(sum>=n/2)
+                break;
+        }
+        return length;
+    }
+
+    /**
+     * DFS
+     * @param grid
+     * @return
+     */
+    public int Num1267countServers(int[][] grid) {
+        int count = 0;
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    int num = Num1267counthelper(grid,i,j);
+                    if(num>1)
+                    {
+                        count+=num;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int Num1267counthelper(int[][] grid,int i,int j){
+        if (!(0 <= i && i < grid.length
+                && 0 <= j && j < grid[0].length)) {
+            return 0;
+        }
+        grid[i][j] = 0;
+        int sum = 1;
+        for(int row = 0;row < grid.length; row++)
+        {
+            if(grid[row][j]==1)
+            {
+                sum+=Num1267counthelper(grid,row,j);
+            }
+        }
+        for(int column = 0;column<grid[0].length;column++)
+        {
+            if(grid[i][column]==1)
+            {
+                sum+=Num1267counthelper(grid,i,column);
+            }
+        }
+
+        return sum;
+    }
+
+    /**
+     * very tricky problem. Turns out that we are going to find the number of subsequences
+     * from 0 to i that contains exactly the number of 1 to i+1.
+     * Then we just need to record the maximum number. If the length of the number equals to the maximum number, then we find a match.
+     * @param light
+     * @return
+     */
+    public int Num1375numTimesAllBlue(int[] light) {
+        int count = 0;
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<light.length;i++)
+        {
+            max = Math.max(max,light[i]);
+            if(max==i+1)
+                count++;
+        }
+        return count;
+    }
+
+    /**
+     * still very tricky problem, Its final state depends on the number of times it has been operated on: if the number of times is odd, it will eventually be on, if it is even, it will eventually be off.
+     * For any number i, that is to find the number of its factors, and then judge the parity of the number, assuming i = ab, a and b always appear in pairs, that is, the number of factors is even.
+     * But there is an exception, that is, when a=b, its factor number will be odd. Other times are always in pairs, that is, even numbers, which can be ignored.
+     * Therefore, for n lights, after n operations, the number of lights on depends on 1~n. How many previous lights can be written in the form of aa.
+     * @param n
+     * @return
+     */
+    public int Num319bulbSwitch(int n) {
+        int count = 0;
+        for(int i=1;i*i<n;i++)
+        {
+            count++;
+        }
+        return count;
+    }
+
+    public int Num672flipLights(int n, int m) {
+        n = Math.min(n, 3);
+        if (m == 0) return 1;
+        if (m == 1) return n == 1 ? 2 : n == 2 ? 3 : 4;
+        if (m == 2) return n == 1 ? 2 : n == 2 ? 4 : 7;
+        return n == 1 ? 2 : n == 2 ? 4 : 8;
+
+    }
+
+    public List<Integer> Num763partitionLabels(String S) {
+        List<Integer> ans = new LinkedList<>();
+        int[] counter = new int[26];
+        Arrays.fill(counter,-1);
+        for(int i=0;i<S.length();i++)
+        {
+            int index = S.charAt(i)-'a';
+            counter[index] = i;
+        }
+        int max = -1;
+        int a = 0;
+        for(int i=0;i<S.length();i++)
+        {
+            int index = S.charAt(i)-'a';
+            max = Math.max(max,counter[index]);
+            if(i>=max)
+            {
+                ans.add(i-a+1);
+                a = i+1;
+            }
+        }
+        return ans;
+    }
+
+
 }

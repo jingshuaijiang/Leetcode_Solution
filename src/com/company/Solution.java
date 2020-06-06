@@ -3,6 +3,7 @@ package com.company;
 import javafx.util.Pair;
 
 import javax.print.attribute.HashAttributeSet;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Solution {
@@ -4476,5 +4477,211 @@ public class Solution {
         return ans;
     }
 
+    public int[][] Num973kClosest(int[][] points, int K) {
+        int[] dist = new int[points.length];
+        for(int i=0;i<points.length;i++)
+        {
+            dist[i] = points[i][0]*points[i][0]+points[i][1]*points[i][1];
+        }
+        Arrays.sort(dist);
+        int distk = dist[K-1];
+        int[][] ans = new int[K][2];
+        int t=0;
+        for(int i=0;i<points.length;i++)
+        {
+            if((points[i][0]*points[i][0]+points[i][1]*points[i][1])<=distk)
+            {
+                ans[t] = points[i];
+                t++;
+            }
+        }
+        return ans;
+    }
 
+    public List<List<String>> Num49groupAnagrams(String[] strs) {
+        HashMap<String,List<String>> map = new HashMap<>();
+        int[] record = new int[26];
+        for(int i=0;i<strs.length;i++)
+        {
+            Arrays.fill(record,0);
+            for(int j=0;j<strs[i].length();j++)
+            {
+                record[strs[i].charAt(j)-'a']++;
+            }
+            String recordtostring = "";
+            for(int j=0;j<26;j++)
+            {
+                recordtostring=recordtostring+record[j]+":";
+            }
+            if(!map.containsKey(recordtostring))
+            {
+                map.put(recordtostring, new LinkedList<>());
+            }
+
+            List<String> analist = map.get(recordtostring);
+            analist.add(strs[i]);
+            map.put(recordtostring,analist);
+        }
+
+        List<List<String>> ans = new LinkedList<>();
+        for(String ke: map.keySet())
+        {
+            ans.add(map.get(ke));
+        }
+        return ans;
+    }
+
+    public List<String> Num692topKFrequent(String[] words, int k) {
+        HashMap<String,Integer> map = new HashMap<>();
+        for(int i=0;i< words.length;i++)
+        {
+            map.put(words[i],map.getOrDefault(words[i],0)+1);
+        }
+        PriorityQueue<String> heap = new PriorityQueue<String>(
+                (w1,w2)-> map.get(w1).equals(map.get(w2)) ? w2.compareTo(w1) :
+                map.get(w1) - map.get(w2)
+        );
+        for(String word:map.keySet())
+        {
+            heap.offer(word);
+            if(heap.size()>k)
+                heap.poll();
+        }
+        List<String> ans = new ArrayList();
+        while (!heap.isEmpty()) ans.add(heap.poll());
+        Collections.reverse(ans);
+        return ans;
+    }
+
+    public int Num1455isPrefixOfWord(String sentence, String searchWord) {
+        int ans = -1;
+        String[] word = sentence.split(" ");
+        int n = searchWord.length();
+        for(int i=0;i<word.length;i++)
+        {
+            if(word[i].length()<n)
+                continue;
+            if(word[i].substring(0,n-1).equals(searchWord))
+            {
+                ans = i+1;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * BFS needs to be done again.
+     * @param grid
+     * @return
+     */
+    public int Num994orangesRotting(int[][] grid) {
+        Queue<Pair<Integer,Integer>> queue = new ArrayDeque<>();
+        int freshorange = 0;
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]==1)
+                    freshorange++;
+                if(grid[i][j]==2)
+                    queue.add(new Pair(i,j));
+            }
+        }
+        int ans = -1;
+        ans+=1;
+        int[][] directions = { {-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        while(!queue.isEmpty())
+        {
+            int length  = queue.size();
+            for(int i=0;i<length;i++)
+            {
+                Pair<Integer,Integer> p = queue.poll();
+                int prow = p.getKey();
+                int pcol = p.getValue();
+                for(int[] d:directions)
+                {
+                    int nrow = prow+d[0];
+                    int ncol = pcol+d[1];
+                    if(nrow>=0&&nrow<grid.length && ncol>=0 && ncol<grid[0].length)
+                    {
+                        if(grid[nrow][ncol]==1)
+                        {
+                            grid[nrow][ncol]=2;
+                            freshorange--;
+                            queue.add(new Pair(nrow,ncol));
+                        }
+                    }
+                }
+
+            }
+            ans+=1;
+        }
+        return freshorange==0? ans: -1;
+    }
+
+    public int Num200numIslands(char[][] grid) {
+        int num = 0;
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]=='1')
+                {
+                    Num200IslandHelper(grid,i,j);
+                    num+=1;
+                }
+            }
+        }
+        return num;
+    }
+
+    public void Num200IslandHelper(char[][] grid,int i,int j)
+    {
+        if(!(0<=i&&i<grid.length&&0<=j && j<grid[0].length))
+        {
+            return;
+        }
+        if(grid[i][j]!='1')
+            return;
+        grid[i][j] = '2';
+        Num200IslandHelper(grid,i+1,j);
+        Num200IslandHelper(grid,i-1,j);
+        Num200IslandHelper(grid,i,j-1);
+        Num200IslandHelper(grid,i,j+1);
+    }
+
+    public int[] Num239maxSlidingWindow(int[] nums, int k) {
+        if (k <= 0) return new int[0];
+        if (nums == null || nums.length <= 1 || k == 1) return nums;
+
+        Deque<Integer> deque = new ArrayDeque<>(k);
+        int[] output = new int[nums.length - k + 1];
+        for (int i = 0; i < nums.length; i++) {
+            cleanDeque(deque, nums, i, k);
+            deque.addLast(i);
+            if (i - k + 1 >= 0) output[i - k + 1] = nums[deque.getFirst()];
+        }
+        return output;
+    }
+
+    private void cleanDeque(Deque<Integer> deque, int[] nums, int i, int k) {
+        if (!deque.isEmpty() && deque.getFirst() < i - k + 1) deque.removeFirst();
+        while (!deque.isEmpty() && nums[deque.getLast()] < nums[i]) deque.removeLast();
+    }
+
+    public int Num325maxSubArrayLen(int[] nums, int k) {
+        if(nums.length == 0) return 0;
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(0, -1);
+        int maxLength = Integer.MIN_VALUE;
+        int runningSum = 0;
+        for(int i=0;i<nums.length;i++){
+            runningSum += nums[i];
+            if(map.containsKey(runningSum - k)) {
+                maxLength = Math.max(maxLength, i-map.get(runningSum-k));
+            }
+            if(!map.containsKey(runningSum)) map.put(runningSum, i);
+        }
+        return maxLength == Integer.MIN_VALUE ? 0 : maxLength;
+    }
 }

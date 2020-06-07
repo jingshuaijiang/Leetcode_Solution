@@ -4684,4 +4684,235 @@ public class Solution {
         }
         return maxLength == Integer.MIN_VALUE ? 0 : maxLength;
     }
+
+    public List<Integer> Num1469getLonelyNodes(TreeNode root) {
+        List<Integer> ans = new LinkedList<>();
+        Num1469TraverseHelper(root,ans);
+        return ans;
+    }
+
+    public void Num1469TraverseHelper(TreeNode node, List<Integer> ans)
+    {
+        if(node==null)
+            return;
+        if(node.left==null&&node.right==null)
+            return;
+        if(node.left==null)
+        {
+            ans.add(node.right.val);
+        }
+        else if(node.right==null)
+        {
+            ans.add(node.left.val);
+        }
+        Num1469TraverseHelper(node.left,ans);
+        Num1469TraverseHelper(node.right,ans);
+
+    }
+
+    public int Num694numDistinctIslands(int[][] grid) {
+        HashMap<String,Integer> map = new HashMap<>();
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    String[] pattern = new String[1];
+                    Num694DFSHelper(grid,i,j,pattern,"0",0);
+                    if(!map.containsKey(pattern[0]))
+                    {
+                        map.put(pattern[0],1);
+                    }
+                }
+            }
+        }
+        return map.size();
+    }
+
+    public void Num694DFSHelper(int[][] grid, int i, int j,String[] pattern,String direction,int depth)
+    {
+        if(!(i>=0&&i<grid.length&&j>=0&&j<grid[0].length))
+        {
+            return;
+        }
+        if(grid[i][j]!=1)
+            return;
+        grid[i][j] = 2;
+        pattern[0]=depth+":"+direction;
+        Num694DFSHelper(grid,i-1,j,pattern,"up",depth+1);
+        Num694DFSHelper(grid,i+1,j,pattern,"down",depth+1);
+        Num694DFSHelper(grid,i,j-1,pattern,"left",depth+1);
+        Num694DFSHelper(grid,i,j+1,pattern,"right",depth+1);
+    }
+
+    public boolean Num79exist(char[][] board, String word) {
+        if(board.length == 0) return false;
+        int h = board.length;
+        int w = board[0].length;
+        for(int i=0; i<w; i++){
+            for(int j=0; j<h; j++){
+                if(search(board, word, 0, i, j, w, h)){
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+    private boolean search(char[][] board, String word, int d, int x, int y, int w, int h){
+        // out of bound
+        if(x<0 || x==w || y<0 || y==h || word.charAt(d) != board[y][x]){
+            return false;
+        }
+        if(d == word.length() - 1){
+            return true; // last word
+        }
+        char current = board[y][x];
+        board[y][x] = 0;
+        Boolean found = search(board, word, d+1, x+1, y, w, h) ||
+                search(board, word, d+1, x-1, y, w,h) ||
+                search(board, word, d+1, x, y+1, w,h) ||
+                search(board, word, d+1, x, y-1, w,h);
+        board[y][x] = current;
+        return found;
+
+    }
+
+    /**
+     * the logic is trivial, when you draw the picture you can see any points
+     * that is Monotonically increasing of decreasing is useless, when just need one and the others
+     * can be removed. So we just need to count the turing point
+     *
+     * @param nums
+     * @return
+     */
+    public int Num376wiggleMaxLength(int[] nums) {
+        if(nums.length<2)
+            return nums.length;
+        int prediff = nums[1]-nums[0];
+        int count = prediff !=0?2:1;
+        for(int i=2;i<nums.length;i++)
+        {
+            int diff = nums[i]-nums[i-1];
+            if((diff>0&&prediff<=0)||(diff<0&&prediff>=0))
+            {
+                count++;
+                prediff = diff;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * just flip those abnormal ones with its previous one
+     * @param nums
+     */
+    public void Num280wiggleSort(int[] nums) {
+        boolean increasing = true;
+        int temp =0;
+        for(int i=1;i<nums.length;i++)
+        {
+            if(increasing)
+            {
+                if(nums[i]-nums[i-1]<0)
+                {
+                    temp = nums[i-1];
+                    nums[i-1] = nums[i];
+                    nums[i] = temp;
+                }
+                increasing = false;
+            }
+            else
+            {
+                if(nums[i]-nums[i-1]>0)
+                {
+                    temp = nums[i-1];
+                    nums[i-1] = nums[i];
+                    nums[i] = temp;
+                }
+                increasing = true;
+            }
+        }
+    }
+
+    /**
+     * this is a wrong answer. Do not copy this.
+     * @param nums
+     */
+    public void Num324wiggleSortWrong(int[] nums) {
+        boolean increasing = true;
+        int temp = 0;
+        for(int i=1;i<nums.length;i++)
+        {
+            if(increasing)
+            {
+                if(nums[i]-nums[i-1]<0)
+                {
+                    Num324Swap(nums,i,i-1);
+                }
+                else if(nums[i]-nums[i-1]==0)
+                {
+                    int right = i+1;
+                    while(nums[right]-nums[i-1]==0)
+                    {
+                        right++;
+                    }
+                    if(nums[right]<nums[i-1])
+                        Num324Swap(nums,i-1,right);
+                    else
+                        Num324Swap(nums,i,right);
+                }
+                increasing = false;
+            }
+            else
+            {
+                if(nums[i]-nums[i-1]>0)
+                {
+                    Num324Swap(nums,i,i-1);
+                }
+                else if(nums[i]-nums[i-1]==0)
+                {
+                    int right = i+1;
+                    while(nums[right]-nums[i-1]==0)
+                    {
+                        right++;
+                    }
+                    if(nums[right]>nums[i-1])
+                        Num324Swap(nums,i-1,right);
+                    else
+                        Num324Swap(nums,i,right);
+                }
+                increasing = true;
+            }
+        }
+    }
+
+    private void Num324Swap(int[] nums,int i, int j)
+    {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    /**
+     * needs to be done again
+     * @param nums
+     */
+    public void wiggleSort(int[] nums)
+    {
+        Arrays.sort(nums);
+        int len=nums.length,i = 0;
+        int[] smaller=new int[len%2==0?len/2:(len/2+1)],bigger=new int[len/2];
+        System.arraycopy(nums,0,smaller,0,smaller.length);
+        System.arraycopy(nums,smaller.length,bigger,0,len/2);
+        for (; i < len / 2; i++) {
+            nums[2*i]=smaller[smaller.length-1-i];
+            nums[2*i+1]=bigger[len/2-1-i];
+        }
+        if (len%2!=0) nums[2*i]=smaller[smaller.length-1-i];
+    }
+
+
 }

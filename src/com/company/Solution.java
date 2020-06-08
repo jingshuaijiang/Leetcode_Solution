@@ -4914,5 +4914,80 @@ public class Solution {
         if (len%2!=0) nums[2*i]=smaller[smaller.length-1-i];
     }
 
+    public int[] Num1470shuffle(int[] nums, int n) {
+        int[] ans = new int[nums.length];
+        for(int i=0;i<n;i++)
+        {
+            ans[2*i] = nums[i];
+            ans[2*i+1] = nums[i+n];
+        }
+        return ans;
+    }
+
+    public int Num278firstBadVersion(int n) {
+        return Num278Helper(0,n);
+    }
+
+    public int Num278Helper(int start,int end)
+    {
+        if(start==end)
+            return start;
+        int index = (start+end+1)/2;
+        if(isBadVersion(index))
+        {
+            return Num278Helper(start,index-1);
+        }
+        else
+        {
+            return Num278Helper(index+1,end);
+        }
+    }
+
+    public int Num1011shipWithinDays(int[] weights, int D) {
+        int right = 0;
+        int left = Integer.MIN_VALUE;
+        for(int i=0;i<weights.length;i++)
+        {
+            right+=weights[i];
+            left = Math.max(weights[i],left);
+        }
+
+        while(left<right)
+        {
+            int mid = left + (right-left)/2;
+            if(!Num1011LongerThanD(weights,D,mid))
+            {
+                left = mid+1;
+            }
+            else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+
+    public boolean Num1011LongerThanD(int[] weights,int D,int maxweight)
+    {
+        int day = 0;
+        int i=0;
+        int compacity = 0;
+        while(i<weights.length)
+        {
+            while(compacity<=maxweight&&i<weights.length)
+            {
+                compacity+=weights[i];
+                i++;
+            }
+            if(compacity>maxweight)
+            {
+                i--;
+                compacity=0;;
+            }
+            day++;
+        }
+        return day<=D;
+
+    }
+
 
 }

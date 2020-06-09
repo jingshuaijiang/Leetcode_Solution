@@ -3,6 +3,7 @@ package com.company;
 import javafx.util.Pair;
 
 import javax.print.attribute.HashAttributeSet;
+import java.lang.annotation.Target;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -4928,7 +4929,7 @@ public class Solution {
         return Num278Helper(0,n);
     }
 
-    public int Num278Helper(int start,int end)
+    public int Num278Helper(int start,int end)强核磁共振造影剂的副作用
     {
         if(start==end)
             return start;
@@ -4989,5 +4990,191 @@ public class Solution {
 
     }
 
+    public String Num1427stringShift(String s, int[][] shift) {
+        int sum = 0;
+        for(int i=0;i<shift.length;i++)
+        {
+            if(shift[i][0]==0)
+            {
+                sum-=shift[i][1];
+            }
+            else
+            {
+                sum+=shift[i][1];
+            }
+        }
+        sum = sum%s.length();
+        if(sum>0)
+        {
+            sum = s.length()-sum;
+        }
+        String removepart = s.substring(0,Math.abs(sum));
+        String prefix = s.substring(Math.abs(sum),s.length());
+        return prefix+removepart;
+
+    }
+
+    public int Num33search(int[] nums, int target) {
+        int pivot = 0, ans = 0;
+        if(nums.length==0)
+            return -1;
+            if(nums[0]>nums[nums.length-1])
+            {
+                pivot = Num33pivotpointhelper(nums,0,nums.length-1);
+                if(nums[0]>target)
+                {
+                    ans = Num33SearchNumhelper(nums,pivot,nums.length-1,target);
+                }
+                else
+                {
+                    ans = Num33SearchNumhelper(nums,0,pivot-1,target);
+
+                }
+            }
+            else
+            {
+                ans = Num33SearchNumhelper(nums,0,nums.length-1,target);
+            }
+
+        return ans;
+
+    }
+
+    public int Num33pivotpointhelper(int[] nums,int left,int right)
+    {
+        while(left<right)
+        {
+            int mid = left+(right-left)/2;
+            if(nums[mid]>nums[right])
+            {
+                left = mid+1;
+            }
+            else
+            {
+                right = mid;
+            }
+        }
+        return left;
+    }
+
+    public int Num33SearchNumhelper(int[] nums,int left,int right,int target)
+    {
+        while(left<right)
+        {
+            int mid = (right+left+1)/2;
+            if(nums[mid]>target)
+            {
+                right = mid-1;
+            }
+            else
+            {
+                left = mid;
+            }
+        }
+        if(nums[left]!=target)
+            return -1;
+        return left;
+    }
+
+    public int Num33Onepasssearch(int[] nums, int target)
+    {
+        int start = 0, end = nums.length - 1;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] >= nums[start]) {
+                if (target >= nums[start] && target < nums[mid]) end = mid - 1;
+                else start = mid + 1;
+            }
+            else {
+                if (target <= nums[end] && target > nums[mid]) start = mid + 1;
+                else end = mid - 1;
+            }
+        }
+        return -1;
+
+    }
+
+    /**
+     * needs to be done again.
+     * @param nums
+     * @param target
+     * @return
+     */
+    public boolean Num81search(int[] nums, int target) {
+        int start = 0, end = nums.length - 1;
+        while(start<=end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target)
+                return true;
+            else if (nums[start] == nums[mid] && nums[mid] == nums[end]) {
+                start++;
+                end--;
+            } else if (nums[mid] >= nums[start]) {
+                if (target >= nums[start] && target < nums[mid]) {
+                    end = mid - 1;
+                } else {
+                    start = mid + 1;
+                }
+            } else {
+                if (target <= nums[end] && target > nums[mid]) {
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+        }
+            return false;
+        }
+
+    public int Num58lengthOfLastWord(String s) {
+        int i = s.length()-1;
+        int length = 0;
+        while(i>=0)
+        {
+            if(s.charAt(i)==' ')
+            {
+                if(length==0)
+                {
+                    i--;
+                }
+                else
+                {
+                    return length;
+                }
+            }
+            else
+            {
+                length+=1;
+                i--;
+            }
+        }
+        return length;
+    }
+
+    public int Num387firstUniqChar(String s) {
+        int[] counter = new int[26];
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<s.length();i++)
+        {
+            if(counter[s.charAt(i)-'a']!=0)
+            {
+                counter[s.charAt(i)-'a'] = -1;
+            }
+            else
+                counter[s.charAt(i)-'a'] = i+1;
+        }
+
+        for(int i=0;i<counter.length;i++)
+        {
+            if(counter[i]!=-1&&counter[i]!=0)
+                min = Math.min(min,counter[i]-1);
+        }
+        return min==Integer.MAX_VALUE?-1 : min;
+    }
+
+    public String Num151reverseWords(String s) {
+
+    }
 
 }

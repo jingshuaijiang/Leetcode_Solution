@@ -5173,8 +5173,93 @@ public class Solution {
         return min==Integer.MAX_VALUE?-1 : min;
     }
 
+    public boolean Num205isIsomorphic(String s, String t) {
+        int[] s1=new int[256];
+        int[] s2=new int[256];
+        for(int i=0;i<s.length();i++){
+            if(s1[s.charAt(i)]==0 && s2[t.charAt(i)]==0){
+                s1[s.charAt(i)]=t.charAt(i);
+                s2[t.charAt(i)]=s.charAt(i);
+            }else if(s1[s.charAt(i)]!=(t.charAt(i)) ||
+                    s2[t.charAt(i)]!=(s.charAt(i))) return false;
+        }
+        return true;
+    }
+
     public String Num151reverseWords(String s) {
+        String ans = "";
+        if(s.length()==0)
+            return ans;
+        int index = s.length()-1;
+        while(index>=0)
+        {
+            while(index>=0&&s.charAt(index)==' ')
+            {
+                index--;
+            }
+            if(index<0)
+                break;
+            String append = "";
+            while(index>=0&&s.charAt(index)!=' ')
+            {
+                append = s.charAt(index)+append;
+                index--;
+            }
+            ans+=append;
+            ans +=" ";
+        }
+        if(ans.length()!=0)
+        {
+            ans = ans.substring(0,ans.length()-1);
+        }
+        return ans;
+    }
+
+    public boolean Num242isAnagram(String s, String t) {
+        if(s.length()!=t.length())
+            return false;
+        int[] counter = new int[26];
+        for(int i=0;i<s.length();i++)
+        {
+            counter[s.charAt(i)-'a']++;
+            counter[t.charAt(i)-'a']--;
+        }
+        for(int i=0;i<26;i++)
+        {
+            if(counter[i]!=0)
+                return false;
+        }
+        return true;
+    }
+
+    public boolean wordPattern(String pattern, String str) {
+        boolean ans = true;
+        Map<Character, String> map = new HashMap<>();
+        String[] words = str.split(" ");
+        char[] symbols = pattern.toCharArray();
+        if (symbols.length != words.length) return false;
+
+        for (int i = 0; i < words.length; i++) {
+            if (map.get(symbols[i]) == null) {
+                if (map.containsValue(words[i])) {
+                    ans = false;
+                    break;
+                }
+                map.put(symbols[i], words[i]);
+            } else if (!map.get(symbols[i]).equals(words[i])) {
+                ans = false;
+                break;
+            }
+        }
+
+        return ans;
+    }
+
+    public boolean Num294canWin(String s) {
 
     }
+
+
+
 
 }

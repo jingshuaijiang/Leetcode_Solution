@@ -5255,11 +5255,146 @@ public class Solution {
         return ans;
     }
 
+    /**
+     * needs to be done again
+     * i don't know if there is a easier solution.
+     * @param s
+     * @return
+     */
     public boolean Num294canWin(String s) {
-
+        char[] arr = s.toCharArray();
+        int len = arr.length;
+        return Num294Helper(arr);
     }
 
+    public boolean Num294Helper(char[] arr)
+    {
+        for(int i=0;i<arr.length-1;i++)
+        {
+            if(arr[i]=='+'&&arr[i+1]=='+')
+            {
+                arr[i] = '-';
+                arr[i+1] = '-';
+                boolean win = !Num294Helper(arr);
+                arr[i] = '+';
+                arr[i+1] = '+';
+                if(win)
+                    return true;
+            }
+        }
+        return false;
+    }
 
+    /**
+     * I don't think some result to this standard problem is right.
+     * For example "" and "" . It should be true. But the program provided by the website will return false;
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean Num161isOneEditDistance(String s, String t) {
+        if(Math.abs(s.length()-t.length())>=2||(s.equals("")&&t.equals("")))
+            return false;
+        int flag = 0;
+        int si = 0;
+        int ti = 0;
+        while(si<s.length()&&ti<t.length())
+        {
+            if(s.charAt(si)!=t.charAt(ti))
+            {
+                if(flag==1)
+                    return false;
+                else if(s.length()==t.length())
+                {
+                    si++;
+                    ti++;
+                }
+                else
+                {
+                    if(s.length()<t.length())
+                    {
+                        ti++;
+                    }
+                    else
+                    {
+                        si++;
+                    }
+                }
+                flag = 1;
+            }
+            else
+            {
+                si++;
+                ti++;
+            }
+        }
+        return true;
+    }
+
+    public int Num72minDistance(String word1, String word2) {
+        if(word1.length()==0||word2.length()==0)
+        {
+            return word1.length()==0? word2.length(): word1.length();
+        }
+        int len1 = word1.length();
+        int len2 = word2.length();
+        int[][] dp = new int[len1+1][len2+1];
+        for(int i=0;i<len1+1;i++)
+        {
+            dp[i][0] = i;
+        }
+
+        for(int j=0;j<len2+1;j++)
+        {
+            dp[0][j] = j;
+        }
+        for(int i=1;i<len1;i++)
+        {
+            for(int j=1;j<len2;j++)
+            {
+                int left = dp[i-1][j];
+                int right = dp[i][j-1];
+                int pre = dp[i-1][j-1];
+                if(word1.charAt(i)==word2.charAt(j))
+                {
+                    pre-=1;
+                }
+                dp[i][j] = Math.min(left,Math.min(right,pre))+1;
+            }
+        }
+        return dp[len1][len2];
+    }
+
+    public List<List<String>> groupStrings(String[] strings) {
+        List<List<String>> ans = new LinkedList<>();
+        HashMap<String,List<String>> map = new HashMap<>();
+        for(int i=0;i<strings.length;i++)
+        {
+            String acer  = "0#";
+            int front = strings[i].charAt(0)-'a';
+
+            for(int j=1;j<strings[i].length();j++)
+            {
+                int curr = (strings[i].charAt(j)-'a'-front);
+                if(curr<0)
+                    curr+=26;
+                acer = acer + curr+"#";
+            }
+            List<String> values = new LinkedList<>();
+            if(map.containsKey(acer))
+            {
+                values = map.get(acer);
+            }
+            values.add(strings[i]);
+            map.put(acer,values);
+        }
+
+        for(String key:map.keySet())
+        {
+            ans.add(map.get(key));
+        }
+        return ans;
+    }
 
 
 }

@@ -5396,5 +5396,250 @@ public class Solution {
         return ans;
     }
 
+    /**
+     * a
+     * @param n
+     * @return
+     */
+    public String Num168convertToTitle(int n) {
+        StringBuilder sb = new StringBuilder();
+        while(n>0)
+        {
+            int remaining = n%26;
+            if(remaining==0)
+            {
+                sb.append('Z');
+                n = n/26 -1;
+            }
+            else
+            {
+                sb.append((char)(64+remaining));
+                n = n/26;
+            }
+        }
+        return sb.reverse().toString();
+    }
+
+    /**
+     * cool stuff
+     * needs to be done again
+     * @param s
+     * @return
+     */
+    public String Num316removeDuplicateLetters(String s) {
+        Stack<Character> stack = new Stack<>();
+        HashSet<Character> seen = new HashSet<>();
+        HashMap<Character,Integer> last = new HashMap<>();
+        for(int i=0;i<s.length();i++)
+        {
+            last.put(s.charAt(i),i);
+        }
+        for(int i=0;i<s.length();i++)
+        {
+            char c = s.charAt(i);
+            if(!seen.contains(c))
+            {
+                while(!stack.isEmpty() && c< stack.peek()&& last.get(stack.peek())>i)
+                {
+                    seen.remove(stack.pop());
+                }
+                seen.add(c);
+                stack.push(c);
+            }
+        }
+        StringBuilder sb = new StringBuilder(stack.size());
+        for(Character c : stack)
+        {
+            sb.append(c.charValue());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * It is easy to think about this solution. When you just done a problem solved with stack.
+     * @param T
+     * @return
+     */
+    public int[] Num739dailyTemperatures(int[] T) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+        int[] ans = new int[T.length];
+        for(int i=1;i<T.length;i++)
+        {
+            while(!stack.isEmpty()&&T[stack.peek()]<T[i])
+            {
+                int index = stack.pop();
+                ans[index] = i-index;
+            }
+            stack.push(i);
+        }
+        while(!stack.isEmpty())
+        {
+            int index = stack.pop();
+            ans[index] = 0;
+        }
+        return ans;
+    }
+
+    public List<String> Num22generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        Num22Helper(n,ans,"",0,0);
+        return ans;
+    }
+
+    public void Num22Helper(int n, List<String> ans,String ps,int left,int right)
+    {
+        if(ps.length()==2*n)
+        {
+            ans.add(ps);
+        }
+
+        if(left<n)
+        {
+            Num22Helper(n,ans,ps+"(",left+1,right);
+        }
+        if(right<left)
+        {
+            Num22Helper(n,ans,ps+")",left,right+1);
+        }
+    }
+
+    public boolean Num246isStrobogrammatic(String num) {
+        HashSet<Character> wrongnumber = new HashSet<>();
+        wrongnumber.add('2');
+        wrongnumber.add('3');
+        wrongnumber.add('4');
+        wrongnumber.add('5');
+        wrongnumber.add('7');
+        HashMap<Character,Character> map = new HashMap<>();
+        map.put('6','9');
+        map.put('9','6');
+        map.put('1','1');
+        map.put('8','8');
+        map.put('0','0');
+
+        int length = num.length();
+        if(length%2==1)
+        {
+            if(num.charAt(length/2)!='1'||num.charAt(length/2)!='8'||num.charAt(length/2)!='0')
+                return false;
+        }
+        for(int i=length/2-1;i>=0;i--)
+        {
+            int reflection = num.length()-1-i;
+            if(wrongnumber.contains(num.charAt(i))||wrongnumber.contains(num.charAt(reflection)))
+                return false;
+            else if(num.charAt(i)!=map.get(num.charAt(reflection)))
+                return false;
+        }
+        return true;
+    }
+
+    public int romanToInt(String s) {
+        Map<String, Integer> values = new HashMap<>();
+        values.put("I", 1);
+        values.put("V", 5);
+        values.put("X", 10);
+        values.put("L", 50);
+        values.put("C", 100);
+        values.put("D", 500);
+        values.put("M", 1000);
+        values.put("IV", 4);
+        values.put("IX", 9);
+        values.put("XL", 40);
+        values.put("XC", 90);
+        values.put("CD", 400);
+        values.put("CM", 900);
+        int sum = 0;
+        int i = 0;
+        while (i < s.length()) {
+            if (i < s.length() - 1) {
+                String doubleSymbol = s.substring(i, i + 2);
+                if (values.containsKey(doubleSymbol)) {
+                    sum += values.get(doubleSymbol);
+                    i += 2;
+                    continue;
+                }
+            }
+            String singleSymbol = s.substring(i, i + 1);
+            sum += values.get(singleSymbol);
+            i += 1;
+        }
+        return sum;
+    }
+
+    public String Num12intToRoman(int num) {
+        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] symbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<values.length;i++)
+        {
+            while(values[i]<=num)
+            {
+                sb.append(symbols[i]);
+                num-=values[i];
+            }
+        }
+        return sb.toString();
+
+    }
+
+    /**
+     * quite slow and i think it can be optimized.
+     * @param s
+     * @return
+     */
+    public boolean Num125isPalindrome(String s) {
+        String test = "";
+        for(int i=0;i<s.length();i++)
+        {
+            if(Character.isLetterOrDigit(s.charAt(i)))
+            {
+                if(Character.isLetter(s.charAt(i)))
+                {
+                    test = test + Character.toLowerCase(s.charAt(i));
+                }
+                else{
+                    test += s.charAt(i);
+                }
+            }
+        }
+        for(int i=0;i<test.length();i++)
+        {
+            if(test.charAt(i)!=test.charAt(test.length()-1-i))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * this time beats 94% of runtime
+     * @param s
+     * @return
+     */
+    public boolean Num125isPalindromeOptimized(String s)
+    {
+        int i=0,j = s.length()-1;
+        while(i<=j)
+        {
+            while(i<=j&&!Character.isLetterOrDigit(s.charAt(j))) {
+                j--;
+            }
+            while(i<=j&&!Character.isLetterOrDigit(s.charAt(i))) {
+                i++;
+            }
+            if(i>j)
+                break;
+            if(Character.toLowerCase(s.charAt(i))!=Character.toLowerCase(s.charAt(j)))
+                return false;
+            else
+            {
+                j--;
+                i++;
+            }
+        }
+        return true;
+    }
+
 
 }

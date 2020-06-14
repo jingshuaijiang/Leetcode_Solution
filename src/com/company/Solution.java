@@ -4929,7 +4929,7 @@ public class Solution {
         return Num278Helper(0,n);
     }
 
-    public int Num278Helper(int start,int end)强核磁共振造影剂的副作用
+    public int Num278Helper(int start,int end)
     {
         if(start==end)
             return start;
@@ -5640,6 +5640,426 @@ public class Solution {
         }
         return true;
     }
+
+    public boolean Num266canPermutePalindrome(String s) {
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(int i=0;i<s.length();i++)
+        {
+            map.put(s.charAt(i),map.getOrDefault(s.charAt(i),0)+1);
+        }
+        int single = 0;
+        for(Character c:map.keySet())
+        {
+            if(map.get(c)%2==1)
+            {
+                if(single!=0)
+                    return false;
+                else
+                    single++;
+            }
+        }
+        return single<=1;
+    }
+    /**
+     * holy shit this is too long
+     * @param s
+     * @return
+     */
+    public List<String> Num267generatePalindromes(String s) {
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(int i=0;i<s.length();i++)
+        {
+            map.put(s.charAt(i),map.getOrDefault(s.charAt(i),0)+1);
+        }
+        String sin = "12";
+        int single = 0;
+        for(Character c:map.keySet())
+        {
+            if(map.get(c)%2==1)
+            {
+                if(single!=0)
+                    return new LinkedList<String>();
+                else
+                {
+                    single++;
+                    sin = c.toString();
+                }
+            }
+        }
+        List<String> ans = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        Num267Helper(s,sb,ans,map,sin);
+        return ans;
+    }
+
+    public void Num267Helper(String s, StringBuilder curr,List<String> ans,HashMap<Character,Integer> map,String sin)
+    {
+        if(curr.length() == s.length()/2)
+        {
+            String finala = "";
+            if(s.length()%2==0)
+            {
+                finala = curr.toString() + curr.reverse().toString();
+                curr.reverse();
+            }
+            else
+            {
+                finala = curr.toString() + sin +curr.reverse().toString();
+                curr.reverse();
+            }
+            ans.add(finala);
+            return;
+        }
+        for(Character c : map.keySet())
+        {
+            if(map.get(c)>=2)
+            {
+                map.put(c,map.get(c)-2);
+                curr = curr.append(c);
+                Num267Helper(s,curr,ans,map,sin);
+                curr.deleteCharAt(curr.length()-1);
+                map.put(c,map.get(c)+2);
+            }
+        }
+    }
+    public boolean Num9isPalindrome(int x) {
+        if(x<0|| (x % 10 == 0 && x != 0))
+            return false;
+        int number = 0;
+        while(x>number)
+        {
+            number = number*10 + x%10;
+            x/=10;
+        }
+        return x==number || x == number/10;
+    }
+
+    public String longestPalindrome(String s) {
+        if(s.length()<=1)
+            return s;
+        int length = s.length();
+        int max = 1,start = 0;
+        boolean[][] dp = new boolean[length][length];
+        for(int i=0;i<length;i++)
+        {
+            dp[i][i] = true;
+        }
+        for(int i=0;i<length-1;i++)
+        {
+            if(s.charAt(i)==s.charAt(i+1))
+            {
+                dp[i][i+1] = true;
+                max = 2;
+                start = i;
+            }
+        }
+        for(int k=3;k<=length;k++)
+        {
+            for(int i=0;i<length-k+1;i++)
+            {
+                int j = i+k-1;
+                if(s.charAt(i)==s.charAt(j)&&dp[i+1][j-1])
+                {
+                    max = k;
+                    dp[i][j] = true;
+                    start = i;
+                }
+            }
+        }
+        return s.substring(start,start+max);
+    }
+
+    public List<List<String>> Num131partition(String s) {
+        List<List<String>> ans = new LinkedList<>();
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        for(int l=1; l<=s.length(); l++){
+            for(int st=0; st<=s.length()-l; st++){
+                int en = st+l-1;
+                if(l==1){
+                    dp[st][en] = true;
+                }
+                else{
+                    dp[st][en] = s.charAt(st)==s.charAt(en) ? (l>2 ? dp[st+1][en-1] : true) : false;
+                }
+            }
+        }
+//        char[] sarray = s.toCharArray();
+        Num131Helper(s,0,s.length()-1,ans,dp,new LinkedList());
+        return ans;
+    }
+
+    public void Num131Helper(String s,int i,int j,List<List<String>> ans,boolean[][] dp,List<String> curr)
+    {
+        if(i>s.length()-1)
+        {
+            ans.add(new LinkedList<>(curr));
+        }
+
+        for(int p=0;p<=j-i;p++)
+        {
+            if(dp[i][i+p])
+            {
+                curr.add(s.substring(i,i+p+1));
+                Num131Helper(s,i+p+1,j,ans,dp,curr);
+                curr.remove(curr.size()-1);
+            }
+        }
+    }
+
+    public List<String> Num890findAndReplacePattern(String[] words, String pattern) {
+        List<String> ans = new LinkedList<>();
+        for(int i=0;i<words.length;i++)
+        {
+            if(words[i].length()!=pattern.length())
+            {
+                continue;
+            }
+            HashMap<Character,Character> map1 = new HashMap<>();
+            HashMap<Character,Character> map2 = new HashMap<>();
+            int diff = 1;
+            for(int j=0;j<words[i].length();j++)
+            {
+                if((map1.containsKey(words[i].charAt(j))&&map1.get(words[i].charAt(j))!=pattern.charAt(j))||(map2.containsKey(pattern.charAt(j))&&map2.get(pattern.charAt(j))!=words[i].charAt(j)))
+                {
+                    diff = 0;
+                    break;
+                }
+                map1.put(words[i].charAt(j),pattern.charAt(j));
+                map2.put(pattern.charAt(j),words[i].charAt(j));
+            }
+            if(diff==1)
+            {
+                ans.add(words[i]);
+            }
+        }
+        return ans;
+    }
+
+    public int Num132minCut(String s) {
+        if(s==null||s.length()==0||s.length()==1)
+            return 0;
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        int[] ap = new int[s.length()];
+        for(int i=0;i<s.length();i++)
+        {
+            dp[i][i] = true;
+        }
+        for(int i=0;i<s.length()-1;i++)
+        {
+            if(s.charAt(i)==s.charAt(i+1))
+            {
+                dp[i][i+1] = true;
+            }
+        }
+        for(int k=3;k<=s.length();k++)
+        {
+            for(int i=0;i<s.length()-k+1;i++)
+            {
+                int j = i+k-1;
+                if(s.charAt(i)==s.charAt(j)&&dp[i+1][j-1])
+                {
+                    dp[i][j] = true;
+                }
+            }
+        }
+        for(int i=1;i<s.length();i++)
+        {
+            ap[i] = dp[0][i]? 0 : Integer.MAX_VALUE;
+            for(int j=0;j<i;j++)
+            {
+                if(dp[j+1][i])
+                {
+                    ap[i] = Math.min(ap[j]+1,ap[i]);
+                }
+            }
+        }
+        return ap[s.length()-1];
+    }
+
+    public int[] Num5420finalPrices(int[] prices) {
+        int [] ans = new int[prices.length];
+        Stack<Integer> stack = new Stack<>();
+        for(int i=0;i<prices.length;i++)
+        {
+            while(!stack.isEmpty()&&prices[stack.peek()]>=prices[i])
+            {
+                int index = stack.pop();
+                ans[index] = prices[index] - prices[i];
+            }
+            stack.push(i);
+        }
+        while(!stack.isEmpty())
+        {
+            int index = stack.pop();
+            ans[index] = prices[index];
+        }
+        return ans;
+    }
+
+    public int Num5423minSumOfLengths(int[] arr, int target) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        List<int[]> map2 = new ArrayList<>();
+        map.put(0,-1);
+        int runningSum = 0;
+        int flag = 0;
+        for(int i=0;i<arr.length;i++)
+        {
+
+            runningSum += arr[i];
+
+            if(map.containsKey(runningSum - target)) {
+                int[] pair = {map.get(runningSum-target)+1,i-map.get(runningSum-target)};
+                map2.add(pair);
+            }
+            map.put(runningSum, i);
+        }
+
+        if(map2.size()<2)
+            return -1;
+        Collections.sort(map2,(x,y)->x[1]-y[1]);
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<map2.size();i++)
+        {
+            int leni = map2.get(i)[1];
+            int starti = map2.get(i)[0];
+            for(int j = i+1;j<map2.size();j++)
+            {
+                int lenj = map2.get(j)[1];
+                int startj = map2.get(j)[0];
+                if(startj>=starti+leni|| starti>=startj+lenj)
+                    return leni+lenj;
+            }
+        }
+        return min==Integer.MAX_VALUE ? -1: min;
+
+    }
+
+    public String Num214shortestPalindrome(String s) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(s);
+        sb.reverse();
+        String rev = sb.toString();
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.substring(0,s.length()-i).equals(rev.substring(i,s.length())))
+                return rev.substring(0,i) + s;
+        }
+        return "";
+    }
+
+    /**
+     * KMP
+     * f(0) = 0
+     * for(i = 1; i < n; i++)
+     * {
+     * 	t = f(i-1)
+     * 	while(t > 0 && b[i] != b[t])
+     * 		t = f(t-1)
+     * 	if(b[i] == b[t]){
+     * 		++t
+     * 	f(i) = t
+     * }
+     */
+
+    public boolean Num392isSubsequence(String s, String t) {
+        if(t.length()<s.length())
+            return false;
+        int i=0,j = 0,len = 0;
+        while(i<s.length()&&j<t.length())
+        {
+            while(j<t.length()&&t.charAt(j)!=s.charAt(i))
+            {
+                j++;
+            }
+            if(j<t.length()&&i<s.length()&&s.charAt(i)==t.charAt(j))
+            {
+                j++;
+                i++;
+                len++;
+            }
+        }
+        if(len<s.length())
+            return false;
+        return true;
+    }
+
+    private int Num241caculate(int num1, char c, int num2) {
+        switch (c) {
+            case '+':
+                return num1 + num2;
+            case '-':
+                return num1 - num2;
+            case '*':
+                return num1 * num2;
+        }
+        return -1;
+    }
+
+    public List<Integer> Num241diffWaysToCompute(String input) {
+        List<Integer> numlist = new ArrayList<>();
+        List<Character> oplist = new ArrayList<>();
+        int num = 0;
+        for(int i=0;i<input.length();i++)
+        {
+            if(input.charAt(i)=='+'||input.charAt(i)=='-'input.charAt(i)=='*')
+            {
+                numlist.add(num);
+                oplist.add(input.charAt(i));
+                num = 0;
+                continue;
+            }
+            num = num*10 + (input.charAt(i)-'0');
+        }
+        numlist.add(num);
+        int n = numlist.size();
+        ArrayList<Integer>[][] dp = new ArrayList[n][n];
+        for(int i=0;i<n;i++)
+        {
+            ArrayList<Integer> result = new ArrayList<>();
+            result.add(numlist.get(i));
+            dp[i][i] = result;
+        }
+        for(int k=2;k<=n;k++)
+        {
+            for(int i=0;i<n-k+1;i++)
+            {
+                int j = i+k-1;
+                ArrayList<Integer> result = new ArrayList<>();
+                for(int s = i;s<j;s++)
+                {
+                    ArrayList<Integer> result1 = dp[i][s];
+                    ArrayList<Integer> result2 = dp[s+1][j];
+                    for (int x = 0; x < result1.size(); x++) {
+                        for (int y = 0; y < result2.size(); y++) {
+                            char op = oplist.get(s);
+                            result.add(Num241caculate(result1.get(x), op, result2.get(y)));
+                        }
+                    }
+
+                }
+                dp[i][j] = result;
+            }
+        }
+        return dp[0][n-1];
+    }
+
+    public String complexNumberMultiply(String a, String b) {
+        String[] x = a.split("\\+|i");
+        String[] y = b.split("\\+|i");
+        int a1 = Integer.parseInt(x[0]);
+        int a2 = Integer.parseInt(x[1]);
+        int b1 = Integer.parseInt(y[0]);
+        int b2 = Integer.parseInt(y[1]);
+        int r1 = a1*b1 -a2*b2;
+        int r2 = a1*b2+a2*b1;
+        return r1+"+"+r2+"i";
+
+    }
+
+
+
+
+
 
 
 }

@@ -6056,6 +6056,153 @@ public class Solution {
 
     }
 
+    public List<Integer> Num241diffWaysToComputeRecursive(String input)
+    {
+        List<Integer> ans = new ArrayList<>();
+        int result = 0;
+        for(int i=0;i<input.length();i++)
+        {
+            if(input.charAt(i)=='+'||input.charAt(i)=='-'||input.charAt(i)=='*')
+            {
+                List<Integer> ans1 = Num241diffWaysToComputeRecursive(input.substring(0,i));
+                List<Integer> ans2 = Num241diffWaysToComputeRecursive(input.substring(i+1,input.length()));
+                for(int j=0;j<ans1.size();j++)
+                {
+                    for(int k = 0;k<ans2.size();k++)
+                    {
+                        if(input.charAt(i)=='+')
+                        {
+                            result = ans1.get(j) + ans2.get(k);
+                        }
+                        else if(input.charAt(i)=='-')
+                            result = ans1.get(j)- ans2.get(k);
+                        else
+                            result = ans1.get(j) * ans2.get(k);
+                        ans.add(result);
+                    }
+                }
+            }
+        }
+        if(ans.size()==0) ans.add(Integer.valueOf(input));
+        return ans;
+    }
+
+    public int Num696countBinarySubstrings(String s) {
+        List<Integer> group = new ArrayList<>();
+        int len = 1;
+        for(int i=1;i<s.length();i++)
+        {
+            if(s.charAt(i)!=s.charAt(i-1))
+            {
+                group.add(len);
+                len = 1;
+                continue;
+            }
+            len++;
+        }
+        group.add(len);
+        int ans = 0;
+        for(int i=1;i<group.size();i++)
+        {
+            ans = ans + Math.min(group.get(i),group.get(i+1));
+        }
+        return ans;
+    }
+
+    public int Num1446maxPower(String s) {
+        int max = 1;
+        int len = 1;
+        for(int i=1;i<s.length();i++)
+        {
+            if(s.charAt(i)!=s.charAt(i-1))
+            {
+                len = 1;
+                max = Math.max(max,len);
+                continue;
+            }
+            len++;
+        }
+        max = Math.max(max,len);
+        return max;
+    }
+
+    public String Num800similarRGB(String color) {
+        String ans = "#";
+        for(int i=1;i<=5;i+=2)
+        {
+            int a1 = Integer.parseInt(color.substring(i,i+2),16);
+            a1 = a1/17 + ((a1%17) > 8? 1:0);
+            ans +=String.format("%02x",17*a1);
+        }
+        return ans;
+    }
+
+    public String Num544findContestMatch(int n) {
+        int level = (int) (Math.log(n)/Math.log(2));
+        List<String> ans = new ArrayList<>();
+        for(int i=1;i<=n/2;i++)
+        {
+            ans.add("(" + i+","+(n+1-i)+")");
+        }
+        return Num544Helper(level-1,ans);
+    }
+
+    public String Num544Helper(int level,List<String> ans)
+    {
+        if(level==0)
+        {
+            String res = ans.get(0);
+            return res;
+        }
+        List<String> rec = new ArrayList<>();
+        for(int i=0;i<ans.size()/2;i++)
+        {
+            rec.add("(" +ans.get(i)+","+ans.get(ans.size()-i-1)+")");
+        }
+        return Num544Helper(level-1,rec);
+    }
+
+    public int Num1100numKLenSubstrNoRepeats(String S, int K) {
+        int num = 0;
+        int[] arr = new int[26];
+        for(int i=0;i<K;i++)
+        {
+            arr[S.charAt(i)-'a']++;
+        }
+
+        for(int i=1;i<S.length()-K+1;i++)
+        {
+            arr[S.charAt(i-1)-'a']--;
+            arr[S.charAt(i+K-1)-'a']++;
+            if(!Num1100Repeated(arr))
+            {
+                num++;
+            }
+        }
+        return num;
+    }
+
+    public boolean Num1100Repeated(int[] arr)
+    {
+        for(int i=0;i<26;i++)
+        {
+            if(arr[i]>=2)
+                return false;
+        }
+        return true;
+    }
+
+    public int[] Num1480runningSum(int[] nums) {
+        for(int i=1;i<nums.length;i++)
+        {
+            nums[i]+=nums[i-1];
+        }
+        return nums;
+    }
+    public boolean Num1433checkIfCanBreak(String s1, String s2) {
+
+    }
+
 
 
 

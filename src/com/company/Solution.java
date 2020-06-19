@@ -5,6 +5,7 @@ import javafx.util.Pair;
 import javax.print.attribute.HashAttributeSet;
 import java.lang.annotation.Target;
 import java.lang.reflect.Array;
+import java.nio.file.StandardWatchEventKinds;
 import java.util.*;
 
 public class Solution {
@@ -6199,8 +6200,502 @@ public class Solution {
         }
         return nums;
     }
-    public boolean Num1433checkIfCanBreak(String s1, String s2) {
 
+    public ListNode Num1474deleteNodes(ListNode head, int m, int n) {
+        ListNode curr = head;
+        while(curr!=null)
+        {
+            int a = m-1;
+            int b = n;
+            while(a>0&&curr!=null)
+            {
+                curr = curr.next;
+                a-=1;
+            }
+            if(curr==null)
+                break;
+            ListNode delete = curr;
+            while(delete.next!=null&&b>0)
+            {
+                delete = delete.next;
+                b--;
+            }
+            curr.next = delete.next;
+            curr = curr.next;
+        }
+        return head;
+    }
+
+    public boolean Num1433checkIfCanBreak(String s1, String s2) {
+        int[] ar1 = new int[26];
+        int[] ar2 = new int[26];
+        for(int i=0;i<s1.length();i++)
+        {
+            ar1[s1.charAt(i)-'a']++;
+            ar2[s2.charAt(i)-'a']++;
+        }
+        int runningsum1 = 0;
+        int runningsum2 = 0;
+        boolean r1_bigger_r2 = true;
+        boolean r2_bigger_r1 = true;
+        for(int i=25;i>=0;i--)
+        {
+            if(ar1[i]!=0)
+            {
+                runningsum1+=ar1[i];
+            }
+            if(ar2[i]!=0)
+            {
+                runningsum2+=ar2[i];
+            }
+            r1_bigger_r2 = r1_bigger_r2 && (runningsum1>=runningsum2);
+            r2_bigger_r1 = r2_bigger_r1 && (runningsum2>=runningsum1);
+            if(!r1_bigger_r2 && !r2_bigger_r1)
+                break;
+        }
+        return r1_bigger_r2 || r2_bigger_r1;
+    }
+
+    public List<List<Integer>> Num336palindromePairs(String[] words) {
+
+    }
+
+    /**
+     * stack way
+     * @param S
+     * @return
+     */
+    public int Num856scoreOfParentheses(String S) {
+        Stack<Integer> stack = new Stack();
+        stack.push(0);
+        for(int i=0;i<S.length();i++)
+        {
+            if(S.charAt(i)=='(')
+                stack.push(0);
+            else
+            {
+                int pre = stack.pop();
+                int left = stack.pop();
+                stack.push(left+Math.max(pre*2,1));
+            }
+        }
+        return stack.pop();
+    }
+
+    /**
+     * another way
+     * @param S
+     * @return
+     */
+    public int Num856AgainscoreOfParentheses(String S) {
+        int ans = 0,bal = 0;
+        for(int i=0;i<S.length();i++)
+        {
+            if(S.charAt(i)=='(')
+            {
+                bal++;
+            }
+            else
+            {
+                bal--;
+                if(S.charAt(i-1)=='(')
+                {
+                    ans += (1* Math.pow(2,bal));
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * heavy way of doing this.two pass and O(n) space.
+     * @param s
+     * @return
+     */
+    public String Num1249minRemoveToMakeValid(String s) {
+        StringBuilder sb = new StringBuilder();
+        int left = 0, right = 0;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.charAt(i)=='(')
+                left++;
+            else if(s.charAt(i)==')')
+            {
+                right++;
+                if(right>left)
+                {
+                    right--;
+                    continue;
+                }
+            }
+            sb.append(s.charAt(i));
+        }
+        if(left==right)
+            return sb.toString();
+        String intermedium = sb.toString();
+        sb.setLength(0);
+        int sleft = 0;
+        for(int i=0;i<intermedium.length();i++)
+        {
+            if(intermedium.charAt(i)=='(')
+            {
+                sleft++;
+                if(sleft>right)
+                {
+                    continue;
+                }
+            }
+            sb.append(intermedium.charAt(i));
+        }
+        return sb.toString();
+    }
+
+    public String Num1249OnePassminRemoveToMakeValid(String s)
+    {
+        int left=0,right=0;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.charAt(i)=='(')
+                left++;
+            else if(s.charAt(i)==')')
+                right++;
+        }
+        int sleft = 0,sright = 0;
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<s.length();i++)
+        {
+            if(s.charAt(i)=='(')
+            {
+                sleft++;
+                if(sleft>right)
+                {
+                    sleft--;
+                    continue;
+                }
+            }
+            else if(s.charAt(i)==')')
+            {
+                sright++;
+                if(sright>sleft)
+                {
+                    sright--;
+                    right--;
+                    continue;
+                }
+            }
+            sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
+
+    public String Num791customSortString(String S, String T) {
+        StringBuilder sb = new StringBuilder();
+        int[] counter = new int[26];
+        for(int i=0;i<T.length();i++)
+        {
+            counter[T.charAt(i)-'a']++;
+        }
+        for(int i=0;i<S.length();i++)
+        {
+            while(counter[S.charAt(i)-'a']!=0)
+            {
+                sb.append(S.charAt(i));
+                counter[S.charAt(i)-'a']--;
+            }
+        }
+        for(int i=0;i<26;i++)
+        {
+            while(counter[i]!=0)
+            {
+                char a = (char)('a' + i);
+                sb.append(a);
+                counter[i]--;
+            }
+        }
+        return sb.toString();
+
+    }
+
+    /**
+     * o(n^2) time and space
+     * @param s
+     * @return
+     */
+    public int Num647countSubstrings(String s) {
+        int length = s.length();
+        boolean[][] dp = new boolean[length][length];
+        int num = 1;
+        for(int i=0;i<length-1;i++)
+        {
+            dp[i][i] = true;
+            num+=1;
+            if(s.charAt(i)==s.charAt(i+1))
+            {
+                dp[i][i+1] = true;
+                num+=1;
+            }
+        }
+        dp[length-1][length-1] = true;
+        for(int k = 2;k<length;k++)
+        {
+            for(int i=0;i<length-k;i++)
+            {
+                int j = i+k;
+                if(dp[i+1][j-1]&&s.charAt(i)==s.charAt(j))
+                {
+                    dp[i][j] = true;
+                    num++;
+                }
+            }
+        }
+        return num;
+    }
+
+    public int Num1347minSteps(String s, String t) {
+        int steps = 0;
+        int[] counter = new int[26];
+        for(int i=0;i<s.length();i++)
+        {
+            counter[s.charAt(i)-'a']++;
+            counter[t.charAt(i)-'a']++;
+        }
+        for(int i=0;i<26;i++)
+        {
+            steps+=Math.abs(counter[i]);
+        }
+        return steps/2;
+    }
+
+    public List<List<String>> NUm1268suggestedProducts(String[] products, String searchWord) {
+        List<List<String>> ans = new ArrayList<>();
+        Arrays.sort(products);
+        for(int i=0;i<searchWord.length();i++)
+        {
+            if(i>0&&ans.get(i-1).size()==0)
+            {
+                ans.add(new ArrayList<>());
+                continue;
+            }
+            List<String> anslist = new ArrayList<>();
+            for(int j=0;j<products.length;j++)
+            {
+                if(products[j].length()<i+1)
+                    continue;
+                if(products[j].substring(0,i+1).equals(searchWord.substring(0,i+1)))
+                {
+                    anslist.add(products[j]);
+                }
+                if(anslist.size()>=3)
+                    break;
+            }
+            ans.add(anslist);
+        }
+        return ans;
+    }
+
+    /**
+     * math problem needs to find the rules and the
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public int Num1247minimumSwap(String s1, String s2) {
+        int x_num = 0, y_num = 0;
+        for(int i = 0; i < s1.length(); i++)
+        {
+            if(s1.charAt(i)=='x'&&s2.charAt(i)=='y')
+                x_num++;
+            if(s2.charAt(i)=='x'&&s1.charAt(i)=='y')
+                y_num++;
+        }
+        if((x_num+y_num)%2!=0)
+            return -1;
+        if(x_num%2==0)
+        {
+            return x_num/2+y_num/2;
+        }
+        return x_num/2+y_num/2+2;
+    }
+
+    public boolean Num1016queryString(String S, int N) {
+        for(int i=1;i<N;i++)
+        {
+            String dec2binary = "";
+            int temp = i;
+            while(temp!=0)
+            {
+                dec2binary=temp%2+dec2binary;
+                temp/=2;
+            }
+            if(!S.contains(dec2binary))
+                return false;
+        }
+        return true;
+    }
+
+    public List<List<String>> Num609findDuplicate(String[] paths) {
+        HashMap<String,List<String>> map = new HashMap<>();
+        for(int i=0;i<paths.length;i++)
+        {
+            String[] files = paths[i].split(" ");
+            for(int j=1;i<files.length;j++)
+            {
+                String content = files[j].substring(files[j].indexOf("(")+1,files[j].indexOf(")"));
+                String filename = files[j].substring(0,files[j].indexOf("("));
+                List<String> a = new LinkedList<>();
+                if(map.containsKey(content))
+                {
+                    a = map.get(content);
+                }
+                a.add(files[0]+'/'+filename);
+                map.put(content,a);
+            }
+        }
+        List<List<String>> ans = new LinkedList<>();
+        for(String key: map.keySet())
+        {
+            if(map.get(key).size()==1)
+                continue;
+            ans.add(map.get(key));
+        }
+        return ans;
+    }
+
+    /**
+     * using prefix and info conpress.
+     * even minus even is even; odd minus odd is odd;
+     * @param s
+     * @return
+     */
+    public int Num1371findTheLongestSubstring(String s) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int state = 0;
+        int length = 0;
+        //watch out for the 0 case.
+        map.put(0,-1);
+        for(int i=0;i<s.length();i++)
+        {
+            char a = s.charAt(i);
+            switch (a)
+            {
+                case 'a':
+                    state ^= 1<<0;
+                    break;
+                case 'e':
+                    state ^= 1<<1;
+                    break;
+                case 'i':
+                    state ^= 1<<2;
+                    break;
+                case 'o':
+                    state ^= 1<<3;
+                    break;
+                case 'u':
+                    state ^= 1<<4;
+                    break;
+            }
+            if(map.containsKey(state))
+            {
+                length = Math.max(length,i-map.get(state));
+            }
+            else
+                map.put(state,i);
+        }
+        return length;
+    }
+
+    /**
+     * sliding window
+     * @param s
+     * @return
+     */
+    public int Num1358numberOfSubstrings(String s) {
+        int[] list = new int[3];
+        int j = 0,total_num = 0;
+        for(int i=0;i<s.length();i++)
+        {
+           list[s.charAt(i)-'a']++;
+           while(list[0]>0&&list[1]>0&&list[2]>0)
+           {
+               total_num+=(s.length()-i);
+               list[s.charAt(j)-'a']--;
+               j++;
+           }
+        }
+        return total_num;
+    }
+
+    /**
+     * can be optimized by binary search
+     * @param customfunction
+     * @param z
+     * @return
+     */
+    public List<List<Integer>> Num1237findSolution(CustomFunction customfunction, int z) {
+        List<List<Integer>> ans = new LinkedList<>();
+        int j_limit = 1000;
+        for(int i=1;i<=1000;i++)
+        {
+            for(int j=1;j<=1000;j++)
+            {
+                if(j>=j_limit)
+                    break;
+                if(customfunction.f(i,j)==z)
+                {
+                    List<Integer> pair = new LinkedList<>();
+                    pair.add(i);
+                    pair.add(j);
+                    ans.add(pair);
+                    j_limit = j;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public List<String> Num1441buildArray(int[] target, int n) {
+        List<String> ans = new LinkedList<>();
+        int index = 0;
+        int max = target[target.length-1];
+        for(int i=1;i<=max;i++)
+        {
+            if(target[index]==i)
+            {
+                ans.add("Push");
+                index++;
+                continue;
+            }
+            else
+            {
+                ans.add("Push");
+                ans.add("Pop");
+            }
+        }
+        return ans;
+    }
+
+    public List<String> Num1233removeSubfolders(String[] folder) {
+        List<String> ans = new LinkedList<>();
+        Arrays.sort(folder);
+        HashMap<String,Integer> map = new HashMap<>();
+        for(int i=0;i<folder.length;i++)
+        {
+            String [] temp = folder[i].split("/");
+            String sb = "";
+            boolean check = false;
+            for(int j = 0; j < temp.length; ++j){
+                sb = sb + "/"+ temp[j];
+                if(map.containsKey(sb)) {
+                    check = true;
+                    break;
+                }
+            }
+            if(!check){
+                map.put(sb, 1);
+                ans.add(folder[i]);
+            }
+        }
+        return ans;
     }
 
 

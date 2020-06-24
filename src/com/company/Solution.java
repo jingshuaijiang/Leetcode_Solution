@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Array;
 import java.nio.file.StandardWatchEventKinds;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 public class Solution {
 
@@ -6698,6 +6699,483 @@ public class Solution {
         return ans;
     }
 
+    /**
+     * 6.20 warm up
+     * @param words
+     * @return
+     */
+    public List<String> Num1408stringMatching(String[] words) {
+        HashSet<String> result = new HashSet<String>();
+        for(int i= 0; i< words.length; i++)
+        {
+            for(int j = i+1; j< words.length;j++)
+            {
+                if(words[j].contains(words[i]))
+                {
+                    result.add(words[i]);
+                }
+                if(words[i].contains(words[j]))
+                {
+                    result.add(words[j]);
+                }
+            }
+        }
+        return new ArrayList<String>(result);
+    }
+
+    /**
+     * stupid question
+     * @param s
+     * @return
+     */
+    public int Num1332removePalindromeSub(String s) {
+        if(s.length()==0)
+            return 0;
+        if(Num1332Palindrome(s))
+        {
+            return 1;
+        }
+        return 2;
+    }
+
+    public boolean Num1332Palindrome(String s)
+    {
+        int i=0,j = s.length()-1;
+        while(i<=j)
+        {
+            if(s.charAt(i)!=s.charAt(j))
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    public int Num539findMinDifference(List<String> timePoints) {
+        int[] counter = new int[1440];
+        for(int i=0;i<timePoints.size();i++)
+        {
+            String[] times = timePoints.get(i).split(":");
+            int hour  = Integer.parseInt(times[0])*60+Integer.parseInt(times[1]);
+            counter[hour]++;
+            if(counter[hour]>1)
+                return 0;
+        }
+        int front = -1,min = Integer.MAX_VALUE,frontiest = 0;
+        for(int i=0;i<1440;i++)
+        {
+            if(counter[i]!=0)
+            {
+                if(front!=-1)
+                {
+                    min = Math.min(min,i-front);
+                }
+                else
+                {
+                    frontiest = i;
+                }
+                front = i;
+            }
+        }
+        min = Math.min(min,frontiest+1440-front);
+        return min;
+    }
+
+    public int Num1062longestRepeatingSubstring(String S) {
+        int n = S.length();
+        int left = 1,right = n;
+        int L;
+        while(left<=right)
+        {
+            L = left + (right-left)/2;
+            if(Num1062Helper(L,n,S))
+            {
+                left = L+1;
+            }
+            right = L-1;
+        }
+        return left-1;
+    }
+
+    public boolean Num1062Helper(int L, int n,String S)
+    {
+        HashSet<String> set = new HashSet<>();
+        String temp;
+        for(int start = 0;start<n-L+1;start++)
+        {
+            temp = S.substring(start,start+L);
+            if(set.contains(temp))
+                return true;
+            set.add(temp);
+        }
+        return false;
+    }
+
+    public List<String> Num1324printVertically(String s) {
+        List<String> ans = new ArrayList<>();
+        String[] words = s.split(" ");
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<words.length;i++)
+        {
+            max = Math.max(max,words[i].length());
+        }
+        for(int i=0;i<max;i++)
+        {
+            String vword = "";
+            for(int j = 0;j<words.length;j++)
+            {
+                if(i>words[j].length()-1)
+                {
+                    vword+=" ";
+                    continue;
+                }
+                vword+=words[j].charAt(i);
+            }
+            vword = Num1324trim(vword);
+            ans.add(vword);
+        }
+        return ans;
+    }
+
+    public String Num1324trim(String vword)
+    {
+        int i = vword.length()-1;
+        while(i>=0)
+        {
+            if(vword.charAt(i)==' ')
+                i--;
+            else
+                break;
+        }
+        return vword.substring(0,i+1);
+    }
+
+    public List<String> Num187findRepeatedDnaSequences(String s) {
+        int L = 10, n = s.length();
+        HashSet<String> seen = new HashSet(), output = new HashSet();
+        for (int start = 0; start < n - L + 1; ++start) {
+            String tmp = s.substring(start, start + L);
+            if (seen.contains(tmp)) output.add(tmp);
+            seen.add(tmp);
+        }
+        return new ArrayList<String>(output);
+    }
+
+    public int Num1486xorOperation(int n, int start) {
+        int res = start;
+        for (int i=1; i<n; i++){
+            res = res ^ (start + 2 * i);
+        }
+        return res;
+    }
+
+    public int Num115numDistinct(String s, String t) {
+
+    }
+
+    public List<List<Integer>> Num102levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if(root==null)
+            return ans;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            List<Integer> levellist = new LinkedList<>();
+            int length = queue.size();
+            for(int i=0;i<length;i++)
+            {
+                TreeNode node = queue.poll();
+                if(node.left!=null)
+                    queue.add(node.left);
+                if(node.right!=null)
+                    queue.add(node.right);
+                levellist.add(node.val);
+            }
+            ans.add(levellist);
+        }
+        return ans;
+    }
+
+    public int Num298longestConsecutive(TreeNode root) {
+        int[] max =new int[1];
+        Num298longestConsecutiveHelper(root,1,max);
+        return max[0];
+    }
+
+    public void Num298longestConsecutiveHelper(TreeNode node,int length,int[] max)
+    {
+        if(node==null)
+            return;
+        max[0] = Math.max(max[0],length);
+        if(node.left==null||node.left.val!=node.val+1)
+        {
+            Num298longestConsecutiveHelper(node.left,1,max);
+        }
+        else
+            Num298longestConsecutiveHelper(node.left,length+1,max);
+        if(node.right==null||node.right.val!=node.val+1)
+        {
+            Num298longestConsecutiveHelper(node.right,1,max);
+        }
+        else
+            Num298longestConsecutiveHelper(node.right,length+1,max);
+    }
+
+    public int Num129sumNumbers(TreeNode root) {
+        int[] sum = new int[1];
+        int value = 0;
+        Num129sumNumbersHelper(root,sum,value);
+        return sum[0];
+    }
+
+    public void Num129sumNumbersHelper(TreeNode root,int[] sum,int value)
+    {
+        if(root==null)
+            return;
+        value = value*10+root.val;
+        if(root.left==null&&root.right==null)
+        {
+            sum[0]+=value;
+        }
+        if(root.left!=null)
+        {
+            Num129sumNumbersHelper(root.left,sum,value);
+        }
+        if(root.right!=null)
+        {
+            Num129sumNumbersHelper(root.right,sum,value);
+        }
+    }
+
+    public List<List<Integer>> Num113pathSum(TreeNode root, int sum) {
+        List<List<Integer>> ans = new LinkedList<>();
+        List<Integer> pathlist = new LinkedList<>();
+        Num113pathSumHelper(root,ans,sum,pathlist);
+        return ans;
+    }
+
+    public void Num113pathSumHelper(TreeNode node,List<List<Integer>>ans,int sum,List<Integer> pathlist)
+    {
+        if(node==null)
+            return;
+        sum-=node.val;
+        pathlist.add(node.val);
+        if(sum==0&&node.left==null&&node.right==null)
+        {
+            ans.add(new LinkedList<>(pathlist));
+        }
+        if(node.left!=null)
+        {
+            Num113pathSumHelper(node.left,ans,sum,pathlist);
+            pathlist.remove(pathlist.size()-1);
+        }
+        if(node.right!=null)
+        {
+            Num113pathSumHelper(node.right,ans,sum,pathlist);
+            pathlist.remove(pathlist.size()-1);
+        }
+    }
+
+    public int Num250countUnivalSubtrees(TreeNode root) {
+        int[] nums = new int[1];
+        Num250countHelper(root,nums,root.val);
+        return nums[0];
+    }
+
+    public boolean Num250countHelper(TreeNode node,int[] nums,int value)
+    {
+        if(node==null)
+            return true;
+
+        boolean left = Num250countHelper(node.left,nums,node.val);
+        boolean right = Num250countHelper(node.right,nums,node.val);
+        if(!left||!right)
+            return false;
+        if(left&&right)
+        {
+            nums[0]++;
+        }
+        if(node.val!=value)
+            return false;
+        return true;
+    }
+
+    public int Num124maxPathSum(TreeNode root) {
+        int[] max = new int[1];
+        max[0]  = Integer.MIN_VALUE;
+        Num124Helper(root,max);
+        return max[0];
+    }
+
+    public int Num124Helper(TreeNode node,int[] max)
+    {
+        if(node==null)
+            return 0;
+        int left = Math.max(Num124Helper(node.left,max),0);
+        int right = Math.max(Num124Helper(node.right,max),0);
+        max[0] = Math.max(max[0],left+right+node.val);
+        return Math.max(left,right)+node.val;
+    }
+
+    public int Num883projectionArea(int[][] grid) {
+        int a = 0,b=0,c=0;
+        for(int i=0;i<grid.length;i++)
+        {
+            int max = 0;
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]!=0)
+                    a++;
+                if(grid[i][j]>max)
+                    max = grid[i][j];
+            }
+            b+=max;
+        }
+        for(int i=0;i<grid[0].length;i++)
+        {
+            int max = 0;
+            for(int j=0;j<grid.length;j++)
+            {
+                if(grid[j][i]>max)
+                    max = grid[j][i];
+            }
+            c+=max;
+        }
+        return a+b+c;
+    }
+
+    public boolean Num98helper(TreeNode node, Integer lower, Integer upper) {
+        if (node == null) return true;
+
+        int val = node.val;
+        if (lower != null && val <= lower) return false;
+        if (upper != null && val >= upper) return false;
+
+        if (! Num98helper(node.right, val, upper)) return false;
+        if (! Num98helper(node.left, lower, val)) return false;
+        return true;
+    }
+
+    /**
+     * recursive
+     * @param root
+     * @return
+     */
+    public boolean Num98isValidBST(TreeNode root) {
+        return Num98helper(root, null, null);
+    }
+
+    /**
+     * iterative
+     * @param root
+     * @return
+     */
+    public boolean Num98IterativeisValidBST(TreeNode root) {
+        Queue<TreeNode> stack = new LinkedList<>();
+        LinkedList<Integer> uppers = new LinkedList<>(), lowers = new LinkedList<>();
+        Integer lower,upper;
+        stack.add(root);
+        uppers.add(null);
+        lowers.add(null);
+        while(!stack.isEmpty())
+        {
+            root = stack.poll();
+            lower = lowers.poll();
+            upper = uppers.poll();
+            if(root==null)
+                continue;
+            if(lower!=null&&root.val<=lower)
+                return false;
+            if(upper!=null&&root.val>=upper)
+                return false;
+            stack.add(root.right);
+            uppers.add(upper);
+            lowers.add(root.val);
+            stack.add(root.right);
+            lowers.add(lower);
+            uppers.add(root.val);
+        }
+        return true;
+    }
+
+    public int Num1302deepestLeavesSum(TreeNode root) {
+        int[] sum = new int[2];
+        Num1302Helper(root,sum,0);
+        return sum[0];
+    }
+
+    public void Num1302Helper(TreeNode node,int[] sum,int depth)
+    {
+        if(node==null)
+            return;
+        if(depth>sum[1])
+        {
+            sum[0] = node.val;
+            sum[1] = depth;
+        }
+        else if(depth==sum[1])
+        {
+            sum[0]+=node.val;
+        }
+        Num1302Helper(node.left,sum,depth+1);
+        Num1302Helper(node.right,sum,depth+1);
+    }
+
+    public TreeNode Num654constructMaximumBinaryTree(int[] nums) {
+        return Num654Helper(nums,0,nums.length-1);
+    }
+
+    public TreeNode Num654Helper(int[] nums,int left,int right)
+    {
+        if(left>right)
+            return null;
+        int max = Integer.MIN_VALUE;
+        int index = 0;
+        for(int i=left;i<=right;i++)
+        {
+            if(max<nums[i])
+            {
+                max = nums[i];
+                index = i;
+            }
+        }
+        TreeNode node = new TreeNode(nums[index]);
+        node.left = Num654Helper(nums,left,index-1);
+        node.right = Num654Helper(nums,index+1,right);
+        return node;
+    }
+
+    public final TreeNode Num1379getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
+        Queue<TreeNode> origin = new LinkedList<>();
+        Queue<TreeNode> clone = new LinkedList<>();
+        origin.add(original);
+        clone.add(cloned);
+        while(!origin.isEmpty())
+        {
+            TreeNode ori = origin.poll();
+            TreeNode clo = clone.poll();
+            if(ori==target)
+            {
+                return clo;
+            }
+            if(ori.left!=null)
+            {
+                origin.add(ori.left);
+                clone.add(clo.left);
+            }
+            if(ori.right!=null)
+            {
+                origin.add(ori.right);
+                clone.add(clo.right);
+            }
+        }
+        return null;
+    }
+
+    public int Num1315sumEvenGrandparent(TreeNode root) {
+
+    }
 
 
 

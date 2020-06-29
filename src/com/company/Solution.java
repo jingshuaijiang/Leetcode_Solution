@@ -1,5 +1,6 @@
 package com.company;
 
+import com.sun.source.tree.Tree;
 import javafx.util.Pair;
 
 import javax.print.attribute.HashAttributeSet;
@@ -7174,8 +7175,304 @@ public class Solution {
     }
 
     public int Num1315sumEvenGrandparent(TreeNode root) {
+        int[] sum = new int[1];
+        Num1315Helper(root,0,0,sum);
+        return sum[0];
+    }
+
+    public void Num1315Helper(TreeNode node,int parentvalue,int grandparentvalue,int[] sum)
+    {
+        if(node==null)
+            return;
+        if(grandparentvalue%2==0&&grandparentvalue!=0)
+            sum[0]+=node.val;
+        Num1315Helper(node.left,node.val,parentvalue,sum);
+        Num1315Helper(node.right,node.val,parentvalue,sum);
+    }
+
+    boolean pfound=false;
+    boolean qfound = false;
+    public TreeNode Num236lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode ans = null;
+        List<TreeNode> pathp = new LinkedList<>();
+        List<TreeNode> pathq = new LinkedList<>();
+        Num236helper(root,p,q,pathp,pathq);
+        int length = Math.min(pathp.size(),pathq.size());
+        int i = 0;
+        for(;i<length;i++)
+        {
+            if(pathp.get(i)==pathq.get(i))
+                continue;
+            else
+                break;
+        }
+        if(i==length)
+            return pathp.get(length-1);
+        return pathp.get(i-1);
+    }
+
+    public void Num236helper(TreeNode node,TreeNode p,TreeNode q,List<TreeNode> pathp,List<TreeNode> pathq)
+    {
+        if(node==null)
+            return;
+        if(!pfound)
+            pathp.add(node);
+        if(!qfound)
+            pathq.add(node);
+        if(node.val==p.val)
+        {
+            pfound = true;
+        }
+        if(node.val==q.val)
+        {
+            qfound = true;
+        }
+        Num236helper(node.left,p,q,pathp,pathq);
+        Num236helper(node.right,p,q,pathp,pathq);
+        if(!pfound)
+            pathp.remove(pathp.size()-1);
+        if(!qfound)
+            pathq.remove(pathq.size()-1);
+    }
+
+    public TreeNode Num701insertIntoBST(TreeNode root, int val) {
+        TreeNode node = root;
+        if(root==null)
+        {
+            root = new TreeNode(val);
+            return root;
+        }
+        Num701Helper(node,val);
+        return root;
+    }
+
+    public void Num701Helper(TreeNode node,int val)
+    {
+        if(node.right==null&&node.val<val)
+        {
+            TreeNode newnode = new TreeNode(val);
+            node.right = newnode;
+            return;
+        }
+        if(node.left==null&&node.val>val)
+        {
+            TreeNode newnode = new TreeNode(val);
+            node.left = newnode;
+            return;
+        }
+        if(val>node.val)
+            Num701Helper(node.right,val);
+        else if(val<node.val)
+            Num701Helper(node.left,val);
+    }
+
+    public TreeNode Num109sortedListToBST(ListNode head) {
 
     }
+
+    public TreeNode Num1008bstFromPreorder(int[] preorder) {
+        TreeNode root = Num1008helper(preorder,0,preorder.length-1);
+        return root;
+    }
+
+    public TreeNode Num1008helper(int[] preorder,int left,int right)
+    {
+        if(left==right)
+        {
+            TreeNode node = new TreeNode(preorder[left]);
+            return node;
+        }
+        TreeNode node = new TreeNode(preorder[left]);
+        int i=left;
+        for(;i<=right;i++)
+        {
+            if(preorder[i]>node.val)
+                break;
+        }
+        if(i>right)
+            node.right = null;
+        else
+            node.right = Num1008helper(preorder,i,right);
+
+        if(preorder[left+1]>preorder[left])
+            node.left = null;
+        else
+            node.left = Num1008helper(preorder,left+1,i-1);
+        return node;
+    }
+
+    /**
+     * needs to be done again
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public List<Integer> Num1305getAllElements(TreeNode root1, TreeNode root2) {
+        List<Integer> ans = new LinkedList<>();
+        ArrayDeque<TreeNode> stack1 = new ArrayDeque(), stack2 = new ArrayDeque();
+        while(root1!=null||root2!=null||!stack1.isEmpty()||!stack2.isEmpty())
+        {
+            while(root1!=null)
+            {
+                stack1.push(root1);
+                root1 = root1.left;
+            }
+            while(root2!=null)
+            {
+                stack2.push(root2);
+                root2 = root2.left;
+            }
+            if(stack2.isEmpty()||!stack1.isEmpty()&&stack1.getFirst().val<=stack2.getFirst().val)
+            {
+                root1 = stack1.pop();
+                ans.add(root1.val);
+                root1 = root1.right;
+            }
+            else
+            {
+                root2 = stack2.poll();
+                ans.add(root2.val);
+                root2 = root2.right;
+            }
+        }
+        return ans;
+    }
+
+    HashMap<Integer,List<TreeNode>> nodemap = new HashMap<>();
+    public List<TreeNode> Num894allPossibleFBT(int N) {
+        List<TreeNode> ans = new LinkedList<>();
+        TreeNode node = new TreeNode(0);
+        N-=1;
+        if(N==0)
+            ans.add(node);
+        for(int i=1;i<N;i+=2)
+        {
+            List<TreeNode> leftlist = null;
+            if(!nodemap.containsKey(i))
+            {
+                leftlist = Num894allPossibleFBT(i);
+            }
+            else
+                leftlist = nodemap.get(i);
+            List<TreeNode> rightlist = null;
+            if(!nodemap.containsKey(N-i))
+            {
+                rightlist = Num894allPossibleFBT(N-i);
+            }
+            else
+                rightlist = nodemap.get(N-i);
+            for(int j=0;j<leftlist.size();j++)
+            {
+                for(int k=0;k<rightlist.size();k++)
+                {
+                    node.left = leftlist.get(j);
+                    node.right = rightlist.get(k);
+                    ans.add(cloneTree(node));
+                }
+            }
+        }
+        nodemap.put(N+1,ans);
+        return ans;
+    }
+
+    public static TreeNode cloneTree(TreeNode root){
+        TreeNode node=null;
+        if(root==null) return null;
+        node=new TreeNode(root.val);
+        node.left=cloneTree(root.left);
+        node.right=cloneTree(root.right);
+        return node;
+    }
+
+    public TreeNode Num814pruneTree(TreeNode root) {
+        boolean rootall = Num814Helper(root);
+        if(rootall)
+            root = null;
+        return root;
+    }
+
+    public boolean Num814Helper(TreeNode node)
+    {
+        if(node==null)
+            return true;
+        boolean left = Num814Helper(node.left);
+        boolean right = Num814Helper(node.right);
+        if(left)
+            node.left = null;
+        if(right)
+            node.right = null;
+        if(!left||!right)
+            return false;
+        return node.val == 0;
+    }
+
+    public List<Integer> pathInZigZagTree(int label) {
+        label+=1;
+        if(label==2)
+        {
+            List<Integer> ans = new LinkedList<>();
+            ans.add(1);
+            return ans;
+        }
+        int depth = (int) Math.ceil(Math.log(label)/Math.log(2));
+        double nums = Math.pow(2,depth-1);
+        label-=1;
+        double a = label - nums+1;
+        int b = (int)Math.ceil(a/2);
+        int aaaa;
+        aaaa = (int) nums-b;
+        List<Integer> last = pathInZigZagTree(aaaa);
+        last.add(label);
+        return last;
+    }
+
+    public TreeNode Num889constructFromPrePost(int[] pre, int[] post) {
+        TreeNode root = Num889helper(pre,post,0,pre.length-1, 0,post.length-1);
+        return root;
+    }
+
+    public TreeNode Num889helper(int[] pre,int[] post,int preleft,int preright,int postleft,int postright)
+    {
+        if(preleft>preright||postleft>postright)
+            return null;
+        TreeNode node = new TreeNode(pre[preleft]);
+        if(preleft==preright)
+        {
+            return node;
+        }
+        int i=postleft;
+        for(;i<=postright;i++)
+        {
+            if(post[i]==pre[preleft+1])
+                break;
+        }
+        int length = i-postleft+1;
+        node.left = Num889helper(pre,post,preleft+1,preleft+length,postleft,postleft+length-1);
+        node.right = Num889helper(pre,post,preleft+length+1,preright,postleft+length,postright);
+        return node;
+    }
+
+    public Node Num1490cloneTree(Node root) {
+        if(root==null)
+            return null;
+        Node node = new Node(root.val);
+        for(int i=0;i<root.children.size();i++)
+        {
+            node.children.add(Num1490cloneTree(root.children.get(i)));
+        }
+        return node;
+    }
+
+    public int Num1130mctFromLeafValues(int[] arr) {
+        
+    }
+
+
+
+
+
+
+
 
 
 

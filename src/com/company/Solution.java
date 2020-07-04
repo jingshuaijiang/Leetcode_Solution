@@ -7464,7 +7464,595 @@ public class Solution {
     }
 
     public int Num1130mctFromLeafValues(int[] arr) {
-        
+        int [][] max = new int[arr.length][arr.length], dp = new int[arr.length][arr.length];
+        for(int i=0;i<arr.length;i++)
+        {
+            int max1 = 0;
+            dp[i][i] = 0;
+            for(int j=i;j<arr.length;j++)
+            {
+                max[i][j] = Math.max(max1,arr[j]);
+                if(j==i+1)
+                {
+                    dp[i][j] = arr[i]*arr[j];
+                }
+            }
+        }
+        for (int i = 0; i < arr.length; i++)
+        {
+            for (int j = 0; j < arr.length; j++)
+            {
+                dp[i][j] = Integer.MAX_VALUE;
+            }
+        }
+
+        for(int L = 2;L<arr.length;L++)
+        {
+            for(int i=0;i<arr.length-L;i++)
+            {
+                for(int j=i;j<i+L;j++)
+                {
+                    dp[i][i+L] = Math.min(dp[i][i+L],dp[i][j]+dp[j+1][i+L]+max[i][j]*max[j+1][i+L]);
+                }
+            }
+        }
+        return dp[0][arr.length-1];
+    }
+
+    public TreeNode Num1038bstToGst(TreeNode root) {
+        int[] sum = new int[1];
+        Num1038Helper(root,sum);
+        return root;
+    }
+
+    public void Num1038Helper(TreeNode node,int[] sum)
+    {
+        if(node==null)
+            return;
+        Num1038Helper(node.right,sum);
+        sum[0]+=node.val;
+        node.val = sum[0];
+        Num1038Helper(node.left,sum);
+    }
+
+    public TreeNode Num1325removeLeafNodes(TreeNode root, int target) {
+        if(root==null)
+            return root;
+        root.left = Num1325removeLeafNodes(root.left,target);
+        root.right = Num1325removeLeafNodes(root.right,target);
+        if(root.left==null&&root.right==null&&root.val==target)
+            return null;
+        return root;
+    }
+
+    public int Num979distributeCoins(TreeNode root) {
+        int[] ans = new int[1];
+    Num979dfs(root,ans);
+        return ans[0];
+}
+
+    public int Num979dfs(TreeNode node,int[] ans) {
+        if (node == null) return 0;
+        int L = Num979dfs(node.left,ans);
+        int R = Num979dfs(node.right,ans);
+        ans[0] += Math.abs(L) + Math.abs(R);
+        return node.val + L + R - 1;
+    }
+
+    /**
+     * needs to be done again.
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> Num46permute(int[] nums) {
+        List<List<Integer>> ans = new LinkedList<>();
+        ArrayList<Integer> output = new ArrayList<>();
+        int[] visited = new int[nums.length];
+        Num46Helper(nums,ans,output,visited);
+        return ans;
+    }
+
+    public void Num46Helper(int[] nums,List<List<Integer>> ans,ArrayList<Integer> output,int[] visited)
+    {
+        if(output.size()==nums.length)
+        {
+            ans.add(new ArrayList<>(output));
+            return;
+        }
+        for(int i=0;i<nums.length;i++)
+        {
+            if(visited[i]==0)
+            {
+                output.add(nums[i]);
+                visited[i]=1;
+                Num46Helper(nums,ans,output,visited);
+                visited[i] = 0;
+                output.remove(output.size()-1);
+            }
+        }
+    }
+
+    public List<List<Integer>> Num47permuteUnique(int[] nums) {
+        List<List<Integer>> ans = new LinkedList<>();
+        ArrayList<Integer> output = new ArrayList<>();
+        Arrays.sort(nums);
+        boolean[] visited = new boolean[nums.length];
+        Num47Helper(nums,ans,output,visited);
+        return ans;
+    }
+
+    public void Num47Helper(int[] nums,List<List<Integer>> ans,ArrayList<Integer> output,boolean[] visited)
+    {
+        if(output.size()==nums.length)
+        {
+            ans.add(new ArrayList<>(output));
+            return;
+        }
+        for(int i=0;i<nums.length;i++)
+        {
+            if(i>0&&nums[i-1]==nums[i]&&!visited[i])
+            if(!visited[i])
+            {
+                output.add(nums[i]);
+                visited[i]=true;
+                Num47Helper(nums,ans,output,visited);
+                visited[i] = false;
+                output.remove(output.size()-1);
+            }
+        }
+    }
+
+    /**
+     * some extention of problem 46 and 47. Also belonging to the backtrack techniques
+     * needs to be done again
+     * @param tiles
+     * @return
+     */
+    public int Num1079numTilePossibilities(String tiles) {
+        int[] counter = new int[26];
+        int[] sum = new int[1];
+        for(int i=0;i<tiles.length();i++)
+        {
+            counter[tiles.charAt(i)-'A']++;
+        }
+        Num1079Helper(counter,sum);
+        return sum[0];
+    }
+
+    public void Num1079Helper(int[] counter,int[] sum)
+    {
+        for(int i=0;i<counter.length;i++)
+        {
+            if(counter[i]!=0)
+            {
+                counter[i]-=1;
+                sum[0]+=1;
+                Num1079Helper(counter,sum);
+                counter[i]+=1;
+            }
+        }
+    }
+
+    public int Num1448goodNodes(TreeNode root) {
+        int[] sum = new int[1];
+        if(root==null)
+            return 0;
+        Num1448Helper(root,sum,root.val);
+        return sum[0];
+    }
+
+    public void Num1448Helper(TreeNode node, int[] sum, int maxval)
+    {
+        if(node==null)
+            return;
+        if(maxval<=node.val)
+            sum[0]+=1;
+        maxval = Math.max(maxval,node.val);
+        Num1448Helper(node.left,sum,maxval);
+        Num1448Helper(node.right,sum,maxval);
+    }
+
+    public List<TreeNode> Num1110delNodes(TreeNode root, int[] to_delete) {
+        List<TreeNode> ans = new LinkedList<>();
+        boolean[] found = new boolean[to_delete.length];
+        if(root==null)
+            return ans;
+        boolean roo = false;
+        Num1110helper(root,ans,to_delete,found,null,"");
+        for(int i=0;i<to_delete.length;i++)
+        {
+            if(to_delete[i]==root.val)
+                roo = true;
+        }
+        if(!roo)
+            ans.add(root);
+        return ans;
+    }
+
+    public void Num1110helper(TreeNode node, List<TreeNode> ans, int[] to_delete, boolean[] found,TreeNode p,String direction)
+    {
+        if(node==null)
+            return;
+        Num1110helper(node.left,ans,to_delete,found,node,"left");
+        Num1110helper(node.right,ans,to_delete,found,node,"right");
+        for(int i=0;i<to_delete.length;i++)
+        {
+            if(found[i])
+                continue;
+            if(node.val==to_delete[i])
+            {
+                found[i] = true;
+                if(node.left!=null)
+                    ans.add(node.left);
+                if(node.right!=null)
+                    ans.add(node.right);
+                if(direction.equals("left"))
+                    p.left = null;
+                else if(direction.equals("right"))
+                    p.right = null;
+                break;
+            }
+        }
+    }
+
+    public int Num1026maxAncestorDiff(TreeNode root) {
+        int[] diff = new int[1];
+        Num1026Helper(root,diff,root.val,root.val);
+        return diff[0];
+    }
+
+    public void Num1026Helper(TreeNode node,int[] diff,int min,int max)
+    {
+        if(node==null)
+            return;
+        diff[0] = Math.max(diff[0],Math.max(Math.abs(node.val-max),Math.abs(node.val-min)));
+        max = Math.max(max,node.val);
+        min = Math.min(min,node.val);
+        Num1026Helper(node.left,diff,min,max);
+        Num1026Helper(node.right,diff,min,max);
+    }
+
+    public List<List<Integer>> Num429levelOrder(Node root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if(root==null)
+            return ans;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            int length = queue.size();
+            List<Integer> levellist = new LinkedList<>();
+            for(int i=0;i<length;i++)
+            {
+                Node node = queue.poll();
+                levellist.add(node.val);
+                for(Node child: node.children)
+                {
+                    queue.add(child);
+                }
+            }
+            ans.add(levellist);
+        }
+        return ans;
+    }
+
+    public boolean Num951flipEquiv(TreeNode root1, TreeNode root2) {
+        if(root1==root2)
+            return true;
+        if(root1==null||root2==null||root1.val!=root2.val)
+            return false;
+        return (Num951flipEquiv(root1.left, root2.left) && Num951flipEquiv(root1.right, root2.right) ||
+                Num951flipEquiv(root1.left, root2.right) && Num951flipEquiv(root1.right, root2.left));
+    }
+
+    public List<Integer> Num515largestValues(TreeNode root) {
+        List<Integer> ans = new LinkedList<>();
+        if(root==null)
+            return ans;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            int length = queue.size();
+            int max = Integer.MIN_VALUE;
+            for(int i=0;i<length;i++)
+            {
+                TreeNode node = queue.poll();
+                max = Math.max(max,node.val);
+                if(node.left!=null)
+                    queue.add(node.left);
+                if(node.right!=null)
+                    queue.add(node.right);
+            }
+            ans.add(max);
+        }
+        return ans;
+    }
+
+    public int Num513findBottomLeftValue(TreeNode root) {
+        int[] nums = new int[2];
+        nums[1] = -1;
+        Num513Helper(root,0,nums);
+        return nums[0];
+    }
+
+    public void Num513Helper(TreeNode node,int depth,int[] nums)
+    {
+        if(node==null)
+            return;
+        if(depth>nums[1])
+        {
+            nums[0] = node.val;
+            nums[1] = depth;
+        }
+        Num513Helper(node.left,depth+1,nums);
+        Num513Helper(node.right,depth+1,nums);
+    }
+
+
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+
+    }
+
+    public TreeNode Num1123lcaDeepestLeaves(TreeNode root) {
+        int[] maxdepth = new int[2];
+        TreeNode ans = null;
+        Num1123DepthHelper(root,maxdepth,0);
+        Num1123LCAHelper(root,maxdepth,0,ans);
+        return ans;
+    }
+
+    public int Num1123LCAHelper(TreeNode node,int[] maxdepth,int depth,TreeNode ans)
+    {
+        if(node==null)
+            return 0;
+        int left = Num1123LCAHelper(node.left,maxdepth,depth+1,ans);
+        int right = Num1123LCAHelper(node.right,maxdepth,depth+1,ans);
+        int sum = left+right;
+        if(depth == maxdepth[0])
+            sum+=1;
+        if(sum==maxdepth[1]&&ans==null)
+            ans = node;
+        return sum;
+    }
+
+    public void Num1123DepthHelper(TreeNode root,int[] maxdepth,int depth)
+    {
+        if(root==null)
+            return;
+        if(depth>maxdepth[0])
+        {
+            maxdepth[0] = depth;
+            maxdepth[1] = 1;
+        }
+        if(depth == maxdepth[0])
+            maxdepth[1]++;
+        Num1123DepthHelper(root.left,maxdepth,depth);
+        Num1123DepthHelper(root.right,maxdepth,depth);
+    }
+
+    public int Num222countNodes(TreeNode root) {
+        if(root==null)
+            return 0;
+        int depth = Num222depthhelper(root,0);
+        if(depth==0)
+            return 1;
+        int left = 1;
+        int right = (int)Math.pow(2,depth)-1;
+        int pivot;
+        while(left<=right)
+        {
+            pivot = left+(right-left)/2;
+            if(Num222existHelper(pivot,depth,root))
+                left = pivot+1;
+            else right = pivot-1;
+        }
+        return (int)Math.pow(2,depth)-1+left;
+    }
+
+    public boolean Num222existHelper(int pivot,int depth,TreeNode root)
+    {
+        int left = 0, right = (int)Math.pow(2,depth)-1;
+        int pi;
+        for(int i=0;i<depth;i++)
+        {
+            pi = left + (right-left)/2;
+            if(pi>=pivot)
+            {
+                root = root.left;
+                right = pi;
+            }
+            else
+            {
+                root = root.right;
+                left = pi+1;
+            }
+        }
+        return root!=null;
+    }
+
+
+    public int Num222depthhelper(TreeNode node,int dep)
+    {
+        int depth = 0;
+        while(node.left!=null)
+        {
+            node = node.left;
+            dep++;
+        }
+        depth = dep;
+        return depth;
+    }
+
+    /**
+     * look like lowest common ancestor
+     * @param root
+     * @return
+     */
+    TreeNode Num865ans;
+    int Num865max = 0;
+    public TreeNode Num865subtreeWithAllDeepest(TreeNode root) {
+        if(root==null)
+            return root;
+        Num865helper(root,0);
+        return Num865ans;
+    }
+
+    public int Num865helper(TreeNode node,int depth)
+    {
+        if(node==null)
+            return depth;
+        int left = Num865helper(node.right,depth+1);
+        int right = Num865helper(node.left,depth+1);
+        if(left==right&&Num865max<=left)
+        {
+            Num865max = left;
+            Num865ans = node;
+        }
+        return Math.max(left,right);
+    }
+
+    public boolean Num255verifyPreorder(int[] preorder) {
+        return Num255verifyPreorderHelper(preorder,0,preorder.length-1);
+    }
+
+    public boolean Num255verifyPreorderHelper(int[] preorder,int left,int right)
+    {
+        if(left>=right)
+            return true;
+        int index = left;
+        for(;index<=right;index++)
+        {
+            if(preorder[index]>preorder[left])
+                break;
+        }
+        for(int i = index;i<=right;i++)
+        {
+            if(preorder[i]<preorder[left])
+                return false;
+        }
+        boolean leftBST = Num255verifyPreorderHelper(preorder,left+1,index-1);
+        boolean rightBST = Num255verifyPreorderHelper(preorder,index,right);
+        return leftBST&&rightBST;
+    }
+
+    public double Num1120maximumAverageSubtree(TreeNode root) {
+        double[] ans = new double[1];
+        Num1120Helper(root,ans);
+        return ans[0];
+    }
+
+    public int[] Num1120Helper(TreeNode node,double[] ans)
+    {
+        if(node==null)
+            return new int[2];
+        int[] left = Num1120Helper(node.left,ans);
+        int[] right = Num1120Helper(node.right,ans);
+        int[] returnlist = new int[2];
+        int sum = left[0]+right[0];
+        int nums = left[1]+right[1];
+        returnlist[0] = sum+node.val;
+        returnlist[1] = nums+1;
+        double curr = (double)returnlist[0]/returnlist[1];
+        ans[0] = Math.max(ans[0],curr);
+        return returnlist;
+    }
+
+    public int Num1466minReorder(int n, int[][] connections) {
+        ArrayList<Integer>[] graph = (ArrayList<Integer>[]) new ArrayList[n];
+        ArrayList<Integer>[] directions = (ArrayList<Integer>[]) new ArrayList[n];
+        boolean[] visited = new boolean[n];
+
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<Integer>(3);
+            directions[i] = new ArrayList<Integer>(2);
+        }
+
+        for (int i = 0; i < connections.length; i++) {
+            graph[connections[i][0]].add(connections[i][1]);
+            graph[connections[i][1]].add(connections[i][0]);
+
+            directions[connections[i][0]].add(connections[i][1]);
+        }
+
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.offer(0);
+
+        int answer = 0;
+
+        while (!queue.isEmpty()) {
+            int city = queue.poll();
+
+            if (visited[city]) {
+                continue;
+            }
+
+            visited[city] = true;
+
+            for (int i = 0; i < directions[city].size(); i++) {
+                if (!visited[directions[city].get(i)]) {
+                    ++answer;
+                }
+            }
+
+            for (int i = 0; i < graph[city].size(); i++) {
+                queue.offer(graph[city].get(i));
+            }
+        }
+        return answer;
+    }
+
+    public TreeNode Num998insertIntoMaxTree(TreeNode root, int val) {
+        if(root==null)
+        {
+            TreeNode node = new TreeNode(val);
+            return node;
+        }
+        if(root.val<val)
+        {
+            TreeNode node = new TreeNode(val);
+            node.left = root;
+            return node;
+        }
+        root.right = Num998insertIntoMaxTree(root.right,val);
+        return root;
+    }
+
+    public List<TreeNode> Num95generateTrees(int n) {
+        int[] narray = new int[n];
+        return Num95nodes(narray,0,n-1);
+    }
+
+    public List<TreeNode> Num95nodes(int[] narray,int left,int right)
+    {
+        List<TreeNode> ans = new LinkedList<>();
+        for(int i=left;i<=right;i++)
+        {
+
+            List<TreeNode> leftlist = Num95nodes(narray,left,i-1);
+            if(leftlist.size()==0)
+                leftlist.add(null);
+            List<TreeNode> rightlist = Num95nodes(narray,i+1,right);
+            if(rightlist.size()==0)
+                rightlist.add(null);
+            for(TreeNode leftnode:leftlist)
+            {
+                for(TreeNode rightnode:rightlist)
+                {
+                    TreeNode node = new TreeNode(i+1);
+                    node.left = leftnode;
+                    node.right = rightnode;
+                    ans.add(node);
+                }
+            }
+
+        }
+        return ans;
+    }
+
+
+
+    public TreeNode Num1382balanceBST(TreeNode root) {
+
     }
 
 

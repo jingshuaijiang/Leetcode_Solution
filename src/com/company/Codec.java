@@ -26,4 +26,13 @@ public class Codec {
         return Arrays.asList(s.split(d, -1));
     }
 
+    public String serialize(TreeNode root) {
+
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+
+    }
+
 }

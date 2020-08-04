@@ -423,6 +423,301 @@ public class Solution_DP {
         return N%2==0;
     }
 
+    /**
+     * similar to stone game I
+     * @param nums
+     * @return
+     */
+    public boolean PredictTheWinner(int[] nums) {
+        int n = nums.length;
+        int[][] dp = new int[nums.length][nums.length];
+        for(int i=0;i<nums.length;i++)
+        {
+            dp[i][i] = nums[i];
+        }
+
+        for(int i=1;i<=n-1;i++)
+        {
+            for(int j=0;j+i<=n-1;j++)
+            {
+                dp[j][j+i] = Math.max(nums[j]-dp[j+1][j+i],nums[j+i]-dp[j][j+i-1]);
+            }
+        }
+        return dp[0][n-1]>=0;
+    }
+
+    public int Num983mincostTickets(int[] days, int[] costs) {
+        int[] dp = new int[366];
+        int i=0;
+        for(int day = 0;day<=365;day++)
+        {
+            if(i>=days.length)
+                break;
+            if(day==days[i])
+            {
+                int oneday = day-1<0?0:dp[day-1];
+                int sevenday = day-7<0?0:dp[day-7];
+                int thirtyday = day-30<0?0:dp[day-30];
+                dp[day] = Math.min(oneday+costs[0],Math.min(sevenday+costs[1],thirtyday+costs[2]));
+                i++;
+            }
+            else
+            {
+                if(day==0)
+                    dp[0] = 0;
+                else dp[day]=dp[day-1];
+
+            }
+        }
+        int lastday = days[days.length-1];
+        return dp[lastday];
+    }
+
+    public int Num1504numSubmat(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] dp = new int[m][n];
+        int sum = 0;
+        int now = 0;
+        for(int i=0;i<m;i++)
+        {
+            now = 0;
+            for(int j=0;j<n;j++)
+            {
+                if(mat[i][j]==1)
+                    now++;
+                else
+                    now=0;
+                dp[i][j] = now;
+            }
+        }
+        int ans = 0,minx = Integer.MAX_VALUE;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                minx = Integer.MAX_VALUE;
+                for(int k=i;k>=0;k--)
+                {
+                    minx = Math.min(minx,dp[k][j]);
+                    ans+=minx;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public int Num1143longestCommonSubsequence(String text1, String text2) {
+        int len1 = text1.length(),len2 = text2.length();
+        int[][] dp = new int[len1+1][len2+1];
+        for(int i=0;i<len1+1;i++)
+        {
+            dp[i][0] = 0;
+        }
+        for(int j=0;j<len2+1;j++)
+        {
+            dp[0][j] = 0;
+        }
+        for(int i=1;i<len1+1;i++)
+        {
+            for(int j=1;j<len2+1;j++)
+            {
+                if(text1.charAt(i)==text2.charAt(j))
+                {
+                    dp[i][j] = dp[i-1][j-1]+1;
+                }
+                dp[i][j] = Math.max(dp[i-1][j],Math.max(dp[i][j-1],dp[i][j]));
+            }
+        }
+        return dp[len1][len2];
+    }
+
+    public int Num516longestPalindromeSubseq(String s) {
+        int n = s.length();
+        int[][] dp = new int[n+1][n+1];
+
+        for(int i=0;i<n+1;i++)
+        {
+            dp[i][0] = 0;
+            dp[0][i] = 0;
+            dp[i][i] = 1;
+        }
+        dp[0][0] = 0;
+        for(int i=1;i<n;i++)
+        {
+            if(s.charAt(i-1)==s.charAt(i))
+                dp[i][i+1] = 2;
+            else
+                dp[i][i+1] = 1;
+        }
+        for(int len=2;len<n;len++)
+        {
+            for(int j=1;j<=n-len;j++)
+            {
+                int tail = j+len;
+                if(s.charAt(j-1)==s.charAt(tail-1))
+                {
+                    dp[j][tail] = dp[j+1][tail-1]+2;
+                }
+                dp[j][tail] = Math.max(dp[j][tail],Math.max(dp[j+1][tail],dp[j][tail-1]));
+            }
+        }
+        return dp[1][n];
+    }
+
+    /**
+     * needs to be done again
+     * @param books
+     * @param shelf_width
+     * @return
+     */
+    public int Num1105minHeightShelves(int[][] books, int shelf_width) {
+        int n = books.length;
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        for(int i=1;i<=n;i++)
+        {
+            int width = books[i-1][0];
+            int height = books[i-1][1];
+            dp[i] = dp[i-1]+height;
+            for(int j=i-1;j>0&&width+books[j-1][0]<=shelf_width;j--)
+            {
+                height = Math.max(height,books[j-1][1]);
+                width+=books[j-1][0];
+                dp[i] = Math.min(dp[i],dp[j-1]+height);
+            }
+        }
+        return dp[n];
+    }
+
+    public int Num413numberOfArithmeticSlices(int[] A) {
+        int sum = 0;
+        int n = A.length;
+        if(n<=2)
+            return sum;
+        int[] dp = new int[n];
+        for(int i=2;i<n;i++)
+        {
+            if(A[i]-A[i-1]==A[i-1]-A[i-2])
+            {
+
+                dp[i] = dp[i-1]+1;
+            }
+        }
+        for(int i=0;i<n;i++)
+            sum += dp[i];
+        return sum;
+    }
+
+    public int Num1048longestStrChain(String[] words) {
+        int n = words.length,max = 1;
+        int[] dp = new int[n];
+        dp[0] = 1;
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+        for(int i=1;i<n;i++)
+        {
+            dp[i]=1;
+            for(int j=i-1;j>=0;j--)
+            {
+                if(Num1048ispredecessor(words[j],words[i]))
+                    dp[i] = Math.max(dp[i],dp[j]+1);
+            }
+            max = Math.max(dp[i],max);
+        }
+        return max;
+    }
+
+    public boolean Num1048ispredecessor(String s1,String s2)
+    {
+        if(s1.length()!=s2.length()-1)
+            return false;
+        if(s2.contains(s1))
+            return true;
+        int j=0,diff = 0;
+        for(int i=0;i<s1.length();i++)
+        {
+            if(s1.charAt(i)!=s2.charAt(j))
+            {
+                if(diff==1)
+                    return false;
+                j++;
+                i--;
+                diff =1;
+            }
+            else
+            {
+                j++;
+            }
+        }
+        return true;
+    }
+
+    public int Num750countCornerRectangles(int[][] grid) {
+        Map<Integer, Integer> count = new HashMap();
+        int ans = 0;
+        for (int[] row: grid) {
+            for (int c1 = 0; c1 < row.length; ++c1) if (row[c1] == 1) {
+                for (int c2 = c1+1; c2 < row.length; ++c2) if (row[c2] == 1) {
+                    int pos = c1 * 200 + c2;
+                    int c = count.getOrDefault(pos, 0);
+                    ans += c;
+                    count.put(pos, c+1);
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int Num1273deleteTreeNodes(int nodes, int[] parent, int[] value) {
+        int[] f = new int[nodes];
+        for (int i = nodes - 1; i > 0; i--) {
+            value[parent[i]] += value[i];
+            f[parent[i]] += value[i] == 0 ? 0 : f[i] + 1;
+        }
+        return value[0] == 0 ? 0 : f[0] + 1;
+    }
+
+    public int Num1027longestArithSeqLength(int[] A) {
+        int hash[][] = new int[A.length][20000];
+        int max = 0;
+        for(int i = 1; i < A.length; i++)
+            for(int j = i-1; j >=0; j--){
+                int diff = A[i] - A[j] + 10000;
+                int counttillnow = hash[j][diff];
+                if(hash[i][diff] > counttillnow) continue;
+                else {
+                    hash[i][diff] = counttillnow + 1;
+                    max = Math.max(max, counttillnow + 1);
+                }
+            }
+        return max + 1;
+    }
+
+    public double Num813largestSumOfAverages(int[] A, int K) {
+        int n = A.length;
+        double[][] dp = new double[K][n];
+        double sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += A[i];
+            dp[0][i] = sum / (i+1);
+        }
+
+        for (int k = 1; k < K; k++) {
+            for (int i = k; i < n; i++) {
+                sum = 0.0;
+                for (int j = i; j > k-1; j--) {
+                    sum += A[j];
+                    dp[k][i] = Math.max(dp[k][i], sum / (i-j+1) + dp[k-1][j-1]);
+                }
+            }
+        }
+        return dp[K-1][n-1];
+
+    }
+
+    public int Num718findLength(int[] A, int[] B) {
+
+    }
 
 
 }

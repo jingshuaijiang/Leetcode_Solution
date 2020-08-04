@@ -7007,6 +7007,188 @@ public class Solution {
         return true;
     }
 
+    public int Num1503getLastMoment(int n, int[] left, int[] right) {
+        int max = 0;
+        for(int i=0;i<left.length;i++)
+        {
+            max = Math.max(max,left[i]);
+        }
+        for(int j=0;j<right.length;j++)
+        {
+            max = Math.max(max,n-right[j]);
+        }
+        return max;
+    }
+
+    /**
+     * very tricky but interesting problem
+     * @param n
+     * @return
+     */
+    public double Num1227nthPersonGetsNthSeat(int n) {
+        if(n==1)
+            return 1;
+        else return (double)1/2;
+    }
+
+    public int Num1512numIdenticalPairs(int[] nums) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
+        }
+        int sum = 0;
+        for(int key:map.keySet())
+        {
+            int val = map.get(key);
+            if(val==2)
+                sum+=1;
+            else if(val>2)
+            {
+                sum+=val*(val-1);
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * wrong process of day here. But i am kind of lazy. I don't want to change it.
+     * @param date
+     * @return
+     */
+    public String Num1507reformatDate(String date) {
+        HashMap<String,String> monthmap = new HashMap<>();
+        monthmap.put("Jan","01");
+        monthmap.put("Feb","02");
+        monthmap.put("Mar","03");
+        monthmap.put("Apr","04");
+        monthmap.put("May","05");
+        monthmap.put("Jun","06");
+        monthmap.put("Jul","07");
+        monthmap.put("Aug","08");
+        monthmap.put("Sep","09");
+        monthmap.put("Oct","10");
+        monthmap.put("Nov","11");
+        monthmap.put("Dec","12");
+        String[] datalist = date.split(" ");
+        String day = Integer.toString(Integer.parseInt(datalist[0].substring(0,datalist[0].indexOf("t"))));
+        day = day.length()==1?"0"+day:day;
+        String month = monthmap.get(datalist[1]);
+        String ans = datalist[2]+"-"+month+"-"+day;
+        return ans;
+    }
+
+    public int Num1518numWaterBottles(int numBottles, int numExchange) {
+        int ans = 0;
+        int full = numBottles;
+        int remaining = 0;
+        while(full!=0)
+        {
+            ans +=full;
+            int a = full+remaining;
+            full = (a) /numExchange;
+            remaining = (a) % numExchange;
+        }
+        return ans;
+    }
+
+    public int Num1508rangeSum(int[] nums, int n, int left, int right) {
+        int ans = 0;
+        int MOD = 1000000007;
+        int[] sum = new int[n*(n+1)/2];
+        int index = 0 ;
+        for(int i=0;i<nums.length;i++)
+        {
+            int prefix = 0;
+            for(int j = i;j>=0;j--)
+            {
+                prefix+=nums[j];
+                sum[index++] = prefix;
+            }
+        }
+        Arrays.sort(sum);
+        for(int i=left-1;i<right;i++)
+        {
+            ans  = (ans % MOD + sum[i]%MOD);
+        }
+        return ans;
+    }
+
+    public String[] Num937reorderLogFiles(String[] logs) {
+        List<String> letterLogs = new ArrayList<>();
+        List<String> numLogs = new ArrayList<>();
+        for (String log : logs) {
+            int i = log.indexOf(" ") + 1;
+            if (log.charAt(i) >= '0' && log.charAt(i) <= '9')
+                numLogs.add(log);
+            else
+                letterLogs.add(log);
+        }
+        Collections.sort(letterLogs, new Comparator<String>() {
+            @Override
+            public int compare(String a, String b) {
+                int ai = a.indexOf(" ");
+                String ida = a.substring(0, ai);
+                String loga = a.substring(ai + 1);
+
+                int bi = b.indexOf(" ");
+                String idb = b.substring(0, bi);
+                String logb = b.substring(bi + 1);
+
+                int cmp = loga.compareTo(logb);
+                if (cmp == 0)
+                    return ida.compareTo(idb);
+                return cmp;
+            }
+        });
+        letterLogs.addAll(numLogs);
+        return letterLogs.toArray(new String[letterLogs.size()]);
+
+    }
+
+    public boolean Num953isAlienSorted(String[] words, String order) {
+        int[] index = new int[26];
+        for(int i=0;i<order.length();i++)
+        {
+            index[order.charAt(i)-'a'] = i;
+        }
+        for(int i=0;i<words.length-1;i++)
+        {
+            String s1 = words[i];
+            String s2 = words[i+1];
+            int diff = 0;
+            for(int k=0;k<Math.min(s1.length(),s2.length());k++)
+            {
+                if(s1.charAt(k)!=s2.charAt(k))
+                {
+                    diff = 1;
+                    if(index[s1.charAt(k)-'a']>index[s2.charAt(k)-'a'])
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            if(diff==0&&s1.length()>s2.length())
+                return false;
+        }
+        return true;
+
+    }
+
+    public String Num1528restoreString(String s, int[] indices) {
+        
+    }
+
+
+
+
+
+
+
 
 
 

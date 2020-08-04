@@ -7,6 +7,7 @@ public class Node {
     public Node right;
     public Node random;
     public Node next;
+    public Node parent;
 
     public Node() {}
 

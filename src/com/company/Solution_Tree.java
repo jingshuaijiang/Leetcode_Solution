@@ -1198,5 +1198,376 @@ public class Solution_Tree {
         return traversal;
     }
 
+    public int Num270closestValue(TreeNode root, double target) {
+        int val,closest = root.val;
+        while(root!=null)
+        {
+            val = root.val;
+            closest = Math.abs(val-target)< Math.abs(closest-target)? val: closest;
+            root = target<root.val?root.left:root.right;
+        }
+        return closest;
+    }
+
+    public TreeNode Num285inorderSuccessor(TreeNode root, TreeNode p) {
+        if(root==null)
+            return null;
+        if (p.right != null) {
+            p = p.right;
+            while (p.left != null) p = p.left;
+            return p;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        int previous = Integer.MIN_VALUE;
+        while(!stack.isEmpty()||root!=null)
+        {
+            while(root!=null)
+            {
+                stack.add(root.left);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(previous==p.val)
+                return root;
+            previous = root.val;
+            root = root.right;
+
+        }
+        return null;
+    }
+
+    /**
+     * needs to be done again.
+     * Successor and predecessor
+     * @param root
+     * @param p
+     * @return
+     */
+    public TreeNode Num285simpleinorderSuccessor(TreeNode root,TreeNode p)
+    {
+        TreeNode cur = root;
+        TreeNode candidate = null;
+        while(cur!=null)
+        {
+            if(cur.val<=p.val)
+            {
+                cur = cur.right;
+            }
+            else
+            {
+                candidate = cur;
+                cur = cur.left;
+            }
+        }
+        return candidate;
+    }
+
+    public TreeNode Num106buildTree(int[] inorder, int[] postorder) {
+        return Num106helper(inorder,postorder,0,inorder.length-1,0,postorder.length-1);
+    }
+
+    public TreeNode Num106helper(int[] inorder,int[] postorder,int inleft,int inright,int postleft,int postright)
+    {
+        if(inleft<inright)
+            return null;
+        int i;
+        for(i = inleft;i<=inright;i++)
+        {
+            if(inorder[i]==postorder[postright])
+                break;
+        }
+        TreeNode node = new TreeNode(postorder[postright]);
+        node.left = Num106helper(inorder,postorder,inleft,i-1,postleft,postleft+(i-inleft)-1);
+        node.right = Num106helper(inorder,postorder,i+1,inright,postleft+(i-inleft),postright);
+        return node;
+    }
+
+    public int Num1457pseudoPalindromicPaths (TreeNode root) {
+        int[] ans = new int[1];
+        List<Integer> path = new ArrayList<>();
+        Num1457dfshelper(root,path,ans);
+        return ans[0];
+    }
+
+    public void Num1457dfshelper(TreeNode node,List<Integer> path,int[] ans)
+    {
+        if(node==null)
+            return;
+        if(node.left==null&&node.right==null)
+        {
+            Num1457palin(path,ans);
+        }
+        path.add(node.val);
+        if(node.left!=null)
+            Num1457dfshelper(node.left,path,ans);
+        if(node.right!=null)
+            Num1457dfshelper(node.right,path,ans);
+        path.remove(path.size()-1);
+    }
+
+    public void Num1457palin(List<Integer> path,int[] ans)
+    {
+        HashMap<Integer,Integer> counter = new HashMap<>();
+        for(int i=0;i<path.size();i++)
+        {
+            counter.put(path.get(i),counter.getOrDefault(path.get(i),0)+1);
+        }
+        int count = 0;
+        for(int key:counter.keySet())
+        {
+            if(count==0&&counter.get(key)%2==1)
+                count++;
+            if(count!=0&&counter.get(key)%2==1)
+                return;
+        }
+        ans[0]+=1;
+    }
+
+    public List<TreeNode> Num652findDuplicateSubtrees(TreeNode root)
+    {
+        HashMap<String,Integer> map = new HashMap<>();
+        List<TreeNode> result = new LinkedList<>();
+        if(root==null)
+            return result;
+        Num652helper(root,map,result);
+        return result;
+    }
+
+    public String Num652helper(TreeNode node,HashMap<String,Integer> map,List<TreeNode> result)
+    {
+        if(node==null)
+            return "null";
+        String serialstr = node.val+","+Num652helper(node.left,map,result)+","+Num652helper(node.right,map,result);
+        map.put(serialstr,map.getOrDefault(serialstr,0)+1);
+        if(map.get(serialstr)==2)
+            result.add(node);
+        return serialstr;
+    }
+
+    /**
+     * this is some shit problem with garbage like description
+     * fuck the author
+     * @param root
+     * @return
+     */
+    public TreeNode Num156upsideDownBinaryTree(TreeNode root) {
+        return root;
+    }
+
+    public int Num1245treeDiameter(int[][] edges) {
+
+    }
+
+    int Num508max;
+    public int[] Num508findFrequentTreeSum(TreeNode root) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        Num508helper(root,map);
+        List<Integer> ans = new LinkedList<>();
+        for(int key:map.keySet())
+        {
+            if(map.get(key)==Num508max)
+                ans.add(key);
+        }
+        int[] res = new int[ans.size()];
+        for(int i=0;i<ans.size();i++)
+        {
+            res[i] = ans.get(i);
+        }
+        return res;
+    }
+
+    public int Num508helper(TreeNode node,HashMap<Integer,Integer> map)
+    {
+        if(node==null)
+            return 0;
+        int left = Num508helper(node.left,map);
+        int right = Num508helper(node.right,map);
+        int sum = left+right+node.val;
+        map.put(sum,map.getOrDefault(sum,0)+1);
+        if(map.get(sum)>Num508max)
+            Num508max = map.get(sum);
+        return sum;
+    }
+
+    int Num1372max = 0;
+    public int Num1372longestZigZag(TreeNode root) {
+        Num1372helper(root,"");
+        return Num1372max;
+    }
+
+    public int[] Num1372helper(TreeNode node,String direction)
+    {
+        int[] counter = new int[2];
+        if(node==null)
+            return counter;
+        int[] left = Num1372helper(node.left,"left");
+        int[] right = Num1372helper(node.right,"right");
+        counter[0] = left[1]+1;
+        counter[1] = right[0]+1;
+        Num1372max = Math.max(counter[0],Math.max(counter[1],Num1372max));
+        return counter;
+    }
+
+    public Node Num510inorderSuccessor(Node node) {
+        if(node.right!=null)
+        {
+            node = node.right;
+            while(node.left!=null)
+            {
+                node = node.left;
+            }
+            return node;
+        }
+        while(node.parent!=null&&node == node.parent.right)
+            node = node.parent;
+        return node.parent;
+
+    }
+
+    public TreeNode Num285Sol2inorderSuccessor(TreeNode root, TreeNode p) {
+        if(p.right!=null)
+        {
+            p = p.right;
+            while(p.left!=null)
+            {
+                p = p.left;
+            }
+            return p;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        int inorder = Integer.MAX_VALUE;
+        while(root!=null||!stack.isEmpty())
+        {
+            while(root!=null)
+            {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(inorder==p.val)
+                return root;
+            inorder = root.val;
+            root = root.right;
+        }
+        return null;
+    }
+
+    int Num958maxdepth = 0;
+    int missingbefore = 0;
+    public boolean Num958isCompleteTree(TreeNode root) {
+        int depth = 0;
+        Num958depthHelper(root,depth);
+        return Num958helper(root,depth);
+    }
+
+    public void Num958depthHelper(TreeNode node,int depth)
+    {
+        if(node==null)
+            return;
+        if(depth>Num958maxdepth)
+            Num958maxdepth = depth;
+        Num958depthHelper(node.left,depth+1);
+        Num958depthHelper(node.right,depth+1);
+    }
+
+    public boolean Num958helper(TreeNode node,int depth)
+    {
+        if(node==null)
+        {
+            if(depth<Num958maxdepth)
+                return false;
+            return true;
+        }
+        boolean left = Num958helper(node.left,depth+1);
+        boolean right = Num958helper(node.right,depth+1);
+        if(!left||!right)
+            return false;
+        if(node.left==null&&node.right!=null)
+            return false;
+        if(depth==Num958maxdepth-1)
+        {
+            if(missingbefore==0&&(node.left==null||node.right==null))
+                missingbefore=1;
+            else if(missingbefore==1&&(node.left!=null||node.right!=null))
+                return false;
+        }
+        return true;
+    }
+
+    public Node Num116sol2connect(Node root) {
+        if(root==null)
+            return root;
+        Node leftmost = root;
+        while(leftmost.left!=null)
+        {
+            Node head = leftmost;
+            while(head!=null)
+            {
+                head.left.next = head.right;
+                if(head.next!=null)
+                    head.right.next = head.next.left;
+                head = head.next;
+            }
+            leftmost = leftmost.left;
+        }
+        return root;
+    }
+
+    public Node Num117connect(Node root) {
+        if(root==null)
+            return root;
+        Queue<Node> Q = new LinkedList<Node>();
+        Q.add(root);
+        while(Q.size()!=0)
+        {
+            int size = Q.size();
+            for(int i=0;i<size;i++)
+            {
+                Node node = Q.poll();
+                if(i<size-1)
+                {
+                    node.next = Q.peek();
+                }
+                if(node.left!=null)
+                {
+                    Q.add(node.left);
+                }
+                if(node.right!=null)
+                {
+                    Q.add(node.right);
+                }
+            }
+        }
+        return root;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

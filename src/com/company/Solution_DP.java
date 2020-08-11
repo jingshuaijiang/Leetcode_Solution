@@ -716,8 +716,506 @@ public class Solution_DP {
     }
 
     public int Num718findLength(int[] A, int[] B) {
+        int maxlength = 0;
+        int a = A.length;
+        int b = B.length;
+        int[][] dp = new int[a+1][b+1];
+        for(int i=1;i<=a;i++)
+        {
+            for(int j=1;j<=b;j++)
+            {
+                if(A[i-1]==B[j-1])
+                {
+                    dp[i][j] = dp[i-1][j-1]+1;
+                    maxlength = Math.max(maxlength,dp[i][j]);
+                }
+                else
+                    dp[i][j] = 0;
+            }
+        }
+        return maxlength;
+    }
+
+    public int Num1055shortestWay(String source, String target) {
+        int[] count = new int[26];
+        for(int i=0;i<source.length();i++)
+        {
+            count[source.charAt(i)-'a']++;
+        }
+        for(int i=0;i<target.length();i++)
+        {
+            if(count[target.charAt(i)-'a']<=0)
+                return -1;
+        }
+        int[] dp = new int[target.length()+1];
+        for(int i=1;i<=target.length();i++)
+        {
+            dp[i] = Integer.MAX_VALUE;
+            for(int len = 0;len<source.length();len++)
+            {
+                if(i-len<1||!Num1055ISasubstring(source,target,i-len-1,i-1))
+                    break;
+                if(Num1055ISasubstring(source,target,i-len-1,i-1))
+                {
+                    dp[i] = Math.min(dp[i-len-1]+1,dp[i]);
+                }
+            }
+        }
+        return dp[target.length()];
+    }
+
+    public boolean Num1055ISasubstring(String source,String target,int start,int end)
+    {
+        int i = 0,j = start;
+        while(i<source.length()&&j<=end)
+        {
+            while(i<source.length()&&j<=end&&source.charAt(i)!=target.charAt(j))
+            {
+                i++;
+            }
+            if(i==source.length()&&j<=end)
+                return false;
+            else
+            {
+                i++;j++;
+            }
+        }
+        if(i==source.length()&&j<=end)
+            return false;
+        return true;
+    }
+
+    public int Num712minimumDeleteSum(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        int[][] dp = new int[n+1][m+1];
+        for(int i=1;i<=n;i++)
+        {
+            dp[i][0] = dp[i-1][0]+s1.charAt(i-1)-'a'+97;
+        }
+        for(int j=1;j<=m;j++)
+        {
+            dp[0][j] = dp[0][j-1]+s2.charAt(j-1)-'a'+97;
+        }
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(s1.charAt(i-1)==s2.charAt(j-1))
+                {
+                    dp[i][j] = dp[i-1][j-1];
+                }
+                else
+                {
+                    int ascs1 = s1.charAt(i-1)-'a'+97;
+                    int ascs2 = s2.charAt(j-1)-'a'+97;
+                    dp[i][j] = Math.min(dp[i-1][j]+ascs1,dp[i][j-1]+ascs2);
+                }
+            }
+        }
+        return dp[n][m];
+    }
+
+    public int Num1155numRollsToTarget(int d, int f, int target) {
+        int MOD = 1000000007;
+        int[][] dp = new int[31][1001];
+        int min = Math.min(f, target);
+        for (int i = 1; i <= min; i++) {
+            dp[1][i] = 1;
+        }
+        int targetMax = d * f;
+        for (int i = 2; i <= d; i++) {
+            for (int j = i; j <= targetMax; j++) {
+                for (int k = 1; j - k >= 0 && k <= f; k++) {
+                    dp[i][j] = (dp[i][j] + dp[i - 1][j - k]) % MOD;
+                }
+            }
+        }
+        return dp[d][target];
 
     }
+
+    public int Num935knightDialer(int N) {
+        int[][] dp = new int[N][10];
+        int mod = 1000000007;
+        for(int i=0;i<10;i++)
+        {
+            dp[0][i] = 1;
+        }
+
+        for(int i=1;i<N;i++)
+        {
+            dp[i][0] = (dp[i-1][4]+dp[i-1][6])%mod;
+            dp[i][1] = (dp[i-1][6]+dp[i-1][8])%mod;
+            dp[i][2] = (dp[i-1][7]+dp[i-1][9])%mod;
+            dp[i][3] = (dp[i-1][4]+dp[i-1][8])%mod;
+
+            dp[i][4] = (((dp[i-1][3]+dp[i-1][9])%mod)+dp[i-1][0])%mod;
+            dp[i][6] = (((dp[i-1][1]+dp[i-1][7])%mod)+dp[i-1][0])%mod;
+
+            dp[i][7] = (dp[i-1][2]+dp[i-1][6])%mod;
+            dp[i][8] = (dp[i-1][1]+dp[i-1][3])%mod;
+            dp[i][9] = (dp[i-1][2]+dp[i-1][4])%mod;
+        }
+        int ans = 0;
+        for(int i=0;i<10;i++)
+        {
+            ans = (ans + dp[N-1][i])%mod;
+        }
+        return ans;
+    }
+
+    public double knightProbability(int N, int K, int r, int c) {
+        double[][] dp = new double[N][N];
+        dp[r][c] = 1;
+        int[] dr = new int[]{2, 2, 1, 1, -1, -1, -2, -2};
+        int[] dc = new int[]{1, -1, 2, -2, 2, -2, 1, -1};
+        for(int i=0;i<K;i++)
+        {
+            double[][] current = new double[N][N];
+            for(int row=0;row<N;row++)
+            {
+                for(int col = 0;col<N;col++)
+                {
+                    if(dp[row][col]>0)
+                    {
+                        for(int k=0;k<8;k++)
+                        {
+                            int nr = row+dr[k];
+                            int nc = col+dc[k];
+                            if(0<=nr&&nr<N&&0<=nc&&nc<N)
+                            {
+                                current[nr][nc] += dp[row][col]/8.0;
+                            }
+                        }
+                    }
+                }
+            }
+            dp = current;
+        }
+        double ans=0;
+        for(int i=0;i<N;i++)
+        {
+            for(int j=0;j<N;j++)
+            {
+                ans+=dp[i][j];
+            }
+        }
+        return ans;
+    }
+
+    public int Num85maximalRectangle(char[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int[] h = new int[m];
+        int[] left = new int[m];
+        int[] right = new int[m];
+        int maxrect = 0;
+        Arrays.fill(right,m);
+        for(int i=0;i<n;i++)
+        {
+            int curleft = 0;
+            int curright = n;
+            for(int j=0;j<m;j++)
+            {
+                if(matrix[i][j]=='1')
+                    h[j]++;
+                else
+                    h[j]=0;
+            }
+
+            for(int j=0;j<m;j++)
+            {
+                if(matrix[i][j]=='1')
+                {
+                    left[j] = Math.max(left[j],curleft);
+                }
+                else
+                {
+                    left[j] = 0;
+                    curleft = j+1;
+                }
+            }
+            for(int j=m-1;j>=0;j--)
+            {
+                if(matrix[i][j]=='1')
+                {
+                    right[j] = Math.min(right[j],curright);
+                }
+                else
+                {
+                    right[j] = 0;
+                    curright = j;
+                }
+            }
+            for(int j=0;j<m;j++)
+            {
+                maxrect = Math.max(maxrect,(right[j]-left[j])*h[j]);
+            }
+        }
+        return maxrect;
+    }
+
+    public int Num91numDecodings(String s) {
+
+        int[] dp = new int[s.length()+1];
+        dp[0] = 1;
+        dp[1] = s.charAt(0) == '0' ? 0 : 1;
+        for(int i=2;i<=s.length();i++)
+        {
+            dp[i] = Integer.valueOf(s.charAt(i-1)+"")>0?dp[i-1]:0;
+            String twodigit = s.substring(i-2,i);
+            if(Integer.valueOf(twodigit)<=26&&Integer.valueOf(twodigit)>9)
+            {
+                dp[i] += dp[i-2];
+            }
+
+        }
+        return dp[s.length()];
+    }
+
+    public int Num646findLongestChain(int[][] pairs) {
+        Arrays.sort(pairs,(a,b)->a[1]-b[1]);
+        int curr = Integer.MIN_VALUE, ans = 0;
+        for(int[] pair:pairs)
+        {
+            if(curr< pair[0])
+            {
+                curr = pair[1];
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    public int Num343integerBreak(int n) {
+        int[] dp = new int[n+1];
+        dp[1] = 1;
+        for(int i=2;i<=n;i++)
+        {
+            for(int j = i-1;j>=1;j--)
+            {
+                dp[i] = Math.max(dp[i],dp[j]*(i-j));
+                dp[i] = Math.max(dp[i],j*(i-j));
+            }
+        }
+        return dp[n];
+    }
+
+    public int Num494findTargetSumWays(int[] nums, int S) {
+        if(S>1000||S<-1000)
+            return 0;
+        int n = nums.length;
+        int[][] dp = new int[n][2*n+1];
+        if(nums[0]==0)
+            dp[0][1000] = 2;
+        else
+        {
+            dp[0][nums[0]+1000] = 1;
+            dp[0][1000-nums[0]] = 1;
+        }
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<2*n+1;j++)
+            {
+                if(dp[i-1][j]>0)
+                {
+                    int mj = j-nums[i];
+                    int pj = j+nums[i];
+                    if(mj>=0)
+                        dp[i][mj]+=dp[i-1][j];
+                    if(pj<=2*n)
+                        dp[i][pj]+=dp[i-1][j];
+                }
+            }
+        }
+        return dp[n-1][S];
+    }
+
+    public int Num740deleteAndEarn(int[] nums) {
+        int[] count = new int[10001];
+        for(int num:nums)
+        {
+            count[num]++;
+        }
+        int ppre = count[1];
+        int pre = Math.max(count[1],2*count[2]);
+        for(int i=3;i<10001;i++)
+        {
+            int curr = Math.max(pre,ppre+i*count[i]);
+            ppre = pre;
+            pre = curr;
+        }
+        return pre;
+    }
+
+    public int Num300lengthOfLIS(int[] nums) {
+        if(nums.length == 0) return 0;
+        int[] dp = new int[nums.length];
+        int res = 0;
+        Arrays.fill(dp, 1);
+        for(int i = 0; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if(nums[j] < nums[i]) dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+
+    public boolean Num416canPartition(int[] nums) {
+        int sum = 0;
+        for(int i=0;i<nums.length;i++)
+        {
+            sum+=nums[i];
+        }
+        if(sum%2==1)
+            return false;
+        int target = sum/2;
+        boolean[][] dp = new boolean[nums.length][20001];
+        dp[0][0] = true;
+        dp[0][nums[0]] = true;
+        for(int i=1;i<nums.length;i++)
+        {
+            for(int j=0;j<20001;j++)
+            {
+                if(dp[i-1][j])
+                {
+                    dp[i][j] = true;
+                    dp[i][j+nums[i]] = true;
+                    if(dp[i][target])
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public int Num1223dieSimulator(int n, int[] rollMax) {
+        int mod = (int) Math.pow(10,9)+7;
+        int[][][] dp = new int[n][7][16];
+        for(int i=1;i<7;i++)
+        {
+            dp[0][i][1] = 1;
+        }
+        for(int i=1;i<n;i++)
+        {
+            int[] prev = new int[7];
+            int sum = 0;
+            int ppp = 0;
+            for(int j=1;j<7;j++)
+            {
+                for(int k=1;k<16;k++)
+                {
+                    prev[j]=(prev[j]+dp[i-1][j][k]%mod)%mod;
+                }
+                sum+=prev[j]%mod;
+            }
+
+            for(int j=1;j<7;j++)
+            {
+                for(int p = 1;p<7;p++)
+                {
+                    if(p!=j)
+                        dp[i][j][1]=(dp[i][j][1]+ prev[p]%mod)%mod;
+                    if(dp[i][j][1]<0)
+                        ppp++;
+                }
+                for(int k=2;k<16;k++)
+                {
+                    if(k<=rollMax[j-1])
+                        dp[i][j][k] = dp[i-1][j][k-1]%mod;
+                    if(dp[i][j][k]<0)
+                        ppp++;
+                }
+            }
+        }
+        int ans = 0;
+        int ppp = 0;
+        for(int j=1;j<7;j++)
+        {
+            for(int k=1;k<16;k++)
+            {
+                ans=(ans+dp[n-1][j][k]%mod)%mod;
+                if(ans<0)
+                    ppp++;
+            }
+        }
+        return ans%mod;
+    }
+
+    public int Num361maxKilledEnemies(char[][] grid) {
+
+    }
+
+    public int Num978maxTurbulenceSize(int[] A) {
+        int[][] dp = new int[2][A.length+1];
+
+        for(int i=0;i<A.length;i++) {
+            dp[0][i] = dp[1][i] = 1;
+        }
+
+        for(int i=1;i<A.length;i++) {
+            if(A[i] < A[i-1]) {
+                dp[0][i] = Math.max(dp[0][i], dp[1][i-1] + 1);
+            }
+            else if(A[i] > A[i-1]) {
+                dp[1][i] = Math.max(dp[1][i], dp[0][i-1] + 1);
+            }
+        }
+
+        int ans = -1;
+        for(int i=0;i<A.length;i++) {
+            ans = Math.max(ans, Math.max(dp[0][i], dp[1][i]));
+        }
+
+        return ans;
+
+    }
+
+    public int Num264nthUglyNumber(int n) {
+        if(n==1)
+            return 1;
+
+    }
+
+    public int Num1262maxSumDivThree(int[] nums) {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

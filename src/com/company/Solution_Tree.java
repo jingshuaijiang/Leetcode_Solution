@@ -1541,7 +1541,60 @@ public class Solution_Tree {
         return root;
     }
 
+    public TreeNode Num450deleteNode(TreeNode root, int key) {
+        if(root==null)
+            return null;
+        if(root.val==key)
+        {
+            if(root.left==null&&root.right==null)
+                return null;
+            if(root.left==null)
+                return root.right;
+            if(root.right==null)
+                return root.left;
+            else
+            {
+                TreeNode leftc = root.left;
+                while(leftc.right!=null)
+                {
+                    leftc = leftc.right;
+                }
+                leftc.right = root.right;
+                return root.left;
+            }
+        }
+        if(key>root.val)
+        {
+            root.right = Num450deleteNode(root.right,key);
+        }
+        else
+        {
+            root.left = Num450deleteNode(root.left,key);
+        }
+        return root;
+    }
 
+    public int Num337rob(TreeNode root) {
+        int[] result = Num337helper(root);
+        return Math.max(result[0], result[1]);
+    }
+
+    public int[] Num337helper(TreeNode node)
+    {
+        if(node==null)
+            return new int[2];
+        int[] ans =  new int[2];
+        int[] left = Num337helper(node.left);
+        int[] right = Num337helper(node.right);
+        ans[0] = Math.max(left[0],left[1])+Math.max(right[0], right[1]);
+        ans[1] = left[0]+right[0]+node.val;
+        return ans;
+    }
+
+
+    public List<Integer> Num545boundaryOfBinaryTree(TreeNode root) {
+
+    }
 
 
 

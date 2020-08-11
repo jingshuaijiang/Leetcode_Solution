@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Codec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Codec.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution_DP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_DP.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" afterDir="false" />
@@ -52,6 +50,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
@@ -91,7 +100,7 @@
       <workItem from="1595433906723" duration="10505000" />
       <workItem from="1596487798574" duration="6175000" />
       <workItem from="1596549612161" duration="162000" />
-      <workItem from="1596550385917" duration="3712000" />
+      <workItem from="1596550385917" duration="56799000" />
     </task>
     <servers />
   </component>

@@ -7397,8 +7397,127 @@ public class Solution {
 
     }
 
+    public List<List<Integer>> Num1282groupThePeople(int[] groupSizes) {
+        List<List<Integer>> ans = new LinkedList<>();
+        for(int i=0;i< groupSizes.length;i++)
+        {
+            int inserted = 0;
+            for(int j = 0;j<ans.size();j++)
+            {
+                if(groupSizes[ans.get(j).get(0)]==groupSizes[i]&&(ans.get(j).size()<groupSizes[i]))
+                {
+                    ans.get(j).add(i);
+                    inserted = 1;
+                }
+            }
+            if(inserted==0)
+            {
+                List<Integer> newlist = new LinkedList<>();
+                newlist.add(i);
+                ans.add(newlist);
+            }
+        }
+        return ans;
+    }
+
+    public int smallestRangeI(int[] A, int K) {
+        Arrays.sort(A);
+        if(A.length==1)
+            return 0;
+        int min = A[0];
+        int max = A[A.length-1];
+        if(min+K>=max-K)
+            return 0;
+        return max-K-min-K;
+    }
+
+    public boolean Num234isPalindrome(ListNode head) {
+        if(head==null)
+            return true;
+        ListNode half = Num234half(head);
+        ListNode reversed = Num234reverse(half.next);
+
+        ListNode p1 = head;
+        ListNode p2 = reversed;
+
+        while(p2!=null)
+        {
+            if(p2.val!=p1.val)
+                return false;
+            p2 = p2.next;
+            p1 = p1.next;
+        }
+        return true;
+
+    }
+
+    public ListNode Num234half(ListNode node)
+    {
+        ListNode slow = node;
+        ListNode fast = node;
+        while(fast.next!=null&&fast.next.next!=null)
+        {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    public ListNode Num234reverse(ListNode node)
+    {
+        if(node==null)
+            return null;
+        ListNode head = node;
+        ListNode prev = null;
+        while(head!=null)
+        {
+            ListNode temp = head.next;
+            head.next  = prev;
+            prev = head;
+            head = temp;
+        }
+        return prev;
+    }
+
+
+    public int Num1219getMaximumGold(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int max = 0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                max = Math.max(max,Num1219helper(grid,i,j));
+            }
+        }
+        return max;
+    }
+
+    public int Num1219helper(int[][] grid,int i,int j)
+    {
+        int[] rows = new int[]{1,0,-1,0};
+        int[] colomns = new int[]{0,1,0,-1};
+        int max = 0;
+        int raw = grid[i][j];
+        grid[i][j] = -2;
+        for(int num=0;num<4;num++)
+        {
+            int row = i+rows[num];
+            int col = j+ colomns[num];
+            if(row>=0&&row<grid.length&&col>=0&&col<grid[0].length)
+            {
+                if(grid[row][col]<=0)
+                    continue;
+                max = Math.max(max,Num1219helper(grid,row,col));
+            }
+        }
+        grid[i][j] = raw;
+        return max+grid[i][j];
+    }
+
     public void Num31nextPermutation(int[] nums) {
-        
+
     }
 
 

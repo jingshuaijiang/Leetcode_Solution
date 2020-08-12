@@ -1145,7 +1145,70 @@ public class Solution_DP {
     }
 
     public int Num361maxKilledEnemies(char[][] grid) {
-
+        int n = grid.length;
+        if(n==0)
+            return 0;
+        int m = grid[0].length;
+        int[][] dpleft =new int[n+2][m+2];
+        int[][] dpright = new int[n+2][m+2];
+        int[][] dpup = new int[n+2][m+2];
+        int[][] dpdown = new int[n+2][m+2];
+        for(int i=1;i<=n;i++)
+        {
+            int leftnum = 0;
+            for(int j=1;j<=m;j++)
+            {
+                if(grid[i-1][j-1]=='W')
+                    leftnum = 0;
+                else if(grid[i-1][j-1]=='E')
+                    leftnum++;
+                else
+                    dpleft[i][j] = leftnum;
+            }
+            int rightnum = 0;
+            for(int j=m;j>=1;j--)
+            {
+                if(grid[i-1][j-1]=='W')
+                    rightnum = 0;
+                else if(grid[i-1][j-1]=='E')
+                    rightnum++;
+                else
+                    dpright[i][j] = rightnum;
+            }
+        }
+        for(int j=1;j<=m;j++)
+        {
+            int upnum = 0;
+            for(int i=1;i<=n;i++)
+            {
+                if(grid[i-1][j-1]=='W')
+                    upnum = 0;
+                else if(grid[i-1][j-1]=='E')
+                    upnum++;
+                else
+                    dpup[i][j] = upnum;
+            }
+            int downnum = 0;
+            for(int i=n;i>=1;i--)
+            {
+                if(grid[i-1][j-1]=='W')
+                    downnum = 0;
+                else if(grid[i-1][j-1]=='E')
+                    downnum++;
+                else
+                    dpdown[i][j] = downnum;
+            }
+        }
+        int max = 0;
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(grid[i-1][j-1]=='0')
+                    max = Math.max(max,dpup[i][j]+dpdown[i][j]+dpleft[i][j]+dpright[i][j]);
+            }
+        }
+        return max;
     }
 
     public int Num978maxTurbulenceSize(int[] A) {
@@ -1176,7 +1239,40 @@ public class Solution_DP {
     public int Num264nthUglyNumber(int n) {
         if(n==1)
             return 1;
+        int[] dp = new int[n];
+        dp[0] = 1;
+        int p2 = 0,p3 = 0,p5=0;
+        for(int i=1;i<n;i++)
+        {
+            dp[i] = Math.min(dp[p2]*2,Math.min(dp[p3]*3,dp[p5]*5));
+            if(dp[i] == dp[p2]*2) p2++;
+            if(dp[i] == dp[p3]*3) p3++;
+            if(dp[i] == dp[p5]*5) p5++;
+        }
+        return dp[n-1];
+    }
 
+    public int Num221maximalSquare(char[][] matrix) {
+        int max = 0;
+        int n = matrix.length;
+        if(n==0)
+            return 0;
+        int m = matrix[0].length;
+        int[][] dp = new int[n+1][m+1];
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(matrix[i-1][j-1]=='0')
+                    dp[i][j] = 0;
+                else
+                {
+                    dp[i][j] = Math.min(dp[i-1][j-1],Math.min(dp[i-1][j],dp[i][j-1]))+1;
+                    max = Math.max(max,dp[i][j]);
+                }
+            }
+        }
+        return max*max;
     }
 
     public int Num1262maxSumDivThree(int[] nums) {

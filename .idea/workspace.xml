@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution_DP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_DP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +99,7 @@
       <workItem from="1595433906723" duration="10505000" />
       <workItem from="1596487798574" duration="6175000" />
       <workItem from="1596549612161" duration="162000" />
-      <workItem from="1596550385917" duration="56799000" />
+      <workItem from="1596550385917" duration="69925000" />
     </task>
     <servers />
   </component>

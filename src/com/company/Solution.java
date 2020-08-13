@@ -7516,6 +7516,59 @@ public class Solution {
         return max+grid[i][j];
     }
 
+    public int Num1167connectSticks(int[] sticks) {
+        int n = sticks.length;
+        if(n==1)
+            return 0;
+        Arrays.sort(sticks);
+        int cost = 0;
+        PriorityQueue<Integer> minheap = new PriorityQueue<>();
+        for(int i=0;i<sticks.length;i++)
+        {
+            minheap.add(sticks[i]);
+        }
+        int temp = 0;
+        while(minheap.size()>1)
+        {
+            temp = minheap.poll() + minheap.poll();
+            minheap.add(temp);
+            cost+=temp;
+        }
+        return cost;
+    }
+
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        int n = pushed.length;
+        Stack<Integer> stack = new Stack<>();
+        int[] counter = new int[1000];
+        int j = 0,i = 0;
+        while(i<n||j<n)
+        {
+            while(i<n&&pushed[i]!=popped[j])
+            {
+                stack.push(pushed[i]);
+                counter[pushed[i]] = 1;
+                i++;
+            }
+            if(i<n)
+            {
+                stack.push(pushed[i]);
+                i++;
+            }
+            while(stack.size()>0&&stack.peek()==popped[j])
+            {
+                stack.pop();
+                j++;
+            }
+            if(j!=n)
+            {
+                if(counter[popped[j]]!=0)
+                    return false;
+            }
+        }
+        return true;
+    }
+
     public void Num31nextPermutation(int[] nums) {
 
     }

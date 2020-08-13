@@ -1274,6 +1274,53 @@ public class Solution_DP {
         }
         return max*max;
     }
+    int[] Num357ans = new int[9];
+    public int Num357countNumbersWithUniqueDigits(int n) {
+        Num357ans[0] = 0;
+        Num357ans[1] = 10;
+        Num357ans[2] = 81;
+        int anns = 0;
+        for(int i=3;i<=8;i++)
+        {
+            Num357ans[i] = Num357ans[i-1]*(11-i);
+        }
+        if(n==0)
+            return 1;
+        else
+        {
+            for(int i=0;i<=n;i++)
+            {
+                anns+=Num357ans[i];
+            }
+        }
+        return anns;
+    }
+
+    public int Num873lenLongestFibSubseq(int[] A) {
+        int N = A.length;
+        Map<Integer,Integer> index = new HashMap<>();
+        for(int i=0;i<N;i++)
+        {
+            index.put(A[i],i);
+        }
+        Map<Integer,Integer> len = new HashMap<>();
+        int max = 0;
+        for(int i=0;i<N;i++)
+        {
+            for(int j=i-1;j>=0;j--)
+            {
+                int k = A[i]-A[j];
+                int inde = index.getOrDefault(k,-1);
+                if(inde>=0&&inde<j)
+                {
+                    int cand = len.getOrDefault(inde*N+j,2)+1;
+                    len.put(j*N+i,cand);
+                    max = Math.max(max,cand);
+                }
+            }
+        }
+        return max>=3?max:0;
+    }
 
     public int Num1262maxSumDivThree(int[] nums) {
 

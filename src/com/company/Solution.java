@@ -7569,6 +7569,93 @@ public class Solution {
         return true;
     }
 
+    public int[][] Num733floodFill(int[][] image, int sr, int sc, int newColor)
+    {
+        if(image[sr][sc]==newColor)
+            return image;
+        Num733helper(image,sr,sc,newColor,image[sr][sc]);
+        return image;
+    }
+
+    public void Num733helper(int[][] image, int sr, int sc, int newColor, int oldColor)
+    {
+        int n = image.length;
+        int m = image[0].length;
+        image[sr][sc] = newColor;
+        int[] rows = new int[]{1,0,-1,0};
+        int[] cols = new int[]{0,1,0,-1};
+        for(int i=0;i<4;i++)
+        {
+            int newrow = sr+rows[i];
+            int newcol = sc+cols[i];
+            if(newrow>=0&&newrow<n&&newcol>=0&&newcol<m)
+            {
+                if(image[newrow][newcol]==oldColor){
+                    Num733helper(image,newrow,newcol,newColor,oldColor);
+                }
+            }
+        }
+    }
+
+    int[] months = new int[]{0,31,28,31,30,31,30,31,31,30,31,30,31};
+    public int Num1360daysBetweenDates(String date1, String date2) {
+        return Math.abs(dayCount(date1) - dayCount(date2));
+    }
+
+    private int dayCount(String date) {
+        String[] ss = date.split("-");
+        int year = Integer.parseInt(ss[0]);
+        int month = Integer.parseInt(ss[1]);
+        int day = Integer.parseInt(ss[2]);
+        int count = day;
+        for (int i = 1; i < month; ++i) {
+            if (i == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+                count += months[i]+1;
+            else count += months[i];
+        }
+        for (int i = 1970; i < year; ++i) {
+            if ((i % 4 == 0 && i % 100 != 0) || (i % 400 == 0)) count += 366;
+            else count += 365;
+        }
+        return count;
+    }
+
+    public int Num1029twoCitySchedCost(int[][] costs) {
+        Arrays.sort(costs, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o1[1] - (o2[0] - o2[1]);
+            }
+        });
+
+        int total = 0;
+        int n = costs.length / 2;
+        for (int i = 0; i < n; ++i) total += costs[i][0] + costs[i + n][1];
+        return total;
+    }
+
+    public int Num921minAddToMakeValid(String S) {
+        int num = 0;
+        int ans = 0;
+        for(int i=0;i<S.length();i++)
+        {
+            if(S.charAt(i)=='(')
+                num++;
+            else
+            {
+                num--;
+            }
+            if(num<0)
+            {
+                ans+=1;
+                num = 0;
+            }
+        }
+        if(num>0)
+            ans+=num;
+        return ans;
+    }
+
     public void Num31nextPermutation(int[] nums) {
 
     }

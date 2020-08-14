@@ -1541,7 +1541,120 @@ public class Solution_Tree {
         return root;
     }
 
+    public TreeNode Num450deleteNode(TreeNode root, int key) {
+        if(root==null)
+            return null;
+        if(root.val==key)
+        {
+            if(root.left==null&&root.right==null)
+                return null;
+            if(root.left==null)
+                return root.right;
+            if(root.right==null)
+                return root.left;
+            else
+            {
+                TreeNode leftc = root.left;
+                while(leftc.right!=null)
+                {
+                    leftc = leftc.right;
+                }
+                leftc.right = root.right;
+                return root.left;
+            }
+        }
+        if(key>root.val)
+        {
+            root.right = Num450deleteNode(root.right,key);
+        }
+        else
+        {
+            root.left = Num450deleteNode(root.left,key);
+        }
+        return root;
+    }
 
+    public int Num337rob(TreeNode root) {
+        int[] result = Num337helper(root);
+        return Math.max(result[0], result[1]);
+    }
+
+    public int[] Num337helper(TreeNode node)
+    {
+        if(node==null)
+            return new int[2];
+        int[] ans =  new int[2];
+        int[] left = Num337helper(node.left);
+        int[] right = Num337helper(node.right);
+        ans[0] = Math.max(left[0],left[1])+Math.max(right[0], right[1]);
+        ans[1] = left[0]+right[0]+node.val;
+        return ans;
+    }
+
+    public int Num1161maxLevelSum(TreeNode root) {
+        int currLevel = 1, maxLevel = 1;
+        int maxSum = root.val, currSum = 0;
+
+        LinkedList<TreeNode> queue = new LinkedList();
+        TreeNode marker = null, x = root;
+        queue.addLast(root);
+        queue.addLast(marker);
+
+        while (queue.size() > 1) {
+            x = queue.removeFirst();
+            // continue current level
+            if (x != marker) {
+                currSum += x.val;
+                if (x.left != null) queue.addLast(x.left);
+                if (x.right != null) queue.addLast(x.right);
+            }
+            // end of current level, go to the next level
+            else {
+                if (currSum > maxSum) {
+                    maxSum = currSum;
+                    maxLevel = currLevel;
+                }
+                currSum = 0;
+                currLevel++;
+                queue.addLast(marker);
+            }
+        }
+
+        return maxLevel;
+    }
+
+    public boolean Num1214twoSumBSTs(TreeNode root1, TreeNode root2, int target) {
+        ArrayDeque<TreeNode> stack = new ArrayDeque();
+        Set<Integer> s = new HashSet();
+        while (!stack.isEmpty() || root1 != null) {
+            while (root1 != null) {
+                stack.push(root1);
+                root1 = root1.left;
+            }
+            root1 = stack.pop();
+            s.add(target - root1.val);
+            root1 = root1.right;
+        }
+        while (!stack.isEmpty() || root2 != null) {
+            while (root2 != null) {
+                stack.push(root2);
+                root2 = root2.left;
+            }
+            root2 = stack.pop();
+            if (s.contains(root2.val)) {
+                return true;
+            }
+            root2 = root2.right;
+        }
+
+        return false;
+    }
+
+
+
+    public List<Integer> Num545boundaryOfBinaryTree(TreeNode root) {
+
+    }
 
 
 

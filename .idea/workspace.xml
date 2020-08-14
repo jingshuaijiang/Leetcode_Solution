@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Codec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Codec.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_DP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_DP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" afterDir="false" />
-    </list>
+    <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,9 +23,11 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -92,6 +87,7 @@
       <workItem from="1596487798574" duration="6175000" />
       <workItem from="1596549612161" duration="162000" />
       <workItem from="1596550385917" duration="3712000" />
+      <workItem from="1596573555352" duration="32000" />
     </task>
     <servers />
   </component>

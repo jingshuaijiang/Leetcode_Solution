@@ -7656,6 +7656,55 @@ public class Solution {
         return ans;
     }
 
+    public int Num1137tribonacci(int n) {
+        if(n==0)
+            return 0;
+        if(n==1||n==2)
+            return 1;
+        int pppre = 0;
+        int ppre = 1;
+        int pre = 1;
+        int index = 3;
+        int cur = -1;
+        while(index<=n)
+        {
+            cur = pppre+ppre+pre;
+            pppre = ppre;
+            ppre = pre;
+            pre = cur;
+            index++;
+        }
+        return pre;
+    }
+
+    public char Num389findTheDifference(String s, String t) {
+        int[] counter = new int[26];
+        for(int i=0;i<s.length();i++)
+        {
+            counter[s.charAt(i)-'a']++;
+            counter[t.charAt(i)-'a']--;
+        }
+        counter[t.charAt(t.length()-1)-'a']--;
+        int i=0;
+        for(;i<26;i++)
+        {
+            if(counter[i]<0)
+                break;
+        }
+        return (char)('a'+i);
+    }
+
+    public int Num1118numberOfDays(int Y, int M) {
+        int[] months = new int[] {0,31,28,31,30,31,30,31,31,30,31,30,31};
+        if(Y%4==0&&M==2)
+            return 29;
+        else return months[M];
+    }
+
+    public String Num1071gcdOfStrings(String str1, String str2) {
+        
+    }
+
     public void Num31nextPermutation(int[] nums) {
 
     }

@@ -7701,6 +7701,52 @@ public class Solution {
         else return months[M];
     }
 
+    public boolean Num1550threeConsecutiveOdds(int[] arr) {
+        if(arr.length<3)
+            return false;
+        for(int i=2;i<arr.length;)
+        {
+            if(arr[i]%2==1)
+            {
+                if(arr[i-1]%2==0)
+                {
+                    i+=2;
+                }
+                else
+                {
+                    if(arr[i-2]%2==0)
+                        i+=1;
+                    else
+                        return true;
+                }
+            }
+            else
+            {
+                i+=3;
+            }
+        }
+        return false;
+    }
+
+    public boolean Num1232checkStraightLine(int[][] coordinates) {
+        int points = coordinates.length;
+
+        int x = coordinates[1][0] - coordinates[0][0];
+        int y = coordinates[1][1] - coordinates[0][1];
+
+        int curr_x = 0, curr_y = 0;
+
+        for(int i=2;i<points;i++)
+        {
+            curr_x = coordinates[i][0] - coordinates[i-1][0];
+            curr_y = coordinates[i][1] - coordinates[i-1][1];
+
+            if(y*curr_x != x*curr_y)
+                return false;
+        }
+        return true;
+    }
+
     public String Num1071gcdOfStrings(String str1, String str2) {
         
     }

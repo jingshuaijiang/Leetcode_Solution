@@ -65,7 +65,41 @@ public class Solution_DFS {
     }
 
     public List<String> Num17letterCombinations(String digits) {
+        List<String> ans = new LinkedList<>();
+        for(int i=0;i<digits.length();i++)
+        {
+            if(digits.charAt(i)>'9'||digits.charAt(i)<'2')
+                return ans;
+        }
+        if(digits.length()<=0)
+            return ans;
+        HashMap<Character,String> digitmap = new HashMap<>();
+        digitmap.put('2',"abc");
+        digitmap.put('3',"def");
+        digitmap.put('4',"ghi");
+        digitmap.put('5',"jkl");
+        digitmap.put('6',"mno");
+        digitmap.put('7',"pqrs");
+        digitmap.put('8',"tuv");
+        digitmap.put('9',"wxyz");
+        Num17helper(digits,digitmap,ans,0,"");
+        return ans;
+    }
 
+    public void Num17helper(String digits,HashMap<Character,String> digitmap,List<String> ans,int index,String curstr)
+    {
+        if(index==digits.length())
+        {
+            ans.add(curstr);
+            return;
+        }
+        String current = digitmap.get(digits.charAt(index));
+        for(int i=0;i<current.length();i++)
+        {
+            curstr+=current.charAt(i);
+            Num17helper(digits,digitmap,ans,index+1,curstr);
+            curstr = curstr.substring(0,curstr.length()-1);
+        }
     }
 
     public void Num289gameOfLife(int[][] board) {

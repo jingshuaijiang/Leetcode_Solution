@@ -4,7 +4,7 @@
     <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Linkedlist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Linkedlist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_DP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_DP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,15 +49,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -103,6 +101,7 @@
       <workItem from="1596549612161" duration="162000" />
       <workItem from="1596550385917" duration="71502000" />
       <workItem from="1597278554575" duration="38352000" />
+      <workItem from="1598818724558" duration="8816000" />
     </task>
     <servers />
   </component>

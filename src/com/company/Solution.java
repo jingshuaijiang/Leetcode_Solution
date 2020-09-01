@@ -7747,6 +7747,78 @@ public class Solution {
         return true;
     }
 
+    public boolean Num202isHappy(int n) {
+        HashMap<Integer,Integer> counter = new HashMap<>();
+        int number = n;
+        while(number!=1&&!counter.containsKey(number))
+        {
+            counter.put(number,1);
+            number = Num202helper(number);
+        }
+        if(number==1)
+            return true;
+        return false;
+    }
+
+    public int Num202helper(int number)
+    {
+        int sum = 0;
+        while(number!=0)
+        {
+            int res = number%10;
+            number = number/10;
+            sum+=res*res;
+        }
+        return sum;
+    }
+
+    public boolean Num326isPowerOfThree(int n) {
+        return (Math.log10(n) / Math.log10(3)) % 1 == 0;
+    }
+
+    public String Num14longestCommonPrefix(String[] strs) {
+        if(strs==null||strs.length==0)
+            return "";
+        for(int i=0;i<strs[0].length();i++)
+        {
+            char c = strs[0].charAt(i);
+            for(int j=1;j<strs.length;j++)
+            {
+                if(i==strs[j].length()||strs[j].charAt(i)!=c)
+                    return strs[0].substring(0,i);
+            }
+        }
+        return strs[0];
+    }
+
+    public int[] Num347topKFrequent(int[] nums, int k) {
+        if(k==nums.length)
+            return nums;
+        HashMap<Integer,Integer> counter = new HashMap<>();
+        for(int num:nums)
+        {
+            counter.put(num,counter.getOrDefault(num,0)+1);
+        }
+        PriorityQueue<Integer> heap = new PriorityQueue<>(
+                (n1,n2)->counter.get(n2)-counter.get(n1)
+        );
+        for(int num:counter.keySet())
+        {
+            heap.add(num);
+        }
+
+        int[] ans = new int[k];
+        for(int i=0;i<k;i++)
+        {
+            ans[i] = heap.poll();
+        }
+        return ans;
+    }
+
+    public int Num215findKthLargest(int[] nums, int k) {
+
+    }
+
     public String Num1071gcdOfStrings(String str1, String str2) {
         
     }

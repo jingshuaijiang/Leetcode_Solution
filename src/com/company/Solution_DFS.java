@@ -102,6 +102,45 @@ public class Solution_DFS {
         }
     }
 
+    int Num1254nums = 0;
+    int Num1254bound = -1;
+    public int Num1254closedIsland(int[][] grid) {
+        for(int i=0;i< grid.length;i++)
+        {
+            for(int j = 0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]==0)
+                {
+                    Num1254helper(grid,i,j,2);
+                    if(Num1254bound==-1)
+                        Num1254nums++;
+                    Num1254bound = -1;
+                }
+            }
+        }
+        return Num1254nums;
+
+    }
+
+    public void Num1254helper(int[][] grid,int i, int j,int fullfilnum)
+    {
+        int n = grid.length;
+        int m = grid[0].length;
+        if(0<=i&&i<n&&0<=j&&j<m)
+        {
+            if(grid[i][j]==0)
+            {
+                if(i==0||i==n-1 ||j==0 ||j==m-1)
+                    Num1254bound = -2;
+                grid[i][j] = fullfilnum;
+                Num1254helper(grid,i+1,j,fullfilnum);
+                Num1254helper(grid,i-1,j,fullfilnum);
+                Num1254helper(grid,i,j-1,fullfilnum);
+                Num1254helper(grid,i,j+1,fullfilnum);
+            }
+        }
+    }
+
     public void Num289gameOfLife(int[][] board) {
 
     }
@@ -109,4 +148,35 @@ public class Solution_DFS {
     public int Num959regionsBySlashes(String[] grid) {
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

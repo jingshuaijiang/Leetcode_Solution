@@ -1,5 +1,6 @@
 package com.company;
 
+import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree;
 import javafx.util.Pair;
 
@@ -7815,6 +7816,31 @@ public class Solution {
         return ans;
     }
 
+    public int Num1539findKthPositive(int[] arr, int k) {
+        int[] counter = new int[1001];
+        for(int i=0;i<arr.length;i++)
+        {
+            counter[arr[i]]++;
+        }
+        int index = 0;
+        for(int i=1;i<1001;i++)
+        {
+            if(counter[i]==0)
+            {
+                index++;
+                if(index==k)
+                    return i;
+            }
+        }
+        if(index<k)
+            return (k-index)+1000;
+        return 0;
+    }
+
+    public int Num419countBattleships(char[][] board) {
+
+    }
+
     public int Num215findKthLargest(int[] nums, int k) {
 
     }
@@ -7823,9 +7849,416 @@ public class Solution {
         
     }
 
-    public void Num31nextPermutation(int[] nums) {
+    public void Num1code1()
+    {
+        Scanner sc = new Scanner(System.in);
+        int n1 = sc.nextInt();
+        int[] list1 = new int[n1];
+        for(int i=0;i<n1;i++)
+        {
+            list1[i] = sc.nextInt();
+        }
+        String ans = "";
+        int i = 0;
+        int n2 = sc.nextInt();
+        for(int j=0;j<n2;j++)
+        {
+            int cur = sc.nextInt();
+            if(list1[i]==cur)
+            {
+                ans+=list1[i];
+                ans+=" ";
+                i++;
+            }
+            else
+            {
+                while(i<n1&&list1[i]>cur)
+                {
+                    i++;
+                }
+                if(i==n1)
+                    break;
+                else if(list1[i]==cur)
+                {
+                    ans+=list1[i];
+                    ans+=" ";
+                    i++;
+                }
+                else
+                    continue;
+            }
 
+        }
+        System.out.println(ans);
     }
+
+    public void Num1code1p1()
+    {
+        Scanner sc = new Scanner(System.in);
+        int n1 = sc.nextInt();
+        LinkedList<Integer> list1 = new LinkedList<>();
+        LinkedList<Integer> list2 = new LinkedList<>();
+        for(int i=0;i<n1;i++)
+        {
+            list1.add(sc.nextInt());
+        }
+        int n2 = sc.nextInt();
+        for(int i=0;i<n2;i++)
+        {
+            list2.add(sc.nextInt());
+        }
+        String ans = "";
+        int i = 0,j = 0;
+        while(i!=n1&&j!=n2)
+        {
+            if(list1.get(i)==list2.get(j))
+            {
+                ans+=list1.get(i)+" ";
+                i++;j++;
+            }
+            else if(list1.get(i)<list2.get(j))
+            {
+                j++;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        System.out.println(ans);
+    }
+
+    public void Num1code1sili()
+    {
+        Scanner sc = new Scanner(System.in);
+        int n1 = sc.nextInt();
+        LinkedList<Integer> list1 = new LinkedList<>();
+        LinkedList<Integer> list2 = new LinkedList<>();
+        for(int i=0;i<n1;i++)
+        {
+            list1.add(sc.nextInt());
+        }
+        int n2 = sc.nextInt();
+
+        String ans = "";
+        int i = 0,j = 0,l2=0;
+        if (n2>0) l2=sc.nextInt();
+        while(i<n1&&j<n2)
+        {
+            if(list1.get(i)==l2)
+            {
+                ans+=list1.get(i)+" ";
+                i++;j++;
+                if (j<n2) l2 = sc.nextInt();
+            }
+            else if(list1.get(i)<l2)
+            {
+                j++;
+                if (j<n2) l2 = sc.nextInt();
+            }
+            else
+            {
+                i++;
+            }
+        }
+        System.out.println(ans);
+    }
+
+
+
+    public void Num1code4()
+    {
+        Scanner sc = new Scanner(System.in);
+        int n1 = sc.nextInt();
+        int[] numlist = new int[n1];
+        int[] list2 = new int[n1];
+        for(int i = 0;i<n1;i++)
+        {
+            numlist[i] = sc.nextInt();
+            list2[i] = numlist[i];
+        }
+        Arrays.sort(list2);
+        int mid1 = n1/2;
+        int midpre = mid1-1;
+        for(int i=0;i<n1;i++)
+        {
+            if(numlist[i]<list2[mid1])
+                System.out.println(list2[mid1]);
+            else
+                System.out.println(list2[midpre]);
+        }
+    }
+
+    public void Num1code5()
+    {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int K = sc.nextInt();
+        HashMap<String,Integer> counter = new HashMap<>();
+        for(int i=0;i<N;i++)
+        {
+            String curstr = sc.nextLine();
+            counter.put(curstr,counter.getOrDefault(curstr,0)+1);
+        }
+        HashMap<Integer,List<String>> map = new HashMap<>();
+        for(String key: counter.keySet())
+        {
+            if(!map.containsKey(counter.get(key)))
+            {
+                List<String> newnumstrlist = new LinkedList<>();
+                newnumstrlist.add(key);
+                map.put(counter.get(key),newnumstrlist);
+            }
+            else
+            {
+                List<String> numstrlist = map.get(counter.get(key));
+                int i = 0,added = 0;
+                for(;i<numstrlist.size();i++)
+                {
+                    if(key.compareTo(numstrlist.get(i))<0)
+                    {
+                        numstrlist.add(i,key);
+                        added = 1;
+                    }
+                }
+                if(added==0)
+                    numstrlist.add(key);
+                map.put(counter.get(key),numstrlist);
+            }
+        }
+        int[] acounter = new int[map.size()];
+        int j = 0;
+        for(int key:map.keySet())
+        {
+            acounter[j] = key;
+            j++;
+        }
+
+        Arrays.sort(acounter);
+        int tail = acounter.length-1;
+        int kcounter = 0;
+        for(int i=tail;i>=0;i--)
+        {
+            List<String> Numstrlist = map.get(acounter[i]);
+            for(int p = 0;p<Numstrlist.size();p++)
+            {
+                String output = Numstrlist.get(p)+" "+acounter[i];
+                System.out.println(output);
+                kcounter++;
+                if(kcounter==K)
+                {
+                    i = -1;
+                    break;
+                }
+            }
+        }
+        kcounter = 0;
+        for(int i=0;i<=tail;i++)
+        {
+            List<String> Numstrlist = map.get(acounter[i]);
+            for(int p = 0;p<Numstrlist.size();p++)
+            {
+                System.out.println(Numstrlist.get(p)+" "+acounter[i]);
+                kcounter++;
+                if(kcounter==K)
+                {
+                    i = tail+1;
+                    break;
+                }
+            }
+        }
+    }
+
+    public int Num1572diagonalSum(int[][] mat) {
+        int n = mat.length;
+        if(n<=0)
+            return 0;
+        int ans = 0;
+        for(int i=0;i<n;i++)
+        {
+            ans+=mat[i][i];
+            int row = i;
+            int col = n-1-i;
+            if(row!=col)
+                ans+=mat[row][col];
+        }
+        return ans;
+    }
+
+
+    public int[][] Num723candyCrush(int[][] board) {
+        int n = board.length;
+        int m = board[0].length;
+        while(Num723revised)
+        {
+            Num723crush(board);
+            if(!Num723revised)
+                break;
+            Num723gravity(board);
+        }
+        return board;
+    }
+    boolean Num723revised = true;
+    public void Num723gravity(int[][] board)
+    {
+        for(int i=0;i<board[0].length;i++)
+        {
+            int count = 0;
+            for(int j = board.length-1;j>=0;j--)
+            {
+                if(board[j][i]==0)
+                    count++;
+                else
+                {
+                    board[j+count][i] = board[j][i];
+                }
+            }
+            for(int j = 0;j<count;j++)
+            {
+                board[j][i] = 0;
+            }
+        }
+    }
+
+    public void Num723crush(int[][] board)
+    {
+        int revised = 0;
+        for(int i=0;i<board.length;i++)
+        {
+            for(int j = 0;j<board[0].length;j++)
+            {
+                if(j<=board[i].length-3&&board[i][j]!=0&&
+                        Math.abs(board[i][j])==Math.abs(board[i][j+1])&&
+                        Math.abs(board[i][j])==Math.abs(board[i][j+2]))
+                {
+                    revised = 1;
+                    board[i][j] = -Math.abs(board[i][j]);
+                    board[i][j+1] = -Math.abs(board[i][j]);
+                    board[i][j+2] = -Math.abs(board[i][j]);
+                }
+
+                if(j<=board.length-3&&board[i][j]!=0&&
+                        Math.abs(board[i][j])==Math.abs(board[i+1][j])&&
+                        Math.abs(board[i][j])==Math.abs(board[i+2][j]))
+                {
+                    revised = 1;
+                    board[i][j] = -Math.abs(board[i][j]);
+                    board[i+1][j] = -Math.abs(board[i][j]);
+                    board[i+2][j] = -Math.abs(board[i][j]);
+                }
+            }
+        }
+        if(revised==0) {
+            Num723revised = false;
+            return;
+        }
+        Num723revised = true;
+        for(int i = 0;i<board.length;i++)
+        {
+            for(int j = 0;j<board[0].length;j++) {
+                if(board[i][j]<0)
+                    board[i][j] = 0;
+            }
+        }
+    }
+
+    public void Num31nextPermutation(int[] nums)
+    {
+        int descend = 1;
+        for(int i=nums.length-1;i>0;i--)
+        {
+            if(descend==1&&nums[i]>nums[i-1])
+            {
+                descend = 0;
+                Num31helper(nums,i-1);
+            }
+        }
+
+        if(descend ==1 )
+        {
+            Num31desctoasc(nums);
+        }
+    }
+
+    public void Num31helper(int[] nums,int start)
+    {
+        for(int i = nums.length-1;i>start;i--)
+        {
+            if(nums[i]>nums[start])
+            {
+                int pre = nums[start];
+                nums[start] = nums[i];
+                nums[i] = pre;
+                break;
+            }
+        }
+        int mid = (nums.length+start)/2;
+        for(int i = 0;i+start+1<=mid;i++)
+        {
+            int po = nums[start+1+i];
+            nums[start+1+i] = nums[nums.length-1-i];
+            nums[nums.length-1-i] = po;
+        }
+    }
+
+    public void Num31desctoasc(int[] nums)
+    {
+        int n = nums.length;
+        int mid = n/2;
+        int po = 0;
+        for(int i=0;i<mid;i++)
+        {
+            po = nums[i];
+            nums[i] = nums[nums.length-1-i];
+            nums[nums.length-1-i] = po;
+        }
+    }
+
+    public void Num73setZeroes(int[][] matrix) {
+        boolean fcol = false;
+        int n = matrix.length;
+        int m = matrix[0].length;
+        for(int i=0;i<n;i++)
+        {
+            if(matrix[i][0]==0)
+                fcol = true;
+            for(int j=1;j<m;j++)
+            {
+                if(matrix[i][j]==0)
+                {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for(int i = 1;i<n;i++)
+        {
+            for(int j=1;j<m;j++)
+            {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        if(matrix[0][0]==0)
+        {
+            for(int j=1;j<m;j++) {
+                matrix[0][j] = 0;
+            }
+
+        }
+        if(fcol)
+        {
+            for (int i=0;i<n;i++)
+            {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+
+
+
 
 
 

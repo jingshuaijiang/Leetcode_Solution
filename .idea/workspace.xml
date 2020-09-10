@@ -36,7 +36,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -90,7 +90,10 @@
       <workItem from="1596549612161" duration="162000" />
       <workItem from="1596550385917" duration="71502000" />
       <workItem from="1597278554575" duration="38352000" />
-      <workItem from="1598818724558" duration="16060000" />
+      <workItem from="1598818724558" duration="16659000" />
+      <workItem from="1599183138406" duration="21854000" />
+      <workItem from="1599601555113" duration="3116000" />
+      <workItem from="1599704632072" duration="4717000" />
     </task>
     <servers />
   </component>
@@ -109,17 +112,31 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="WindowStateProjectService">
+    <state x="2240" y="681" key="FileChooserDialogImpl" timestamp="1599400993810">
+      <screen x="1920" y="0" width="1080" height="1880" />
+    </state>
+    <state x="2240" y="681" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040/1920.0.1080.1880@1920.0.1080.1880" timestamp="1599400993810" />
+    <state x="369" y="143" key="SettingsEditor" timestamp="1599704978402">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="369" y="143" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040/1920.0.1080.1880@1920.0.1080.1880" timestamp="1599704978402" />
+    <state x="1920" y="550" key="new project wizard" timestamp="1599400997234">
+      <screen x="1920" y="0" width="1080" height="1880" />
+    </state>
+    <state x="1920" y="550" key="new project wizard/0.0.1920.1040/-1920.0.1920.1040/1920.0.1080.1880@1920.0.1080.1880" timestamp="1599400997234" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/company/Solution.java</url>
-          <line>508</line>
+          <line>509</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/company/Solution.java</url>
-          <line>1982</line>
+          <line>1983</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

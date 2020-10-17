@@ -8,6 +8,7 @@ public class Node {
     public Node random;
     public Node next;
     public Node parent;
+    public List<Node> neighbors;
 
     public Node() {}
 
@@ -18,5 +19,9 @@ public class Node {
     public Node(int _val, List<Node> _children) {
         val = _val;
         children = _children;
+    }
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
     }
 }

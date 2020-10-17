@@ -8257,6 +8257,145 @@ public class Solution {
         }
     }
 
+    public int[] Num1103distributeCandies(int candies, int num_people) {
+        int[] ans = new int[num_people];
+        int round = 0;
+        while(candies>0)
+        {
+            for(int i=0;i<num_people;i++)
+            {
+                if(candies-(round*(num_people)+(i+1))>=0)
+                {
+                    ans[i]+=(round*(num_people)+(i+1));
+                    candies-=(round*(num_people)+(i+1));
+                }
+                else
+                {
+                    ans[i]+=candies;
+                    candies=0;
+                }
+            }
+            round++;
+        }
+
+        return ans;
+    }
+
+    public int[][] Num56merge(int[][] intervals) {
+        Collections.sort(Arrays.asList(intervals), new Comparator<int[]>() {
+            @Override
+            public int compare(int[] t1, int[] t2) {
+                if(t1[0]==t2[0])
+                    return t2[1]-t1[1];
+                else
+                    return t1[0]-t2[0];
+            }
+        });
+        LinkedList<int[]> ans = new LinkedList<>();
+        for(int[] interval: intervals)
+        {
+            if(ans.isEmpty()||ans.getLast()[1]<interval[0])
+                ans.add(interval);
+            else
+            {
+                ans.getLast()[1] = Math.max(ans.getLast()[1],interval[1]);
+            }
+        }
+        return ans.toArray(new int[ans.size()][2]);
+    }
+
+    public char Num389Sol2findTheDifference(String s, String t) {
+        char ch = 0;
+        for(int i=0;i<s.length();i++)
+        {
+            ch ^= s.charAt(i);
+        }
+        for(int i=0;i<t.length();i++)
+            ch ^=t.charAt(i);
+        return ch;
+    }
+
+    public int Num318maxProduct(String[] words) {
+        int n = words.length;
+        int[] lengthlist = new int[n];
+        int[] masks = new int[n];
+        int bitmask = 0;
+        for(int i=0;i<n;i++)
+        {
+            bitmask = 0;
+            for(int j=0;j<words[i].length();j++)
+            {
+                bitmask|=1<<(words[i].charAt(j)-'a');
+            }
+            masks[i] = bitmask;
+            lengthlist[i] = words[i].length();
+        }
+        int ans = 0;
+        for(int i=0;i<words.length;i++)
+        {
+            for(int j = i+1;j<words.length;j++)
+            {
+                if((masks[i]&masks[j])==0)
+                    ans = Math.max(ans,lengthlist[i]*lengthlist[j]);
+            }
+        }
+        return ans;
+    }
+
+    public String Num1592reorderSpaces(String text) {
+        int space_num = 0;
+        for(int i=0;i<text.length();i++)
+        {
+            if(text.charAt(i)==' ')
+                space_num++;
+        }
+        String[] words = text.split(" ");
+        String ans = "";
+        int num = words.length-1;
+        int middle = space_num/num;
+        for(int i=0;i<words.length;i++)
+        {
+            ans+=words[i];
+        }
+    }
+
+    public int Num1582numSpecial(int[][] mat) {
+        if(mat==null||mat.length==0)
+            return 0;
+        int row = mat.length;
+        int col = mat[0].length;
+        int[] counter_row = new int[row];
+        int[] counter_col = new int[col];
+        for(int i=0;i<mat.length;i++)
+        {
+            for(int j = 0;j<mat[0].length;j++)
+            {
+                if(mat[i][j]==1)
+                {
+                    counter_row[i]++;
+                    counter_col[j]++;
+                }
+            }
+        }
+        int count = 0;
+        for(int i=0;i<mat.length;i++)
+        {
+            for(int j = 0;j<mat[0].length;j++)
+            {
+                if(mat[i][j]==1&&counter_row[i]==1&&counter_col[j]==1)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+
+    }
+
+    public int Num1588sumOddLengthSubarrays(int[] arr) {
+
+    }
+
 
 
 

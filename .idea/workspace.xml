@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_DFS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_DFS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +94,18 @@
       <workItem from="1598818724558" duration="16659000" />
       <workItem from="1599183138406" duration="21854000" />
       <workItem from="1599601555113" duration="3116000" />
-      <workItem from="1599704632072" duration="4717000" />
+      <workItem from="1599704632072" duration="6227000" />
+      <workItem from="1599892251288" duration="998000" />
+      <workItem from="1599897314355" duration="1873000" />
+      <workItem from="1599982065896" duration="1988000" />
+      <workItem from="1599985251026" duration="16731000" />
+      <workItem from="1601128459598" duration="7647000" />
+      <workItem from="1601342199019" duration="1904000" />
+      <workItem from="1601344847105" duration="21198000" />
+      <workItem from="1601600610900" duration="6461000" />
+      <workItem from="1601690417815" duration="9928000" />
+      <workItem from="1602386343371" duration="14000" />
+      <workItem from="1602900863170" duration="8941000" />
     </task>
     <servers />
   </component>
@@ -125,6 +137,10 @@
       <screen x="1920" y="0" width="1080" height="1880" />
     </state>
     <state x="1920" y="550" key="new project wizard/0.0.1920.1040/-1920.0.1920.1040/1920.0.1080.1880@1920.0.1080.1880" timestamp="1599400997234" />
+    <state x="2123" y="435" width="672" height="678" key="search.everywhere.popup" timestamp="1601525621900">
+      <screen x="1920" y="0" width="1080" height="1880" />
+    </state>
+    <state x="2123" y="435" width="672" height="678" key="search.everywhere.popup/1920.0.1080.1880/0.0.1920.1040/-1920.0.1920.1040@1920.0.1080.1880" timestamp="1601525621900" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1677,6 +1677,55 @@ public class Solution_Tree {
         return null;
     }
 
+    public Node Num1506findRoot(List<Node> tree) {
+        Map<Node, Node> childrenParent = new HashMap<>();
+        for(Node n : tree){
+            if(n.children != null){
+                for(Node node : n.children){
+                    childrenParent.put(node, n);
+                }
+            }
+        }
+        for(Node n : tree){
+            if(!childrenParent.containsKey(n)){
+                return n;
+            }
+        }
+        return null;
+    }
+    int Num1522diameters=0;
+    public int Num1522diameter(Node root) {
+        int dep = Num1522helper(root);
+        return Num1522diameters>dep-1?Num1522diameters:dep-1;
+    }
+
+    public int Num1522helper(Node root)
+    {
+        if(root==null)
+            return 0;
+        List<Integer> childdepth = new LinkedList<>();
+        int max = 0;
+        for(Node child:root.children)
+        {
+            int dep = Num1522helper(child);
+            max = Math.max(max,dep);
+            childdepth.add(dep);
+        }
+        Num1522diamax(childdepth);
+        return max+1;
+    }
+
+    public void Num1522diamax(List<Integer> childdepth)
+    {
+        for(int i=0;i<childdepth.size()-1;i++)
+        {
+            for(int j=i+1;j<childdepth.size();j++)
+            {
+                Num1522diameters=Math.max(Num1522diameters,childdepth.get(i)+childdepth.get(j));
+            }
+        }
+    }
+
 
 
 

@@ -8392,7 +8392,68 @@ public class Solution {
 
     }
 
-    public int Num1588sumOddLengthSubarrays(int[] arr) {
+    String Num1625minstring;
+
+    /**
+     * problems like this is simply brute force, we just need to simulate the process
+     * and split all different operations into different functions, and do DFS or BFS
+     * @param s
+     * @param a
+     * @param b
+     * @return
+     */
+    public String Num1625findLexSmallestString(String s, int a, int b) {
+        HashSet<String> set = new HashSet<>();
+        Num1625minstring = s;
+        Num1625helper(s,a,b,set);
+        return Num1625minstring;
+    }
+
+    public void Num1625helper(String s, int a, int b,HashSet<String> set)
+    {
+        if(set.contains(s))
+            return;
+        set.add(s);
+        if(s.compareTo(Num1625minstring)<0)
+            Num1625minstring = s;
+        Num1625helper(Num1625rotate(s,b),a,b,set);
+        Num1625helper(Num1625add(s,a),a,b,set);
+    }
+
+    public String Num1625rotate(String s, int b)
+    {
+        int len = s.length()-b;
+        return s.substring(len)+s.substring(0,len);
+    }
+
+    public String Num1625add(String s,int a)
+    {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<s.length();i++)
+        {
+            char c =s.charAt(i);
+            if(i%2==1)
+            {
+                int curr = (c-'0'+a)%10;
+                c = (char) (curr+48);
+            }
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    public int Num1561maxCoins(int[] piles) {
+        int sum = 0,time = 0,n = piles.length/3;
+        Arrays.sort(piles);
+        for(int i = piles.length-2;time<n;i-=2)
+        {
+            sum+=piles[i];
+            time++;
+        }
+        return sum;
+    }
+
+    public String Num819mostCommonWord(String paragraph, String[] banned) {
 
     }
 

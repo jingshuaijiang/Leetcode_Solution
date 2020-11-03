@@ -1012,7 +1012,111 @@ public class Solution_Graph {
         return map.get(bottomleft)==1&&map.get(topleft)==1&&map.get(topright)==1&&map.get(bottomright)==1;
     }
 
-    
+    public boolean Num261validTree(int n, int[][] edges) {
+        int[] unions = new int[n];
+        for(int i=0;i<edges.length;i++)
+        {
+            if(edges[i][0]>edges[i][1])
+            {
+                int k = edges[i][0];
+                edges[i][0] = edges[i][1];
+                edges[i][1] = k;
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            unions[i] = i;
+        }
+        for(int[] edge:edges)
+        {
+            if(Num261unions(edge[0],edge[1],unions))
+                return false;
+        }
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<n;i++)
+        {
+            set.add(Num261find(i,unions));
+        }
+        return set.size()==1;
+
+    }
+
+    public int Num261find(int x, int[] unions)
+    {
+        if(unions[x]==x)
+            return x;
+        return Num261find(unions[x],unions);
+    }
+
+    public boolean Num261unions(int x,int y,int[] unions)
+    {
+        int xset = Num261find(x,unions);
+        int yset = Num261find(y,unions);
+        if(xset!=yset)
+        {
+            unions[y] = xset;
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * some testcase are wrong, but i don't know why. Fuck!!!
+     * @param n
+     * @param threshold
+     * @param queries
+     * @return
+     */
+    public List<Boolean> Num1627areConnected(int n, int threshold, int[][] queries) {
+        List<Boolean> ans = new LinkedList<>();
+        if(threshold==0)
+        {
+            for(int i=0;i<queries.length;i++)
+                ans.add(true);
+            return ans;
+        }
+        int[] unions = new int[n+1];
+        for(int i=1;i<=n;i++)
+        {
+            unions[i]=i;
+        }
+        for (int i = threshold + 1; i <= n; i++) {
+            int temp = i;
+            while(temp <= n) {
+                Num1627unions(i, temp,unions);
+                temp += i;
+            }
+        }
+        for(int[] query:queries)
+        {
+            if(Num1627find(query[0],unions)==Num1627find(query[1],unions)) {
+                ans.add(true);
+            } else{
+                ans.add(false);
+            }
+        }
+        return ans;
+    }
+
+    public int Num1627find(int x ,int[] unions)
+    {
+        if(unions[x]==x)
+            return x;
+        return Num1627find(unions[x],unions);
+    }
+
+    public void Num1627unions(int x,int y,int[] unions)
+    {
+        int xset = unions[x];
+        int yset = unions[y];
+        if(xset!=yset)
+            unions[xset] = yset;
+    }
+
+    public List<Integer> Num305numIslands2(int m, int n, int[][] positions) {
+
+    }
+
 
 
 

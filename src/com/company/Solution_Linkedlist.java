@@ -20,6 +20,16 @@ import java.util.*;
  *      Leetcode 1019
  */
 public class Solution_Linkedlist {
+    public ListNode Num206reverseList(ListNode head) {
+        if(head==null||head.next==null)
+            return head;
+        ListNode node = Num206reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return node;
+    }
+
+
     public ListNode Num24swapPairs(ListNode head) {
         if(head==null)
             return null;
@@ -107,6 +117,57 @@ public class Solution_Linkedlist {
             node = null;
         node.val = node.next.val;
         node.next = node.next.next;
+    }
+
+    public ListNode Num92againreverseBetween(ListNode head, int m, int n) {
+        if(head==null)
+            return null;
+        if(m==n)
+            return head;
+        ListNode node = new ListNode(0);
+        node.next = head;
+        ListNode hhead = node;
+        int i = 0;
+        while(i<m-1)
+        {
+            node = node.next;
+            i++;
+        }
+        ListNode current = node.next;
+        ListNode reversehead = current;
+        ListNode pre = null;
+        while(i<n)
+        {
+            ListNode next = current.next;
+            current.next = pre;
+            pre = current;
+            current = next;
+            i++;
+        }
+        reversehead.next = current;
+        node.next = pre;
+        return hhead.next;
+    }
+
+    public ListNode Num160getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode Ahead = headA;
+        ListNode Bhead = headB;
+        int lena = 0;
+        int lenb = 0;
+        while(lena!=lenb)
+        {
+            if(headA.next==null)
+                headA = Bhead;
+            else
+                headA = headA.next;
+            lena++;
+            if(headB.next==null)
+                headB = Ahead;
+            else
+                headB = headB.next;
+            lenb++;
+        }
+        return headA;
     }
 
     public ListNode Num92reverseBetween(ListNode head, int m, int n) {
@@ -441,9 +502,396 @@ public class Solution_Linkedlist {
         return node;
     }
 
-    public Node Num426treeToDoublyList(Node root) {
+    public ListNode Num61rotateRight(ListNode head, int k) {
+        if(head==null||head.next==null||k==0)
+            return head;
+        int len = length(head);
+        k = k%len;
+        if(k==0)
+            return head;
+        ListNode newhead = new ListNode(-1);
+        newhead.next = head;
+        ListNode tail = newhead;
+        head = newhead;
+        for(int i=0;i<k;i++)
+        {
+            tail = tail.next;
+        }
+        while(tail.next!=null)
+        {
+            tail = tail.next;
+            head = head.next;
+        }
+        ListNode khead = head.next;
+        tail.next = newhead.next;
+        head.next = null;
+        newhead.next = null;
+        return khead;
 
     }
+
+    public int length(ListNode head)
+    {
+        int len=0;
+        while(head!=null)
+        {
+            len++;
+            head = head.next;
+        }
+        return len;
+    }
+
+    public ListNode partition(ListNode head, int x) {
+        ListNode smallerhead = new ListNode(-1);
+        ListNode largerhead = new ListNode(-1);
+        ListNode smallernode = smallerhead;
+        ListNode largernode = largerhead;
+        while(head!=null)
+        {
+            if(head.val<x)
+            {
+                ListNode node = head;
+                head = head.next;
+                node.next = null;
+                smallernode.next = node;
+                smallernode  = smallernode.next;
+            }
+            else
+            {
+                ListNode node = head;
+                head = head.next;
+                node.next = null;
+                largernode.next = node;
+                largernode = largernode.next;
+            }
+            head = head.next;
+        }
+        smallernode.next = largerhead.next;
+        return smallerhead.next;
+    }
+
+    public ListNode Num147insertionSortList(ListNode head) {
+        ListNode dummy = new ListNode();
+        ListNode curr = head;
+
+        while (curr != null) {
+            // At each iteration, we insert an element into the resulting list.
+            ListNode prev = dummy;
+
+            // find the position to insert the current node
+            while (prev.next != null && prev.next.val < curr.val) {
+                prev = prev.next;
+            }
+
+            ListNode next = curr.next;
+            // insert the current node to the new list
+            curr.next = prev.next;
+            prev.next = curr;
+
+            // moving on to the next iteration
+            curr = next;
+        }
+
+        return dummy.next;
+    }
+
+    public ListNode Num23mergeKLists(ListNode[] lists) {
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode n1, ListNode n2) {
+                return n1.val-n2.val;
+            }
+        });
+        for(ListNode node:lists)
+        {
+            pq.add(node);
+        }
+        ListNode newhead = new ListNode(-1);
+        ListNode head = newhead;
+        while(pq!=null)
+        {
+            ListNode node = pq.poll();
+            head.next = node;
+            head = head.next;
+            if(node.next!=null)
+                pq.add(node.next);
+        }
+        return newhead.next;
+    }
+
+    public ListNode Num1669mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        int index = 0;
+        ListNode newhead = new ListNode(-1);
+        newhead.next = list1;
+        list1 = newhead;
+        for(int i=0;i<a;i++)
+        {
+            list1 = list1.next;
+        }
+        ListNode tail = list1;
+        for(int i=0;i<b-a+2;i++)
+        {
+            list1 = list1.next;
+        }
+        tail.next = list2;
+        while(list2.next!=null)
+        {
+            list2 = list2.next;
+        }
+        list2.next = list1;
+        return newhead.next;
+
+    }
+
+    public int Num817numComponents(ListNode head, int[] G) {
+        Set<Integer> gset = new HashSet<>();
+        for(int x: G)
+        {
+            gset.add(x);
+        }
+        ListNode curr = head;
+        int num = 0;
+        while(curr!=null)
+        {
+            if(gset.contains(curr.val)&&(curr.next==null||!gset.contains(curr.next.val)))
+                num++;
+            curr = curr.next;
+        }
+        return num;
+    }
+
+    public ListNode Num25reverseKGroup(ListNode head, int k) {
+        ListNode newhead = new ListNode(-1);
+        newhead.next = head;
+        ListNode p1 = newhead;
+        ListNode p2 = p1;
+        for(int i=0;i<k;i++)
+        {
+            if(p2==null)
+                return newhead.next;
+            p2 = p2.next;
+        }
+        while(p2!=null)
+        {
+            ListNode reversehead =p1.next;
+            ListNode nexthead = p2.next;
+            p2.next = null;
+            p1.next = null;
+            p1.next = reverselist(reversehead);
+            p2 = p1;
+            for(int i=0;i<k;i++)
+            {
+                p2 = p2.next;
+            }
+            p2.next = nexthead;
+            for(int i=0;i<k;i++)
+            {
+                if(p2==null)
+                    return newhead.next;
+                p2 = p2.next;
+                p1 = p1.next;
+            }
+        }
+        return newhead.next;
+
+    }
+
+    public ListNode reverselist(ListNode head)
+    {
+        if(head==null||head.next==null)
+            return head;
+        ListNode node = reverselist(head.next);
+        head.next.next = head;
+        head.next = null;
+        return node;
+    }
+
+    HashMap<Node,Node> visited = new HashMap<>();
+    public Node Num138copyRandomList(Node head) {
+        if(head==null)
+            return null;
+        Node oldnode = head;
+        Node newhead = new Node(head.val);
+        visited.put(head,newhead);
+        while(oldnode!=null)
+        {
+            newhead.next = getclone(oldnode.next);
+            newhead.random = getclone(oldnode.random);
+            oldnode = oldnode.next;
+            newhead = newhead.next;
+        }
+        return visited.get(head);
+    }
+
+    public Node getclone(Node node)
+    {
+        if(node!=null)
+        {
+            if(visited.containsKey(node))
+                return visited.get(node);
+            else
+            {
+                visited.put(node,new Node(node.val));
+                return visited.get(node);
+            }
+        }
+        return null;
+    }
+
+    public ListNode Num1171removeZeroSumSublists(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        HashMap<Integer,ListNode> map = new HashMap<>();
+        int sum = 0;
+        for(ListNode i = head;i!=null;i=i.next)
+        {
+            sum+=i.val;
+            map.put(sum,i);
+        }
+        sum = 0;
+        for(ListNode i=dummy;i!=null;i=i.next)
+        {
+            sum+=i.val;
+            i.next = map.get(sum).next;
+        }
+        return dummy.next;
+    }
+
+    public Node Num426treeToDoublyList(Node root) {
+        if(root==null)
+            return null;
+        Node newhead = helper(root);
+        Node tail = newhead;
+        while(tail.right!=null)
+            tail = tail.right;
+        tail.right = newhead;
+        newhead.left = tail;
+        return newhead;
+    }
+
+    public Node helper(Node node)
+    {
+        if(node==null)
+            return null;
+        Node lefthead = node;
+        if(node.left!=null)
+        {
+            lefthead = helper(node.left);
+            Node tail = lefthead;
+            while(tail.right!=null)
+            {
+                tail = tail.right;
+            }
+            tail.right = node;
+            node.left = tail;
+        }
+        Node righthead = node;
+        if(node.right!=null)
+        {
+            righthead = helper(node.right);
+            node.right = righthead;
+            righthead.left = node;
+        }
+        return lefthead;
+    }
+
+    public Node flatten(Node head) {
+        Node dummy = new Node(-1);
+        Stack<Node> stack = new Stack<>();
+        dummy.next = head;
+        Node curr = dummy;
+        Node pre = null;
+        while(curr!=null||pre!=null)
+        {
+            while(curr.next!=null&&curr.child==null)
+            {
+                curr = curr.next;
+            }
+            if(curr.child!=null)
+            {
+                if(curr.next!=null)
+                    stack.push(curr.next);
+                curr.next = curr.child;
+                curr.child.prev = curr;
+                curr = curr.next;
+            }
+            pre = null;
+            if(curr.next==null)
+            {
+                if(!stack.isEmpty())
+                {
+                    pre = stack.pop();
+                    curr.next = pre;
+                    pre.prev = curr;
+                }
+                curr = curr.next;
+            }
+        }
+        Node i = dummy.next;
+        while(i.next!=null)
+            i = i.next;
+        i.next = dummy.next;
+        dummy.next.prev = i;
+        return dummy.next;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1726,6 +1726,128 @@ public class Solution_Tree {
         }
     }
 
+    public TreeNode Num1660correctBinaryTree(TreeNode root) {
+        if(root==null)
+            return root;
+        Queue<TreeNode> queue = new LinkedList<>();
+        Set<Integer> set = new HashSet<>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            int num = queue.size();
+            for(int i=0;i<num;i++)
+            {
+                TreeNode node = queue.poll();
+                if(node.right!=null)
+                {
+                    if(set.contains(node.right.val))
+                    {
+                        Num1660remove(root,node.val);
+                        break;
+                    }
+                    else
+                        queue.add(node.right);
+                }
+                if(node.left!=null)
+                    queue.add(node.left);
+                set.add(node.val);
+            }
+        }
+        return root;
+
+    }
+
+    public void Num1660remove(TreeNode root, int val)
+    {
+        if(root==null)
+            return;
+        if(root.right!=null)
+        {
+            if(root.right.val==val)
+                root.right=null;
+            else
+                Num1660remove(root.right,val);
+        }
+        if(root.left!=null)
+        {
+            if(root.left.val==val)
+                root.left=null;
+            else
+                Num1660remove(root.left,val);
+        }
+
+    }
+
+    public List<Integer> Num144IterativepreorderTraversal(TreeNode root) {
+        List<Integer> ans = new LinkedList<>();
+        if(root==null)
+            return ans;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.isEmpty())
+        {
+            TreeNode node = stack.pop();
+            ans.add(node.val);
+            if(node.right!=null)
+                stack.push(node.right);
+            if(node.left!=null)
+                stack.push(node.left);
+        }
+        return ans;
+    }
+
+    public List<Integer> Num94iterativeinorderTraversal(TreeNode root) {
+        List<Integer> ans = new LinkedList<>();
+        if(root==null)
+            return ans;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        while(curr!=null||!stack.isEmpty())
+        {
+            while(curr!=null)
+            {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+            ans.add(curr.val);
+            stack.push(curr.right);
+        }
+        return ans;
+    }
+
+    public List<Integer> Num145postorderTraversal(TreeNode root) {
+        List<Integer> ans = new LinkedList<>();
+        if(root==null)
+            return ans;
+        Stack<TreeNode> stack = new Stack<>();
+        while(root!=null||!stack.isEmpty())
+        {
+            while(root!=null)
+            {
+                if(root.right!=null)
+                    stack.push(root.right);
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(!stack.isEmpty()&&root.right==stack.peek())
+            {
+                stack.pop();
+                stack.push(root);
+                root = root.right;
+            }
+            else
+            {
+                ans.add(root.val);
+                root = null;
+            }
+        }
+        return ans;
+    }
+
+
+
 
 
 

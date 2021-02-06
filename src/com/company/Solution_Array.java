@@ -1,4 +1,5 @@
 package com.company;
+import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import java.util.*;
 
 public class Solution_Array {
@@ -979,6 +980,805 @@ public class Solution_Array {
             }
         }
         return minwin;
+    }
+
+    private Set<List<Integer>> Num491set = new HashSet();
+
+    public List<List<Integer>> Num491findSubsequences(int[] nums) {
+        List<List<Integer>> list = new ArrayList();
+        Num491backTrack(nums, 0, new ArrayList(), list, Num491set);
+        return list;
+    }
+
+
+    public void Num491backTrack(int[] nums, int index, List<Integer> currList, List<List<Integer>> list, Set<List<Integer>> set) {
+        if (currList.size() > 1 && set.add(new ArrayList(currList))) {
+            list.add(new ArrayList(currList));
+        }
+
+        for (int i = index; i < nums.length; i++) {
+            if (currList.size() == 0 || currList.get(currList.size()-1) <= nums[i]) {
+                currList.add(nums[i]);
+                Num491backTrack(nums, i+1, currList, list, set);
+                currList.remove(currList.size()-1);
+            }
+        }
+    }
+
+    public int[][] Num59generateMatrix(int n) {
+        int[][] ans = new int[n][n];
+        int start = 1;
+        int head = 0;
+        int tail = n-1;
+        int left = 0;
+        int right = n-1;
+        while(head<=tail&&left<=right)
+        {
+            for(int i=left;i<right;i++)
+            {
+                ans[head][i] = start;
+                start++;
+            }
+            head++;
+            for(int j=head-1;j<tail;j++)
+            {
+                ans[j][right] = start;
+                start++;
+            }
+            right--;
+            for(int i = right+1;i>left;i--)
+            {
+                ans[tail][i] = start;
+                start++;
+            }
+            tail--;
+            for(int j = tail+1;j>=head;j--)
+            {
+                ans[j][left] = start;
+                start++;
+            }
+            left++;
+        }
+        if(left==right+2&&head==tail+2)
+            ans[left-1][left-1] = start;
+        return ans;
+    }
+
+    public int Num845longestMountain(int[] A) {
+        int max = 0;
+        int i=0,j=0;
+        int peak = 0,down = 0;
+        while(i<A.length&&j<A.length)
+        {
+            while(i+1<A.length&&A[i]>A[i+1])
+            {
+                i++;
+            }
+            if(i+1>=A.length)
+                break;
+            j = i+1;
+            while(j<A.length&&A[j]>A[j-1])
+            {
+                j++;
+                peak=1;
+            }
+            if(j>=A.length)
+                break;
+
+            while(j<A.length&&A[j]<A[j-1])
+            {
+                j++;
+                down = 1;
+            }
+            if(down==1&&peak==1)
+                max = Math.max(max,j-i);
+            i = j;
+            down = 0;
+            peak=0;
+        }
+        return max;
+    }
+
+    public int Num1482minDays(int[] bloomDay, int m, int k) {
+        if(bloomDay.length<m*k)
+            return -1;
+        int left = 1,right = 1000000001;
+        while(left<=right)
+        {
+            int mid = left + (right-left)/2;
+            int count = Num1482helper(bloomDay,k,mid);
+            if(count<m)
+                left = mid+1;
+            else
+                right = mid-1;
+        }
+        return left;
+    }
+
+
+    public int Num1482helper(int[] bloomDay,int k,int mid)
+    {
+        int bcount = 0,fcount = 0;
+        for(int i=0;i<bloomDay.length;i++)
+        {
+            if(bloomDay[i]>mid)
+                fcount=0;
+            else
+            {
+                fcount++;
+                if(fcount>=k)
+                {
+                    bcount++;
+                    fcount=0;
+                }
+            }
+        }
+        return bcount;
+    }
+
+    public int Num1300findBestValue(int[] arr, int target) {
+        int start = 1,end = 0;
+        for(int num:arr)
+        {
+            end = Math.max(end,num);
+        }
+        while(start<=end)
+        {
+            int mid = start + (end-start)/2;
+            int sum = Num1300sum(arr,mid);
+            if(sum<target)
+            {
+                start = mid+1;
+            }
+            else
+                end = mid-1;
+        }
+        int sum1 = Num1300sum(arr,start);
+        int sum2 = Num1300sum(arr,start-1);
+        return Math.abs(target-sum2)<=Math.abs(sum1-target)?start-1:start;
+    }
+
+    public int Num1300sum(int[] arr,int mid)
+    {
+        int sum = 0;
+        for(int num:arr)
+        {
+            sum+=Math.min(num,mid);
+        }
+        return sum;
+    }
+
+    public int Num1283smallestDivisor(int[] nums, int threshold) {
+        int start = 1,end = 0;
+        for(int num:nums)
+        {
+            end = Math.max(end,num);
+        }
+        while(start<=end)
+        {
+            int mid = start + (end-start)/2;
+            int sum = Num1283helper(nums,mid);
+            if(sum>threshold)
+            {
+                start = mid+1;
+            }
+            else
+                end = mid-1;
+        }
+        return start;
+    }
+
+    public int Num1283helper(int[] nums,int divisor)
+    {
+        int sum = 0;
+        double d = (double)divisor;
+        for(int i=0;i<nums.length;i++)
+        {
+            sum = sum+((int)Math.ceil(nums[i]/d));
+        }
+        return sum;
+    }
+
+    public int[] Num34againsearchRange(int[] nums, int target) {
+        int[] ans = new int[]{-1,-1};
+        int start = 0,end = nums.length-1;
+        while(start<=end)
+        {
+            int mid = start+(end-start)/2;
+            if(nums[mid]<target)
+                start = mid+1;
+            else if(nums[mid]>target)
+                end = mid-1;
+            else
+                start = mid+1;
+        }
+        if(end<0||nums[end]!=target)
+            return ans;
+        ans[1] = end;
+        start = 0;end = nums.length-1;
+        while(start<=end)
+        {
+            int mid = start+(end-start)/2;
+            if(nums[mid]<target)
+                start = mid+1;
+            else if(nums[mid]>target)
+                end = mid-1;
+            else
+                end = mid-1;
+        }
+        if(start>nums.length-1||nums[start]!=target)
+            return ans;
+        ans[0] = start;
+        return ans;
+    }
+
+    public int Num1672maximumWealth(int[][] accounts) {
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<accounts.length;i++)
+        {
+            int current_max= 0;
+            for(int j=0;j<accounts[0].length;j++)
+            {
+                current_max+=accounts[i][j];
+            }
+            max = Math.max(max,current_max);
+        }
+        return max;
+    }
+
+    public int Num121maxProfit(int[] prices) {
+        int ans = 0;
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<prices.length;i++)
+        {
+            if(prices[i]<min)
+                min = prices[i];
+            else if(prices[i]-min>ans)
+                ans = prices[i]-min;
+        }
+        return ans;
+    }
+
+    public boolean Num1662arrayStringsAreEqual(String[] word1, String[] word2) {
+        List<Character> list1 = new ArrayList<>();
+        for(String word:word2)
+        {
+            for(char c:word.toCharArray())
+            {
+                list1.add(c);
+            }
+        }
+        int index = 0;
+        for(String word:word1){
+            for(char c: word.toCharArray())
+            {
+                if(c!=list1.get(index)||index>=list1.size())
+                    return false;
+                index++;
+            }
+        }
+        return true;
+    }
+
+    public int Num122maxProfit(int[] prices) {
+        int sum = 0;
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<prices.length;i++)
+        {
+            if(prices[i]>min)
+                sum+=prices[i]-min;
+            min = prices[i];
+        }
+        return sum;
+    }
+
+    public boolean Num665checkPossibility(int[] nums) {
+        boolean found_1 = false;
+        for(int i=1;i<nums.length;i++)
+        {
+            if(nums[i]<nums[i-1])
+            {
+                if(i!=1 && nums[i]<nums[i-2])
+                {
+                    nums[i] = nums[i-1];
+                }
+                if(found_1)
+                    return false;
+                found_1 = true;
+            }
+        }
+        return true;
+    }
+
+    public int Num1710maximumUnits(int[][] boxTypes, int truckSize) {
+        Arrays.sort(boxTypes, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] t1, int[] t2) {
+                return t2[1]-t1[1];
+            }
+        });
+        int ans = 0;
+        for(int i=0;i<boxTypes.length;i++)
+        {
+            if(truckSize>0)
+            {
+                if(truckSize<boxTypes[i][0])
+                {
+                    ans+=truckSize*boxTypes[i][1];
+                    truckSize=0;
+                }
+                else
+                {
+                    ans+=boxTypes[i][0]*boxTypes[i][1];
+                    truckSize-=boxTypes[i][0];
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int[] Num1againtwoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            int complete = target-nums[i];
+            if(map.containsKey(complete))
+            {
+                return new int[] {map.get(complete),i};
+            }
+            map.put(nums[i],i);
+
+        }
+        throw new IllegalArgumentException("No two sum solution");
+    }
+
+    public List<List<Integer>> Num15threeSum(int[] nums) {
+        List<List<Integer>> ans = new LinkedList<>();
+        HashSet<Pair> found = new HashSet<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            int complete = 0-nums[i];
+            HashMap<Integer,Integer> map = new HashMap<>();
+            for(int j = i+1;j<nums.length;j++)
+            {
+                int third = complete-nums[j];
+                if(map.containsKey(third))
+                {
+                    int v1 = Math.min(nums[i],Math.min(third,nums[j]));
+                    int v2 = Math.max(nums[i],Math.max(third,nums[j]));
+                    if(found.add(new Pair(v1,v2)))
+                    {
+                        ans.add(Arrays.asList(nums[i],third,nums[j]));
+                    }
+                }
+                map.put(nums[j],j);
+            }
+        }
+        return ans;
+    }
+
+    public int Num1711countPairs(int[] deliciousness) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int res = 0;
+        int mod = 1000000007;
+        for(int i=0;i<deliciousness.length;i++)
+        {
+            int power = 1;
+            for(int j=0;j<22;j++)
+            {
+                if(map.containsKey(power-deliciousness[i]))
+                {
+                    res+=map.get(power-deliciousness[i]);
+                    res%=mod;
+                }
+                power*=2;
+            }
+            map.put(deliciousness[i],map.getOrDefault(deliciousness[i],0)+1);
+        }
+        return res;
+    }
+
+    public int Num1712waysToSplit(int[] nums) {
+        int num = 0;
+        int mod = 1000000007;
+        int sum = 0;
+        for(int i=0;i<nums.length;i++)
+        {
+            sum+=nums[i];
+        }
+        int movingsum = 0;
+        for(int i=0;i<nums.length;i++)
+        {
+            movingsum+=nums[i];
+            int second = 0;
+            for(int j=i+1;j<nums.length-1;j++)
+            {
+                second+=nums[j];
+                int third = sum-movingsum-second;
+                if(movingsum<=second&&second<=third)
+                {
+                    num++;
+                    num%=mod;
+                }
+                if(second>third)
+                    break;
+            }
+            if(movingsum>sum-movingsum)
+                break;
+        }
+        return num;
+
+    }
+    public int Num27removeElement(int[] nums, int val) {
+        int front  = 0;
+        int num = 0;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(nums[i]!=val)
+            {
+                nums[front] = nums[i];
+                front++;
+            }
+            else
+                num++;
+        }
+        return nums.length-num;
+
+    }
+
+    public int Num275hIndex(int[] citations) {
+        int start = 0;
+        int end = citations.length-1;
+        while(start<=end)
+        {
+            int mid = start + (end-start)/2;
+            int nums = citations.length-mid;
+            if(citations[mid]>nums)
+            {
+                end = mid-1;
+            }
+            else if(citations[mid]<nums)
+                start = mid+1;
+            else return nums;
+        }
+        return citations.length-start;
+    }
+
+    public int Num611triangleNumber(int[] nums) {
+        int count = 0;
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++) {
+            int k = i + 2;
+            for (int j = i + 1; j < nums.length - 1 && nums[i] != 0; j++) {
+                while (k < nums.length && nums[i] + nums[j] > nums[k])
+                    k++;
+                count += k - j - 1;
+            }
+        }
+        return count;
+
+    }
+
+    public int Num80removeDuplicates(int[] nums) {
+        if(nums==null||nums.length==0)
+            return 0;
+        if(nums.length==1)
+            return 1;
+        int len = 1;
+        int samevalue = 1;
+        for(int i=1;i<nums.length;i++)
+        {
+            if(nums[i]==nums[i-1]&&samevalue>=2)
+                continue;
+            else
+            {
+                if(nums[i]==nums[i-1])
+                    samevalue++;
+                else
+                    samevalue=1;
+                nums[len] = nums[i];
+                len++;
+            }
+        }
+        return len;
+    }
+
+
+    public int maxProfit(int[] prices) {
+
+    }
+
+    public int Num378kthSmallest(int[][] matrix, int k) {
+        
+    }
+
+    public int Num410splitArray(int[] nums, int m) {
+
+    }
+
+    public int getMaximumGenerated(int n) {
+
+    }
+
+    public String Num179largestNumber(int[] nums) {
+        
+    }
+
+    public int Num1664waysToMakeFair(int[] nums) {
+        int n = nums.length;
+        if(n<=2)
+            return n;
+        int[] oddsum = new int[n];
+        int[] evensum = new int[n];
+        for(int i=0;i<n;i++)
+        {
+            if(i%2==0)
+            {
+                evensum[i] = (i==0?nums[i]:evensum[i-1]+nums[i]);
+                oddsum[i] = (i==0?0:oddsum[i-1]);
+            }
+            else
+            {
+                oddsum[i] = oddsum[i-1]+nums[i];
+                evensum[i] = evensum[i-1];
+            }
+        }
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            int odd = (i==0?0:oddsum[i-1])+(evensum[n-1]-evensum[i]);
+            int even = (i==0?0:evensum[i-1])+(oddsum[n-1]-oddsum[i]);
+            ans+= (odd==even ? 1:0);
+        }
+        return ans;
+    }
+
+    public List<List<Integer>> Num218getSkyline(int[][] buildings) {
+        List<List<Integer>> points = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
+        int n = buildings.length;
+        for(int[] b: buildings)
+        {
+            List<Integer> p1 = new ArrayList<>();
+            p1.add(b[0]);
+            p1.add(-b[2]);
+            points.add(p1);
+
+            List<Integer> p2 = new ArrayList<>();
+            p2.add(b[1]);
+            p2.add(b[2]);
+            points.add(p2);
+        }
+        Collections.sort(points, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> p1, List<Integer> p2) {
+                int x1 = p1.get(0);
+                int y1 = p1.get(1);
+                int x2 = p2.get(0);
+                int y2 = p2.get(1);
+                if (x1 != x2) {
+                    return x1 - x2;
+                } else {
+                    return y1 - y2;
+            }
+        }});
+        Queue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer t1, Integer t2) {
+                return t2-t1;
+            }
+        });
+        queue.offer(0);
+        int preMax = 0;
+        for(List<Integer> p: points)
+        {
+            int x = p.get(0);
+            int y = p.get(1);
+            if(y<0)
+            {
+                queue.offer(-y);
+            }
+            else{
+                queue.remove(y);
+            }
+            int curMax = queue.peek();
+            if(curMax!=preMax)
+            {
+                List<Integer> temp = new ArrayList<>();
+                temp.add(x);
+                temp.add(curMax);
+                ans.add(temp);
+                preMax = curMax;
+            }
+        }
+        return ans;
+    }
+
+    public int Num253minMeetingRooms(int[][] intervals) {
+        if(intervals.length==0)
+            return 0;
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] t1, int[] t2) {
+                if(t1[0]==t2[0])
+                    return t1[1]-t2[1];
+                return t1[0]-t2[0];
+            }
+        });
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer t1, Integer t2) {
+                return t1-t2;
+            }
+        });
+        pq.add(intervals[0][1]);
+        for(int i=1;i<intervals.length;i++)
+        {
+            if(intervals[i][0]<pq.peek())
+            {
+                pq.add(intervals[i][1]);
+            }
+            else
+            {
+                pq.poll();
+                pq.add(intervals[i][1]);
+            }
+        }
+        return pq.size();
+    }
+
+    public int[][] Num57insert(int[][] intervals, int[] newInterval) {
+        if(intervals.length==0)
+            return new int[][]{{newInterval[0],newInterval[1]}};
+        LinkedList<int[]> list = new LinkedList<>();
+        boolean inserted = false;
+        for(int i=0;i<intervals.length;)
+        {
+            if(!inserted)
+            {
+                int[] current = intervals[i];
+                if(newInterval[0]>current[1])
+                    list.add(current);
+                else{
+                    if(newInterval[1]<current[0])
+                    {
+                        list.add(newInterval);
+                        inserted = true;
+                        continue;
+                    }
+                    else
+                    {
+                        int[] merged = new int[]{Math.min(current[0],newInterval[0]),Math.max(current[1],newInterval[1])};
+                        list.add(merged);
+                    }
+                    inserted = true;
+                }
+            }
+            else
+            {
+                int[] current = intervals[i];
+                int[] last = list.getLast();
+                if(last[1]<current[0])
+                {
+                    list.add(current);
+
+                }
+                else
+                {
+                    last[1] = Math.max(last[1],current[1]);
+                }
+            }
+            i++;
+        }
+        if(!inserted)
+            list.add(newInterval);
+        return list.toArray(new int[list.size()][2]);
+    }
+
+    public int[] Num239maxSlidingWindow(int[] nums, int k) {
+        if(k<=0)
+            return new int[0];
+        if(nums==null||nums.length<=1||k==1)
+            return nums;
+        Deque<Integer> deque = new LinkedList<>();
+        int[] output = new int[nums.length-k+1];
+        for(int i=0;i<nums.length;i++)
+        {
+            cleandeque(nums,k,i,deque);
+            deque.add(i);
+            if(i-k+1>=0)
+                output[i-k+1] = nums[deque.getFirst()];
+        }
+        return output;
+    }
+
+    public void cleandeque(int[] nums, int k, int i, Deque<Integer> deque)
+    {
+        while(!deque.isEmpty()&&deque.getFirst()<i-k+1)
+            deque.removeFirst();
+        while(!deque.isEmpty()&&deque.getLast()<nums[i])
+            deque.removeLast();
+    }
+
+    public int[] productExceptSelf(int[] nums) {
+        int[] ans = new int[nums.length];
+        ans[0] = 1;
+        for(int i=1;i<nums.length;i++)
+        {
+            ans[i] = ans[i-1] * nums[i-1];
+        }
+        int a = nums[nums.length-1];
+        for(int i=nums.length-2;i>=0;i--)
+        {
+            ans[i] = ans[i] * a;
+            a*=nums[i];
+        }
+        return ans;
+    }
+
+    public List<String> Num228summaryRanges(int[] nums) {
+        List<String> ans = new LinkedList<>();
+        if(nums.length==0)
+            return ans;
+        ans.add(String.valueOf(nums[0]));
+        for(int i=1;i<nums.length;i++)
+        {
+            String lastrange = ans.get(ans.size()-1);
+            int last_digit = lastrange.charAt(lastrange.length()-1)-'0';
+            if(nums[i]==last_digit+1)
+            {
+                String newone = "";
+                if(lastrange.contains("-"))
+                    newone = lastrange.substring(0,lastrange.length()-1)+last_digit;
+                else
+                    newone = lastrange+"->"+last_digit;
+                ans.remove(ans.size()-1);
+                ans.add(newone);
+            }
+            else
+            {
+                String newone = ""+last_digit;
+                ans.add(newone);
+            }
+
+        }
+        return ans;
+    }
+
+    public List<String> Num163findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> ans = new LinkedList<>();
+        if(nums==null||nums.length==0)
+        {
+            String current = lower==upper?String.valueOf(lower):lower+"->"+upper;
+            ans.add(current);
+            return ans;
+        }
+        int currentmax = Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(nums[i]>=upper)
+                break;
+            if(nums[0]>lower)
+            {
+                int diff = nums[0]-lower;
+                String added = diff==1?String.valueOf(lower):lower+"->"+(nums[0]-1);
+                ans.add(added);
+
+            }
+            if(i!=0)
+            {
+                int diff = nums[i]-currentmax;
+                String added = diff==1?String.valueOf(lower):lower+"->"+(nums[0]-1);
+                ans.add(added);
+            }
+            currentmax = nums[0]+1;
+        }
+        if(currentmax<=upper)
+        {
+            String last = currentmax==upper?String.valueOf(upper):currentmax+"->"+upper;
+            ans.add(last);
+        }
+        return ans;
     }
 
 

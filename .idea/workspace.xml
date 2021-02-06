@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="81c4b745-652f-4517-a11b-027ac15f9c61" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/company/Solution_pq.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/MovingAverage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/MovingAverage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Array.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Array.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution_DFS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_DFS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Graph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_DP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_DP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Linkedlist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Linkedlist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Math.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Math.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Solution_String.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_String.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Solution_Tree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +42,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -123,7 +125,17 @@
       <workItem from="1603506101496" duration="18474000" />
       <workItem from="1603936402524" duration="17552000" />
       <workItem from="1604246974671" duration="609000" />
-      <workItem from="1604332807666" duration="19532000" />
+      <workItem from="1604332807666" duration="31377000" />
+      <workItem from="1605017001531" duration="7388000" />
+      <workItem from="1605576215133" duration="610000" />
+      <workItem from="1605804420054" duration="2297000" />
+      <workItem from="1606719909580" duration="227000" />
+      <workItem from="1608481660795" duration="439000" />
+      <workItem from="1609445501559" duration="5108000" />
+      <workItem from="1609776568396" duration="24120000" />
+      <workItem from="1610634820222" duration="58743000" />
+      <workItem from="1611538691303" duration="90017000" />
+      <workItem from="1612477821174" duration="29003000" />
     </task>
     <servers />
   </component>
@@ -143,18 +155,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2240" y="681" key="FileChooserDialogImpl" timestamp="1599400993810">
+    <state x="1961" y="584" key="SettingsEditor" timestamp="1609776607449">
       <screen x="1920" y="0" width="1080" height="1880" />
     </state>
-    <state x="2240" y="681" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040/1920.0.1080.1880@1920.0.1080.1880" timestamp="1599400993810" />
-    <state x="369" y="143" key="SettingsEditor" timestamp="1599704978402">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="369" y="143" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040/1920.0.1080.1880@1920.0.1080.1880" timestamp="1599704978402" />
-    <state x="1920" y="550" key="new project wizard" timestamp="1599400997234">
-      <screen x="1920" y="0" width="1080" height="1880" />
-    </state>
-    <state x="1920" y="550" key="new project wizard/0.0.1920.1040/-1920.0.1920.1040/1920.0.1080.1880@1920.0.1080.1880" timestamp="1599400997234" />
+    <state x="1961" y="584" key="SettingsEditor/1920.0.1080.1880/0.0.1920.1040/-1920.0.1920.1040@1920.0.1080.1880" timestamp="1609776607449" />
     <state x="2123" y="435" width="672" height="678" key="search.everywhere.popup" timestamp="1603051513485">
       <screen x="1920" y="0" width="1080" height="1880" />
     </state>

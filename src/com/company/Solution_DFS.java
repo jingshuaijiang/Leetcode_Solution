@@ -340,6 +340,232 @@ public class Solution_DFS {
         }
     }
 
+    int num200ans = 0;
+    public int Num200againnumIslands(char[][] grid) {
+        if(grid==null||grid[0].length==0)
+            return 0;
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(grid[i][j]=='1')
+                {
+                    Num200helper(grid,i,j);
+                    num200ans++;
+                }
+            }
+        }
+        return num200ans;
+    }
+
+    public void Num200helper(char[][] grid,int i, int j)
+    {
+        if(!(0<=i&&i<grid.length&&0<=j&&j<grid[0].length))
+        {
+            return;
+        }
+        if(grid[i][j]!='1')
+            return;
+        grid[i][j] = '2';
+        Num200helper(grid,i+1,j);
+        Num200helper(grid,i-1,j);
+        Num200helper(grid,i,j+1);
+        Num200helper(grid,i,j-1);
+    }
+
+    public List<List<String>> Num51againsolveNQueens(int n) {
+        List<List<String>> ans = new LinkedList<>();
+        int[] positions = new int[n];
+        for(int i=0;i<n;i++)
+        {
+            positions[0] = i;
+            Num51helperagain(n,positions,ans,1);
+        }
+        return ans;
+    }
+
+    public void Num51helperagain(int n, int[] positions, List<List<String>> ans, int depth)
+    {
+        if(depth==n)
+        {
+            List<String> solstr = new LinkedList<>();
+            for(int i=0;i<n;i++)
+            {
+                String curline = "";
+                for(int j=0;j<n;j++)
+                {
+                    if(positions[i]==j)
+                    {
+                        curline+="Q";
+                    }
+                    else
+                        curline+=".";
+                }
+                solstr.add(curline);
+            }
+            ans.add(solstr);
+            return;
+        }
+        int[] newposition = new int[n];
+        for(int i=0;i<depth;i++)
+        {
+            int col = positions[i];
+            newposition[col] = 1;
+            int k = depth-i;
+            if(col-k>=0)
+                newposition[col-k]=1;
+            if(col+k<n)
+                newposition[col+k]=1;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(newposition[i]==0)
+            {
+                positions[depth] = i;
+                Num51helperagain(n,positions,ans,depth+1);
+                positions[depth] = 0;
+            }
+        }
+    }
+
+    int Num364count = 0;
+    public int Num364depthSumInverse(List<NestedInteger> nestedList) {
+        int maximum_depth = maximumdepth(nestedList);
+        getsum(nestedList,maximum_depth);
+        return Num364count;
+    }
+
+    public int maximumdepth(List<NestedInteger> nestedList)
+    {
+        int depth = 1;
+        for(NestedInteger list:nestedList)
+        {
+            if(!isInteger(list))
+                depth = Math.max(depth,maximumdepth(list.getList())+1);
+        }
+        return depth;
+    }
+
+    public void getsum(List<NestedInteger> nestedList, int depth)
+    {
+        for(NestedInteger list:nestedList)
+        {
+            if(isInteger(list))
+                Num364count+=(depth*list.getInteger());
+            else
+                getsum(list.getList(),depth-1);
+        }
+    }
+
+    public int[] Num1706findBall(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[] ans = new int[n];
+        for(int j=0;j<n;j++)
+        {
+            if(Num1706Helper(grid,0,j))
+                ans[j] = 1;
+        }
+        return ans;
+    }
+
+    public boolean Num1706Helper(int[][] grid, int i, int j)
+    {
+        if(i==grid.length)
+            return true;
+        if(grid[i][j]==1)
+        {
+            if(j==grid[0].length||grid[i][j+1]==-1)
+                return false;
+            return Num1706Helper(grid,i+1,j+1);
+        }
+        else
+        {
+            if(j==0||grid[i][j-1]==-1)
+                return false;
+            return Num1706Helper(grid,i+1,j-1);
+        }
+    }
+
+    public int Num638shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        return Num638helper(price,special,needs);
+    }
+
+    public int Num638helper(List<Integer> price,List<List<Integer>> special,List<Integer> needs)
+    {
+        int prices = 0;
+        for(int i=0;i<price.size();i++)
+        {
+            prices+=price.get(i)*needs.get(i);
+        }
+        for(int i=0;i<special.size();i++)
+        {
+            List<Integer> current_combination = special.get(i);
+            ArrayList<Integer> clone = new ArrayList<>(needs);
+            int j=0;
+            for(j=0;j<clone.size();j++)
+            {
+                int diff = clone.get(j)-current_combination.get(j);
+                if(diff<0)
+                    break;
+                clone.set(j,diff);
+            }
+            if(j==clone.size())
+            {
+                prices = Math.min(prices,current_combination.get(j)+Num638helper(price,special,clone));
+            }
+        }
+        return prices;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public List<List<String>> Num126findLadders(String beginWord, String endWord, List<String> wordList) {

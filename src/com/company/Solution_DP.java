@@ -1322,6 +1322,495 @@ public class Solution_DP {
         return max>=3?max:0;
     }
 
+    public int Num312maxCoins(int[] nums) {
+        int[][] dp = new int[nums.length+2][nums.length+2];
+        int[] newarray = new int[nums.length+2];
+        newarray[0] = 1;
+        newarray[nums.length+1] = 1;
+        for(int i=1;i<newarray.length-1;i++)
+        {
+            newarray[i] = nums[i-1];
+        }
+        for (int j = 2; j < newarray.length; j++) {
+            for (int i = 0; i < newarray.length - j; i++) {
+                for (int k = i + 1; k < i + j; k++) {
+                    dp[i][i + j] = Math.max(dp[i][i + j], dp[i][k] + dp[k][i + j] + newarray[i] * newarray[k] * newarray[i + j]);
+                }
+            }
+        }
+        return dp[0][newarray.length-1];
+    }
+
+    public int Num265minCostII(int[][] costs) {
+        if(costs.length==0)
+            return 0;
+        int k = costs[0].length;
+        int n = costs.length;
+        for(int i=1;i<n;i++)
+        {
+            int min = -1,secondmin = -1;
+            for(int j=0;j<k;j++)
+            {
+                int cost = costs[i-1][j];
+                if(min==-1||cost<costs[i-1][min])
+                {
+                    secondmin = min;
+                    min = j;
+                }
+                else if(secondmin==-1||cost<costs[i-1][secondmin])
+                    secondmin = j;
+            }
+            for(int j=0;j<k;j++)
+            {
+                if(j==min)
+                {
+                    costs[i][j] += costs[i-1][secondmin];
+                }
+                else
+                    costs[i][j] += costs[i-1][min];
+            }
+        }
+        int ans = Integer.MAX_VALUE;
+        for(int j=0;j<k;j++)
+        {
+            ans = Math.min(ans,costs[n-1][j]);
+        }
+        return ans;
+    }
+
+    public int Num1335minDifficulty(int[] jobDifficulty, int d) {
+        int len = jobDifficulty.length;
+        if(d>len)
+            return -1;
+        int[][] dp = new int[len][d+1];
+        for(int i=0;i<len;i++)
+        {
+            dp[i][1] = i==0 ? jobDifficulty[0]:Math.max(jobDifficulty[i],dp[i-1][1]);
+        }
+        for(int k=2;k<=d;k++)
+        {
+            for(int i=k-1;i<len;i++)
+            {
+                dp[i][k] = Integer.MAX_VALUE;
+                int localMax = jobDifficulty[i];
+                for(int s=i-1;s>=k-2;s--)
+                {
+                    dp[i][k] = Math.min(dp[i][k],dp[s][k-1]+localMax);
+                    localMax = Math.max(localMax,jobDifficulty[s]);
+                }
+            }
+        }
+        return dp[len-1][d];
+    }
+
+    public int Num1478minDistance(int[] houses, int k) {
+        int len = houses.length;
+        Arrays.sort(houses);
+        if(k>=len)
+            return 0;
+        int[][] distances = new int[len][len];
+        for(int i=len-2;i>=0;i--)
+        {
+            for(int j=i+1;j<len;j++)
+            {
+                distances[i][j] = distances[i+1][j-1] + houses[j]-houses[i];
+            }
+        }
+        int[][] dp = new int[len][k+1];
+        for(int i=0;i<len;i++)
+        {
+            Arrays.fill(dp[i],Integer.MAX_VALUE/2);
+        }
+        for(int i=0;i<len;i++)
+        {
+            dp[i][1] = distances[0][i];
+            for(int j=2;j<=k&&j<=i+1;j++)
+            {
+                for(int i0=0;i0<i;i0++)
+                {
+                    dp[i][j] = Math.min(dp[i][j],dp[i0][j-1]+distances[i0+1][i]);
+                }
+            }
+        }
+        return dp[len-1][k];
+    }
+
+    public int Num1235jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int jobs = startTime.length;
+        int[][] jobinfo = new int[jobs][3];
+        int[] dp = new int[jobs+1];
+        for(int i=0;i<jobs;i++)
+        {
+            jobinfo[i][0] = startTime[i];
+            jobinfo[i][1] = endTime[i];
+            jobinfo[i][2] = profit[i];
+        }
+        Arrays.sort(jobinfo, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] job1, int[] job2) {
+                return job1[1]-job2[1];
+            }
+        });
+
+        for(int i=0;i<jobs;i++)
+        {
+            dp[i+1] = Math.max(dp[i],jobinfo[i][2]);
+            for(int j=i-1;j>=0;j--)
+            {
+                if(jobinfo[j][1]<=jobinfo[i][0])
+                {
+                    dp[i+1] = Math.max(dp[i+1],dp[j+1]+jobinfo[i][2]);
+                    break;
+                }
+            }
+        }
+        return dp[jobs];
+    }
+
+    public int Num1043maxSumAfterPartitioning(int[] arr, int k) {
+        int len = arr.length;
+        int[][] dp = new int[len+1][k+2];
+        for(int i=0;i<arr.length;i++)
+        {
+            for(int j=1;j<=k&&i-j>=0;j++)
+            {
+                dp[i+1][j] = Integer.MIN_VALUE;
+                int maxnum = Maxinrange(arr,i,j);
+                for(int p=1;p<=k;p++)
+                {
+                    dp[i+1][j] = Math.max(dp[i+1][j],dp[i+1-j][p]+maxnum*j);
+                }
+            }
+        }
+        int ans = 0;
+        for(int p=1;p<=k;p++ )
+        {
+            ans = Math.max(ans,dp[len][p]);
+        }
+        return ans;
+    }
+
+    public int Maxinrange(int[] arr, int end, int nums)
+    {
+        int max = 0;
+        for(int i=end-nums;i<=end;i++)
+        {
+            max = Math.max(max,arr[i]);
+        }
+        return max;
+    }
+
+    public int Num1043againmaxSumAfterPartitioning(int[] arr, int k) {
+        int len = arr.length;
+        int[] dp = new int[len+1];
+        for(int i=0;i<arr.length;i++)
+        {
+            dp[i+1] = Integer.MIN_VALUE;
+            for(int j=1;j<=k&&i-j>=0;j++)
+            {
+                int maxnum = Maxinrange(arr,i,j);
+                dp[i+1] = Math.max(dp[i+1],dp[i+1-j]+maxnum*j);
+            }
+        }
+        return dp[len];
+    }
+
+    public boolean Num523checkSubarraySum(int[] nums, int k) {
+        if(k==0)
+            return false;
+        int n = nums.length;
+        int[][] dp = new int[n][n];
+        for(int i=0;i<n;i++)
+        {
+            dp[i][i] = nums[i]%k;
+        }
+        for(int i=0;i<n-1;i++)
+        {
+            dp[i][i+1] = (nums[i]%k+nums[i+1]%k)%k;
+            if(dp[i][i+1]==0)
+                return true;
+        }
+        for(int len = 2; len<n; len++)
+        {
+            for(int i=0;i+len<n;i++)
+            {
+                int j = i+len;
+                dp[i][j] = (dp[i+1][j-1]+nums[i]%k+nums[j]%k)%k;
+                if(dp[i][j]%k==0)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean Num10isMatch(String s, String p) {
+        int n = s.length();
+        int m = p.length();
+        boolean[][] dp = new boolean[n+1][m+1];
+        dp[0][0] = true;
+        for(int i=2;i<=m;i+=2)
+        {
+            if(p.charAt(i-1)=='*')
+            {
+                dp[0][i] = dp[0][i - 2];
+            }
+        }
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(s.charAt(i-1)==p.charAt(j-1)||p.charAt(j-1)=='.')
+                    dp[i][j] = dp[i-1][j-1];
+                else if(p.charAt(j-1)=='*')
+                {
+                    if(s.charAt(i-1)!=p.charAt(j-2)&&p.charAt(j-2)!='.')
+                    {
+                        dp[i][j] = dp[i][j-2];
+                    }
+                    else
+                    {
+                        dp[i][j] = dp[i][j-1] || dp[i][j-2] || dp[i-1][j];
+                    }
+                }
+            }
+        }
+        return dp[n][m];
+    }
+
+
+    public int Num650minSteps(int n) {
+        int ans = 0,d = 2;
+        while(n>1)
+        {
+            while(n%d==0)
+            {
+                ans+=d;
+                n/=d;
+            }
+            d++;
+        }
+        return ans;
+    }
+
+    public double Num799champagneTower(int poured, int query_row, int query_glass) {
+        double[][] dp = new double[query_row+1][query_row+1];
+        dp[0][0] = poured;
+        for(int i=1;i<=query_row;i++)
+        {
+            for(int j=0;j<=i;j++)
+            {
+                if(j==0)
+                {
+                    dp[i][0] = dp[i-1][0]>1?(dp[i-1][0]-1)/2:0;
+                }
+                else if(j==i)
+                {
+                    dp[i][j] = dp[i-1][j-1]>1?(dp[i-1][j-1]-1)/2:0;
+                }
+                else
+                {
+                    double a = dp[i-1][j-1]>1?(dp[i-1][j-1]-1)/2:0;
+                    double b = dp[i-1][j]>1?(dp[i-1][j]-1)/2:0;
+                    dp[i][j] =  a+b ;
+                }
+            }
+        }
+        return dp[query_row][query_glass]>1?1:dp[query_row][query_glass];
+    }
+
+    public int Num516againlongestPalindromeSubseq(String s) {
+        int n = s.length();
+        int[][] dp = new int[n+1][n+1];
+
+        for(int i=0;i<n+1;i++)
+        {
+            dp[i][0] = 0;
+            dp[0][i] = 0;
+            dp[i][i] = 1;
+        }
+        dp[0][0] = 0;
+        for(int i=1;i<n;i++)
+        {
+            if(s.charAt(i-1)==s.charAt(i))
+                dp[i][i+1] = 2;
+            else
+                dp[i][i+1] = 1;
+        }
+        for(int len=2;len<n;len++)
+        {
+            for(int j=1;j<=n-len;j++)
+            {
+                int tail = j+len;
+                if(s.charAt(j-1)==s.charAt(tail-1))
+                {
+                    dp[j][tail] = dp[j+1][tail-1]+2;
+                }
+                dp[j][tail] = Math.max(dp[j][tail],Math.max(dp[j+1][tail],dp[j][tail-1]));
+            }
+        }
+        return dp[1][n];
+
+    }
+
+    public int Num1682longestPalindromeSubseq(String s) {
+        int n = s.length();
+        int ans = 0;
+        // state
+        int[][][] f = new int[n][n][26];
+        // function
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i + len - 1 < n; i++) {
+                int j = i + len - 1;
+                if (len == 2) {
+                    if (s.charAt(i) == s.charAt(j)) {
+                        f[i][j][s.charAt(i) - 'a'] = 2;
+                        ans = Math.max(ans, 2);
+                    }
+                } else {
+                    for (int k = 0; k < 26; k++) {
+                        if (s.charAt(i) == s.charAt(j) && s.charAt(i) - 'a' != k) {
+                            f[i][j][s.charAt(i) - 'a'] = Math.max(f[i][j][s.charAt(i) - 'a'], f[i + 1][j - 1][k] + 2);
+                            ans = Math.max(ans, f[i][j][s.charAt(i) - 'a']);
+                        }
+                        f[i][j][k] = Math.max(Math.max(f[i + 1][j][k], f[i][j - 1][k]), Math.max(f[i + 1][j - 1][k], f[i][j][k]));
+                    }
+                }
+            }
+        }
+        // answer
+        return ans;
+    }
+
+    public List<String> Num140wordBreak(String s, List<String> wordDict) {
+        HashSet<String> set = new HashSet<>();
+        for(String word:wordDict)
+        {
+            set.add(word);
+        }
+        HashMap<String,List<String>> map = new HashMap<>();
+        Num140helper(map,s,set);
+        return map.get(s);
+    }
+
+    public List<String> Num140helper(HashMap<String,List<String>> map, String s, HashSet<String> set)
+    {
+        if(s.equals(""))
+        {
+            LinkedList<String> ans = new LinkedList<>();
+            return ans;
+        }
+
+        if(map.containsKey(s))
+            return map.get(s);
+        List<String> ans = new LinkedList<>();
+        map.put(s,ans);
+        for(int i=1;i<=s.length();i++)
+        {
+            String word = s.substring(0,i);
+            if(set.contains(word))
+            {
+                List<String> postfixes = Num140helper(map,s.substring(i),set);
+                for(String postfix:postfixes)
+                {
+                    String news = word+" "+postfix;
+                    ans.add(news);
+                }
+                if(postfixes.size()==0&&s.substring(i).equals(""))
+                    ans.add(word);
+            }
+        }
+        return map.get(s);
+
+    }
+
+    public List<String> Num282addOperators(String num, int target) {
+
+    }
+
+    public int Num115numDistinct(String s, String t) {
+        int n = s.length();
+        int m = t.length();
+        int[][] dp = new int[n+1][m+1];
+        for(int i=0;i<=n;i++)
+        {
+            dp[i][0] = 1;
+        }
+        for(int i=1;i<=m;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                dp[j][i] = dp[j-1][i];
+                if(s.charAt(j-1)==t.charAt(i-1))
+                {
+                    dp[j][i]+=dp[j-1][i-1];
+                }
+            }
+        }
+        return dp[n][m];
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public int Num1262maxSumDivThree(int[] nums) {

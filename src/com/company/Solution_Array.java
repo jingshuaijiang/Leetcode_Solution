@@ -1781,6 +1781,73 @@ public class Solution_Array {
         return ans;
     }
 
+    public String Num1209removeDuplicates(String s, int k) {
+        Stack<Integer> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        int prev_continue = 1;
+        char prev = '1';
+        for(int i=0;i<s.length();i++)
+        {
+            if(i==0||s.charAt(i)!=prev)
+            {
+                sb.append(s.charAt(i));
+                stack.push(1);
+                prev = s.charAt(i);
+            }
+            else
+            {
+                prev_continue=stack.pop()+1;
+                sb.append(s.charAt(i));
+                if(prev_continue>=k)
+                {
+                    sb.delete(sb.length()-k,sb.length());
+                    if(sb.length()==0)
+                        prev = '1';
+                    else
+                        prev = sb.charAt(sb.length()-1);
+                    continue;
+                }
+                stack.push(prev_continue);
+
+            }
+        }
+        return sb.toString();
+    }
+
+    public int Num518change(int amount, int[] coins) {
+        int[] dp = new int[amount+1];
+        dp[0] = 1;
+        for(int i=1;i<=amount;i++)
+        {
+            for(int j=0;j<coins.length;j++)
+            {
+                if(i-coins[j]<0)
+                    break;
+                dp[i]+=dp[i-coins[j]];
+            }
+        }
+        return dp[amount];
+    }
+
+    public static int availableSpace(int numComputer, List<Integer> hardDiskSpace, int segmentLength) {
+        int max = 0;
+        LinkedList<Integer> temp = new LinkedList<>();
+        for(int i=0;i<hardDiskSpace.size();i++)
+        {
+            while(!temp.isEmpty()&&temp.get(0)<=i-segmentLength)
+            {
+                temp.removeFirst();
+            }
+            while(!temp.isEmpty()&&temp.getLast()>hardDiskSpace.get(i))
+            {
+                temp.removeLast();
+            }
+            temp.add(i);
+            max = Math.max(max,hardDiskSpace.get(temp.get(0)));
+        }
+        return max;
+    }
+
 
 
 

@@ -2,6 +2,7 @@ package com.company;
 import java.util.*;
 import java.lang.Object;
 import javafx.util.Pair;
+import org.w3c.dom.html.HTMLDOMImplementation;
 
 public class Solution_Design {
 
@@ -572,21 +573,546 @@ public class Solution_Design {
     }
 
     class BrowserHistory {
+        public class history
+        {
+            String url;
+            private history next;
+            private history before;
+
+            public history(String url)
+            {
+                this.url = url;
+            }
+        }
+
+        history head,current;
 
         public BrowserHistory(String homepage) {
-
+            head = new history("This is the head");
+            history homepage1 = new history(homepage);
+            head.next = homepage1;
+            homepage1.before = head;
+            current = homepage1;
         }
 
         public void visit(String url) {
-
+            if(current.next!=null)
+            {
+                current.next.before = null;
+                current.next = null;
+            }
+            history newpage = new history(url);
+            current.next = newpage;
+            newpage.before = current;
+            current = current.next;
         }
 
         public String back(int steps) {
-
+            while(current.before!=null&&steps>=0)
+            {
+                current = current.before;
+                steps--;
+            }
+            current = current.next;
+            return current.url;
         }
 
         public String forward(int steps) {
+            while(current.next!=null&&steps>0)
+            {
+                current = current.next;
+                steps--;
+            }
+            return current.url;
+        }
+    }
 
+    class UndergroundSystem {
+        private HashMap<Integer,Pair<Integer,String>> checkin;
+        private HashMap<String,Pair<Double,Double>> timetable;
+
+        public UndergroundSystem() {
+            checkin = new HashMap<Integer, Pair<Integer, String>>();
+            timetable = new HashMap<String, Pair<Double, Double>>();
+
+        }
+
+        public void checkIn(int id, String stationName, int t) {
+            checkin.put(id,new Pair<>(t,stationName));
+        }
+
+        public void checkOut(int id, String stationName, int t) {
+            Pair<Integer,String> info = checkin.get(id);
+            String startstation = info.getKey();
+            int time = info.getValue();
+            String key = startstation+"##"+stationName;
+            if(timetable.containsKey(key))
+            {
+                Pair<Double, Double> currentones = timetable.get(key);
+
+            }
+            checkin.remove(id);
+        }
+
+        public double getAverageTime(String startStation, String endStation) {
+            String key = startStation+"##"+endStation;
+            Pair<Double, Double> currentones = timetable.get(key);
+            return currentones.getKey()/currentones.getValue();
+        }
+    }
+
+    class RandomizedSet {
+
+        /** Initialize your data structure here. */
+        HashMap<Integer,Integer> setmap;
+        List<Integer> set;
+        public RandomizedSet() {
+            set = new ArrayList<>();
+            setmap = new HashMap<Integer,Integer>();
+        }
+
+        /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+        public boolean insert(int val) {
+            int position = set.size();
+            if(setmap.containsKey(val))
+                return false;
+            setmap.put(val,position-1);
+            return true;
+        }
+
+        /** Removes a value from the set. Returns true if the set contained the specified element. */
+        public boolean remove(int val) {
+            if(!setmap.containsKey(val))
+                return false;
+            int index = setmap.get(val);
+            int last = set.get(set.size()-1);
+            set.set(index,last);
+            set.remove(set.size()-1);
+            setmap.remove(val);
+            return true;
+        }
+
+        /** Get a random element from the set. */
+        public int getRandom() {
+            return set.get(rand.nextInt(set.size()));
+        }
+    }
+
+
+    class SummaryRanges {
+
+        private class Node {
+
+            int left, right;
+            Node next;
+
+            public Node(int left, int right, Node next) {
+                this.left = left;
+                this.right = right;
+                this.next = next;
+            }
+        }
+        private TreeMap<Integer,Node> treeMap;
+        private Node dummy;
+        private int count;
+        /** Initialize your data structure here. */
+        public SummaryRanges() {
+            this.treeMap = new TreeMap<>();
+            dummy = new Node(-2,-2,null);
+            treeMap.put(-2,dummy);
+            count = 0;
+        }
+
+        public void addNum(int val) {
+            Node pre = treeMap.lowerEntry(val).getValue();
+            Node cur = pre.next;
+            if(cur!=null&&cur.left<=val)
+                return;
+            boolean isnull = cur==null;
+            if(cur==null)
+            {
+                cur = new Node(val+2,val+2,null);
+            }
+            if(pre.right+1==val)
+            {
+                if(val+1==cur.left)
+                {
+                    treeMap.remove(pre.right);
+                    treeMap.remove(cur.right);
+                    pre.right = cur.right;
+                    pre.next = cur.next;
+                    treeMap.put(cur.right,pre);
+                    count--;
+                }
+                else
+                {
+                    treeMap.remove(pre.right);
+                    pre.right++;
+                    treeMap.put(pre.right,pre);
+                }
+            }else if(val+1==cur.left)
+                cur.left--;
+            else
+            {
+                Node node = new Node(val,val,isnull?null:cur);
+                treeMap.put(val,node);
+                count++;
+                pre.next = node;
+            }
+        }
+
+        public int[][] getIntervals() {
+            int[][] res = new int[count][2];
+            Node node = dummy.next;
+            int id = 0;
+            while(node!=null)
+            {
+                res[id++] = new int[]{node.left,node.right};
+                node = node.next;
+            }
+            return res;
+        }
+    }
+
+    class RangeModule {
+        private class Interval
+        {
+            private int left;
+            private int right;
+            private Interval next;
+            public Interval(int left, int right, Interval next)
+            {
+                this.left = left;
+                this.right = right;
+                this.next = next;
+            }
+        }
+        TreeMap<Integer,Interval> map;
+        Interval dummy;
+
+        public RangeModule() {
+            map = new TreeMap<>();
+            dummy = new Interval(-1,-1,null);
+            map.put(-1,dummy);
+        }
+
+        public void addRange(int left, int right) {
+            Interval prev = map.lowerEntry(left).getValue();
+            Interval cur = prev.next;
+            while(cur!=null&&cur.left<=right)
+            {
+                right = Math.max(cur.right,right);
+                left = Math.min(cur.left,left);
+                map.remove(cur.right);
+                cur = cur.next;
+            }
+            prev.next = new Interval(left,right,cur);
+            map.put(right, prev.next);
+        }
+
+        public boolean queryRange(int left, int right) {
+            Interval itv = map.lowerEntry(left).getValue().next;
+            if(itv == null)
+                return false;
+            return itv.left<=left&&itv.right>=right;
+        }
+
+        public void removeRange(int left, int right) {
+            Interval pre = map.floorEntry(left).getValue();
+            Interval cur = pre.next;
+            while (cur!=null&&cur.left<right)
+            {
+                map.remove(cur.right);
+                if(cur.left<left)
+                {
+                    pre.next = new Interval(cur.left,left,null);
+                    map.put(left,pre.next);
+                    pre = pre.next;
+                }
+                if(cur.right>right)
+                {
+                    pre.next = new Interval(right,cur.right,null);
+                    map.put(cur.right,pre.next);
+                    pre = pre.next;
+                }
+                cur = cur.next;
+            }
+            pre.next = cur;
+        }
+    }
+
+    class MedianFinder {
+
+        /** initialize your data structure here. */
+        public MedianFinder() {
+
+        }
+
+        public void addNum(int num) {
+
+        }
+
+        public double findMedian() {
+
+        }
+    }
+
+    class RandomizedCollection {
+
+        ArrayList<Integer> lst;
+        HashMap<Integer,Set<Integer>> idx;
+        java.util.Random rand = new java.util.Random();
+        /** Initialize your data structure here. */
+        public RandomizedCollection() {
+            lst = new ArrayList<>();
+            idx = new HashMap<>();
+        }
+
+        /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+        public boolean insert(int val) {
+            if(!idx.containsKey(val))
+            {
+                idx.put(val,new HashSet<Integer>());
+            }
+            idx.get(val).add(lst.size());
+            lst.add(val);
+            return idx.get(val).size()==1;
+        }
+
+        /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+        public boolean remove(int val) {
+            if(!idx.containsKey(val)||idx.get(val).size()==0)
+                return false;
+            int remove_index = idx.get(val).iterator().next();
+            idx.get(val).remove(remove_index);
+            int last = lst.get(lst.size()-1);
+            lst.set(remove_index,last);
+            idx.get(last).remove(lst.size()-1);
+            idx.get(last).add(remove_index);
+
+            lst.remove(lst.size()-1);
+            return true;
+        }
+
+        /** Get a random element from the collection. */
+        public int getRandom() {
+            return lst.get(rand.nextInt(lst.size()));
+        }
+    }
+
+    class LFUCache {
+
+        HashMap<Integer,cachenode> cache;
+        HashMap<Integer,DoublyLinkedList> frequencymap;
+        int capacity;
+        int min;
+        public LFUCache(int capacity) {
+            cache = new HashMap<>(capacity);
+            frequencymap = new HashMap<>();
+            this.capacity = capacity;
+        }
+
+        public int get(int key) {
+            cachenode node = cache.get(key);
+            if(node==null)
+                return -1;
+            updatefreq(node);
+            return node.value;
+        }
+
+        public void put(int key, int value) {
+            if(capacity==0)
+                return;
+            cachenode node = cache.get(key);
+            if(node!=null)
+            {
+                node.value = value;
+                updatefreq(node);
+            }
+            else
+            {
+                if(cache.size()==capacity)
+                {
+                    DoublyLinkedList dll = frequencymap.get(min);
+                    cache.remove(dll.tail.pre.key);
+                    dll.removenode(dll.tail.pre);
+                }
+                cachenode newnode = new cachenode(key,value);
+                cache.put(key,newnode);
+                DoublyLinkedList dll = frequencymap.get(1);
+                if(dll==null)
+                {
+                    dll = new DoublyLinkedList();
+                    frequencymap.put(1,dll);
+                }
+                dll.addnode(newnode);
+                min = 1;
+            }
+        }
+
+        public void updatefreq(cachenode node)
+        {
+            int freq = node.frequency;
+            DoublyLinkedList dll = frequencymap.get(freq);
+            dll.removenode(node);
+            if(freq==min&&dll.head.next==dll.tail)
+            {
+                min = freq+1;
+            }
+            node.frequency++;
+            DoublyLinkedList dll2 = frequencymap.get(freq+1);
+            if(dll2==null)
+            {
+                dll2 = new DoublyLinkedList();
+                frequencymap.put(freq+1,dll2);
+            }
+            dll2.addnode(node);
+
+        }
+    }
+
+    class cachenode
+    {
+        int key;
+        int value;
+        int frequency = 1;
+        cachenode pre,next;
+
+        public cachenode()
+        {
+        }
+
+        public cachenode(int key,int value)
+        {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    class DoublyLinkedList
+    {
+        cachenode head;
+        cachenode tail;
+        public DoublyLinkedList() {
+            head = new cachenode();
+            tail = new cachenode();
+            head.next = tail;
+            tail.pre = head;
+        }
+
+        public void removenode(cachenode node)
+        {
+            node.pre.next = node.next;
+            node.next.pre = node.pre;
+        }
+
+        public void addnode(cachenode node)
+        {
+            node.next = head.next;
+            head.next.pre = node;
+            head.next = node;
+            node.pre = head;
+        }
+    }
+
+
+    class Trie {
+        TrieNode root;
+        /** Initialize your data structure here. */
+        public Trie() {
+            root = new TrieNode();
+        }
+
+        /** Inserts a word into the trie. */
+        public void insert(String word) {
+            TrieNode node = root;
+            for(int i=0;i<word.length();i++)
+            {
+                char current = word.charAt(i);
+                if(node.containsKey(current))
+                {
+                    node = node.get(current);
+                }
+                else
+                {
+                    TrieNode newnode = new TrieNode();
+                    node.put(current,newnode);
+                    node = node.get(current);
+                }
+            }
+            node.setEnd();
+        }
+
+        /** Returns if the word is in the trie. */
+        public boolean search(String word) {
+            TrieNode node = root;
+            for(int i=0;i<word.length();i++)
+            {
+                char current = word.charAt(i);
+                if(node.containsKey(current))
+                {
+                    node = node.get(current);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return node.isEnd;
+        }
+
+        /** Returns if there is any word in the trie that starts with the given prefix. */
+        public boolean startsWith(String prefix) {
+            TrieNode node = root;
+            for(int i=0;i<prefix.length();i++)
+            {
+                char current = prefix.charAt(i);
+                if(node.containsKey(current))
+                {
+                    node = node.get(current);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    class TrieNode
+    {
+        private TrieNode[] children;
+
+        final int R = 26;
+        boolean isEnd;
+        public TrieNode(){
+            children = new TrieNode[26];
+        }
+
+        public boolean containsKey(char ch)
+        {
+            return children[ch-'a']!=null;
+        }
+
+        public TrieNode get(char ch)
+        {
+            return children[ch-'a'];
+        }
+
+        public void put(char ch,TrieNode node)
+        {
+            children[ch-'a'] = node;
+        }
+
+        public void setEnd()
+        {
+            isEnd = true;
+        }
+
+        public boolean isEnd()
+        {
+            return isEnd;
         }
     }
 

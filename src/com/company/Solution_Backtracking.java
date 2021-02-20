@@ -444,6 +444,48 @@ public class Solution_Backtracking {
         }
     }
 
+    HashMap<Character,String> c2s = new HashMap<>();
+    HashMap<String,Character> s2c = new HashMap<>();
+    public boolean Num291wordPatternMatch(String pattern, String s) {
+        return Num291helper(pattern,s,0,0);
+    }
+
+    public boolean Num291helper(String pattern,String s,int pindex, int sindex)
+    {
+        if(pindex==pattern.length()&&sindex==s.length())
+            return true;
+        if((pindex==pattern.length()&&sindex<s.length())||(sindex==s.length()&&pindex<pattern.length()))
+            return false;
+        char c = pattern.charAt(pindex);
+        if(c2s.containsKey(c))
+        {
+            String value = c2s.get(c);
+            if(s.length()-sindex<value.length())
+                return false;
+            if(s.substring(sindex,sindex+value.length()).equals(value))
+            {
+                if(Num291helper(pattern,s,pindex+1,sindex+value.length()))
+                    return true;
+            }
+            return false;
+        }else
+        {
+            for(int i = sindex+1;i<=s.length();i++)
+            {
+                String value = s.substring(sindex,i);
+                if(s2c.containsKey(value))
+                    continue;
+                s2c.put(value,c);
+                c2s.put(c,value);
+                if(Num291helper(pattern,s,pindex+1,i))
+                    return true;
+                s2c.remove(value);
+                c2s.remove(c);
+            }
+        }
+        return false;
+    }
+
 
 
 

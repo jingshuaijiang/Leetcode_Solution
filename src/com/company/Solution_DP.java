@@ -1749,8 +1749,95 @@ public class Solution_DP {
         return dp[n][m];
     }
 
+    public int Num1444ways(String[] pizza, int k) {
+        int mod  = 1000000007;
+        int row = pizza.length;
+        int col = pizza[0].length();
+        int[][][] dp = new int[row][col][k+1];
+        dp[0][0][1] = 1;
+        for(int x = 2;x<=k;x++)
+        {
+            for(int i=0;i<row;i++)
+            {
+                for(int j=0;j<col;j++)
+                {
+                    if(dp[i][j][x]==0)
+                        continue;
+                    for(int z = i+1;z<row;z++)
+                    {
+                        if(hasA(num,i,j,z-1,col-1)&&hasA(num,z,j,row-1,col-1))
+                        {
+                            dp[z][j][x]+=dp[i][j][x-1];
+                            dp[z][j][x]%=mod;
+                        }
+                    }
+                    for(int z=j+1;z<col;z++)
+                    {
+                        if(hasA(num,i,j,ro-1,z-1)&&hasA(num,i,z,row-1,col-1))
+                        {
+                            dp[i][z][x]+=dp[i][j][x-1];
+                            dp[i][z][x]%=mod;
+                        }
+                    }
+                }
+            }
+        }
+        int ans = 0;
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                ans+=dp[i][j][k];
+                ans%=mod;
+            }
+        }
+        return ans;
+    }
 
+    public boolean hasA(int[][] num,int sr,int sc,int er,int ec){
+        int num1=0,num2=0,num3=0,res;
+        if(sr!=0 && sc!=0) num1=num[sr-1][sc-1];
+        if(sr!=0) num2=num[sr-1][ec];
+        if(sc!=0) num3=num[er][sc-1];
+        return num[er][ec]-num2-num3+num1>0;
+    }
 
+    public boolean Num44isMatch(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+        boolean[][] dp = new boolean[m+1][n+1];
+        dp[0][0] = true;
+        for(int i=1;i<=n;i++)
+        {
+            if(p.charAt(i-1)=='*')
+            {
+                dp[0][i]=true;
+            }
+            else
+                break;
+        }
+        for(int i=1;i<=m;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                if(p.charAt(j-1)=='?'||p.charAt(j-1)==s.charAt(i-1))
+                {
+                    dp[i][j] = dp[i-1][j-1];
+                }
+                else if(p.charAt(j-1)=='*')
+                {
+                    dp[i][j] = dp[i-1][j]||dp[i][j-1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    public boolean test()
+    {
+        String a = "";
+        a.substring()
+    }
 
 
 

@@ -694,6 +694,118 @@ public class Solution_String {
         return String.valueOf(ans);
     }
 
+    public List<String> Num472findAllConcatenatedWordsInADict(String[] words) {
+        Num472TrieNode root = new Num472TrieNode();
+        for(int i=0;i<words.length;i++)
+        {
+            if(!words[i].equals(""))
+                root.add(words[i]);
+        }
+        List<String> ans = new LinkedList<>();
+        for(int i=0;i<words.length;i++)
+        {
+            if(Num472dfs(words[i],root,0))
+                ans.add(words[i]);
+        }
+        return ans;
+    }
+
+    public boolean Num472dfs(String word, Num472TrieNode root, int start)
+    {
+        Num472TrieNode node = root;
+        for(int i=start;i<word.length();i++)
+        {
+            if(!node.next.containsKey(word.charAt(i)))
+            {
+                return false;
+            }
+            node = node.next.get(word.charAt(i));
+            if(node.isWord&&Num472dfs(word.substring(i+1),root,i+1))
+                return true;
+        }
+        return node.isWord&&start!=0;
+    }
+
+    class Num472TrieNode {
+        public boolean isWord;
+        public Map<Character, Num472TrieNode> next;
+        public Num472TrieNode() {
+            isWord = false;
+            next = new HashMap<>();
+        }
+        public void add(String str) {
+            Num472TrieNode node = this;
+            for (int i = 0; i < str.length(); i++) {
+                char c = str.charAt(i);
+                if (!node.next.containsKey(c)) {
+                    node.next.put(c, new Num472TrieNode());
+                }
+                node = node.next.get(c);
+            }
+            node.isWord = true;
+        }
+    }
+
+    public int[] Num735asteroidCollision(int[] asteroids) {
+        int[] ans = new int[asteroids.length];
+        Stack<Integer> stack = new Stack<>();
+        for(int i=0;i<asteroids.length;i++)
+        {
+            if(asteroids[i]>0)
+            {
+                stack.push(i);
+            }
+            else
+            {
+                int current = asteroids[i];
+                while(!stack.isEmpty()&&current!=0)
+                {
+                    int right = stack.peek();
+                    if(asteroids[right]>Math.abs(current))
+                        current = 0;
+                    else if(asteroids[right]==Math.abs(current))
+                    {
+                        current = 0;
+                        stack.pop();
+                        ans[right] = 0;
+                    }
+                    else
+                    {
+                        stack.pop();
+                        ans[right] = 0;
+                    }
+                }
+                if(stack.size()==0&&current!=0)
+                    ans[i] = asteroids[i];
+                else
+                    ans[i] = 0;
+            }
+        }
+        while(!stack.isEmpty())
+        {
+            int index = stack.pop();
+            ans[index] = asteroids[index];
+        }
+        int count = 0;
+        for(int i=0;i<asteroids.length;i++)
+        {
+            if(ans[i]!=0)
+                count++;
+        }
+        int[] res = new int[count];
+        int id = 0;
+        for(int i=0;i<asteroids.length;i++)
+        {
+            if(ans[i]!=0)
+            {
+                res[id] = ans[i];
+                id++;
+            }
+        }
+        return res;
+    }
+
+
 
 
 
